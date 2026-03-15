@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlHiem's Domain — Portfolio Terminal</title>
+    <meta name="description"
+        content="Interactive PowerShell-styled portfolio terminal for Sayed. Type commands to explore projects, skills, education, and contact info.">
+    <style>
+        /* ========== DESIGN TOKENS ========== */
+        :root {
+            --bg: #050508;
+            --surface: rgba(195, 181, 255, 0.05); /* faint purple surface */
+            --border: #C3B5FF;
+            --text-primary: #C3B5FF;
+            --text-dim: rgba(195, 181, 255, 0.6);
+            --text-accent: #FFFFFF;
+            --text-green: #FFFFFF; 
+            --text-yellow: #FFFFFF; 
+            --text-white: #FFFFFF;
+            --prompt-blue: #C3B5FF;
+            --cursor: #C3B5FF;
+        }
+
+        /* ========== RESET & BASE ========== */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            background: var(--bg);
+            color: var(--text-primary);
+            font-family: 'Cascadia Code', 'Consolas', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background: var(--border);
+            color: var(--bg);
+        }
+
+        a {
+            color: var(--text-accent);
+            text-decoration: none;
+            transition: text-decoration 0.15s;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* ========== LAYOUT WRAPPER ========== */
+        #app {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 32px 20px 60px;
+        }
+
+        /* ========== HERO BOX ========== */
+        #hero-container {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #hero-container.visible {
+            opacity: 1;
+        }
+
+        .hero-box {
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            max-width: 860px;
+            margin: 0 auto;
+            background: var(--surface);
+        }
+
+        .hero-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 14px;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+            color: var(--text-accent);
+            font-size: 13px;
+        }
+
+        .hero-body {
+            display: grid;
+            grid-template-columns: 40% 1px 1fr;
+            min-height: 220px;
+        }
+
+        .hero-left {
+            padding: 18px 16px;
+        }
+
+        .hero-divider {
+            background: var(--border);
+            opacity: 0.4;
+        }
+
+        .hero-right {
+            padding: 18px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .hero-welcome {
+            color: var(--text-yellow);
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+
+        .ascii-art {
+            color: var(--text-accent);
+            font-size: 11px;
+            line-height: 1.25;
+            white-space: pre;
+            letter-spacing: 0px;
+        }
+
+        .hero-tagline {
+            color: var(--text-dim);
+            font-size: 11px;
+            margin-top: 8px;
+        }
+
+        .section-title {
+            color: var(--text-yellow);
+            font-size: 12px;
+            letter-spacing: 1px;
+            margin-bottom: 2px;
+        }
+
+        .section-line {
+            color: var(--text-dim);
+            font-size: 12px;
+            margin-bottom: 6px;
+        }
+
+        .activity-item {
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .activity-name {
+            color: var(--text-green);
+        }
+
+        .activity-time {
+            color: var(--text-dim);
+        }
+
+        .activity-dot {
+            color: var(--text-accent);
+        }
+
+        .activity-status {
+            color: var(--text-green);
+            font-size: 11px;
+        }
+
+        .activity-commit {
+            color: var(--text-dim);
+            font-size: 11px;
+            margin-left: 16px;
+        }
+
+        .whatsnew-item {
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .whatsnew-plus {
+            color: var(--text-accent);
+        }
+
+        .whatsnew-time {
+            color: var(--text-dim);
+        }
+
+        /* Tip line */
+        .hero-tip {
+            text-align: center;
+            margin-top: 14px;
+            font-size: 12px;
+            color: var(--text-dim);
+        }
+
+        .hero-tip .cmd-badge {
+            background: #1f3a4a;
+            color: var(--text-accent);
+            padding: 2px 7px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+
+        /* ========== TERMINAL AREA ========== */
+        #terminal-container {
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            margin-top: 8px;
+        }
+
+        #terminal-container.visible {
+            opacity: 1;
+        }
+
+        #terminal-output {
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-bottom: 4px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* Custom slim scrollbar */
+        #terminal-output::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        #terminal-output::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #terminal-output::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        #terminal-output {
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) transparent;
+        }
+
+        .output-line {
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .output-line a {
+            color: var(--text-accent);
+            text-decoration: none;
+        }
+
+        .output-line a:hover {
+            text-decoration: underline;
+        }
+
+        /* ========== PROMPT LINE ========== */
+        .prompt-line {
+            display: flex;
+            align-items: center;
+            flex-wrap: nowrap;
+            min-height: 24px;
+            position: relative;
+        }
+
+        .prompt-prefix {
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .prompt-ps {
+            color: var(--text-white);
+        }
+
+        .prompt-path {
+            color: var(--text-accent);
+        }
+
+        .prompt-gt {
+            color: var(--text-white);
+            margin-right: 6px;
+        }
+
+        /* Input area */
+        .input-wrapper {
+            position: relative;
+            flex: 1;
+            min-width: 0;
+        }
+
+        #cmd-input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 14px;
+            width: 100%;
+            caret-color: transparent;
+            line-height: 1.6;
+        }
+
+        /* Visible text mirror + cursor */
+        #cmd-mirror {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre;
+        }
+
+        .block-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background: var(--cursor);
+            vertical-align: text-bottom;
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 600px) {
+            html {
+                font-size: 12px;
+            }
+
+            .hero-body {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto;
+            }
+
+            .hero-divider {
+                height: 1px;
+                width: 100%;
+            }
+
+            .ascii-art {
+                font-size: 8px;
+            }
+
+            #app {
+                padding: 16px 10px 40px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <!-- HERO (rendered by JS typewriter) -->
+        <div id="hero-container"></div>
+
+        <!-- TERMINAL -->
+        <div id="terminal-container">
+            <div id="terminal-output"></div>
+            <div class="prompt-line" id="active-prompt">
+                <span class="prompt-prefix"><span class="prompt-ps">PS </span><span
+                        class="prompt-path">C:\Users\Sayed\Portfolio</span><span class="prompt-gt">&gt;</span></span>
+                <div class="input-wrapper">
+                    <input type="text" id="cmd-input" autocomplete="off" autocorrect="off" autocapitalize="off"
+                        spellcheck="false" aria-label="Terminal input">
+                    <span id="cmd-mirror"><span class="block-cursor"></span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ==========================================================
+           Sayed's PowerShell Portfolio Terminal
+           ========================================================== */
+
+        (function () {
+            'use strict';
+
+            // ── DOM refs ──
+            const heroContainer = document.getElementById('hero-container');
+            const termContainer = document.getElementById('terminal-container');
+            const termOutput = document.getElementById('terminal-output');
+            const cmdInput = document.getElementById('cmd-input');
+            const cmdMirror = document.getElementById('cmd-mirror');
+
+            // ── State ──
+            const history = [];
+            let historyIdx = -1;
+            let isLocked = false;
+
+            const COMMANDS = ['help', 'projects', 'skills', 'education', 'connect', 'clear', 'whoami', 'home'];
+
+            // ── Utility ──
+            function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+            function escapeHTML(str) {
+                return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            }
+
+            // ── Typewriter (returns a promise) ──
+            async function typewriter(el, html, charDelay = 18) {
+                // We type the raw text but inject HTML at the end
+                // For the hero we do character-by-character of text content
+                const tmp = document.createElement('div');
+                tmp.innerHTML = html;
+                const text = tmp.textContent;
+                el.textContent = '';
+                for (let i = 0; i < text.length; i++) {
+                    el.textContent += text[i];
+                    await sleep(charDelay + (Math.random() * 8 - 4));
+                }
+                // Now swap to real HTML
+                el.innerHTML = html;
+            }
+
+            // ── Build hero HTML ──
+            function getHeroHTML() {
+                return `<div class="hero-box">
+  <div class="hero-header">
+    <span>Alhiem's Domain</span>
+    <span>v2.0.26</span>
+  </div>
+  <div class="hero-body">
+    <div class="hero-left">
+      <div class="hero-welcome">Welcome Back, User.</div>
+      <pre class="ascii-art">███████╗███████╗██╗  ██╗
+██╔════╝██╔════╝██║  ██║
+███████╗███████╗███████║
+╚════██║╚════██║██╔══██║
+███████║███████║██║  ██║
+╚══════╝╚══════╝╚═╝  ╚═╝</pre>
+      <div class="hero-tagline">[ Secure. Sharp. Handcrafted. ]</div>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-right">
+      <div>
+        <div class="section-title">RECENT ACTIVITY</div>
+        <div class="section-line">───────────────────────────────</div>
+        <div class="activity-item">
+          <span class="activity-dot">*</span> <span class="activity-name">splotch.in</span>          <span class="activity-time">[2h ago]</span>  <span class="activity-dot">●</span>  <span class="activity-status">active</span>
+        </div>
+        <div class="activity-commit">→ commit: "ui polish pass"</div>
+      </div>
+      <div>
+        <div class="section-title">WHAT'S NEW</div>
+        <div class="section-line">───────────────────────────────</div>
+        <div class="whatsnew-item"><span class="whatsnew-plus">+</span> learned SQL          <span class="whatsnew-time">[recent]</span></div>
+        <div class="whatsnew-item"><span class="whatsnew-plus">+</span> learned Godot        <span class="whatsnew-time">[recent]</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="hero-tip">Tip: type <span class="cmd-badge">help</span> in the terminal below for a list of commands.</div>`;
+            }
+
+            // ── Init sequence ──
+            async function init() {
+                await sleep(400);
+
+                // Build hero with typewriter
+                const heroHTML = getHeroHTML();
+                heroContainer.innerHTML = heroHTML;
+                // For the typewriter effect we'll animate the hero box text content
+                const heroBox = heroContainer.querySelector('.hero-box');
+                const heroTip = heroContainer.querySelector('.hero-tip');
+                heroTip.style.opacity = '0';
+
+                // Capture final HTML
+                const finalHeroHTML = heroBox.innerHTML;
+
+                // Flatten all text nodes for typewriter
+                const fullText = heroBox.textContent;
+
+                // Clear box and type character by character
+                heroContainer.style.opacity = '1';
+                heroContainer.classList.add('visible');
+                heroBox.textContent = '';
+                heroBox.style.whiteSpace = 'pre-wrap';
+                heroBox.style.border = '1px solid var(--border)';
+                heroBox.style.borderRadius = '4px';
+                heroBox.style.background = 'var(--surface)';
+                heroBox.style.overflow = 'hidden';
+
+                for (let i = 0; i < fullText.length; i++) {
+                    heroBox.textContent += fullText[i];
+                    await sleep(8 + (Math.random() * 6 - 3)); // faster for big block
+                }
+
+                // Swap back to real HTML
+                heroBox.innerHTML = finalHeroHTML;
+                heroBox.style.whiteSpace = '';
+
+                // Fade in tip
+                heroTip.style.transition = 'opacity 0.4s ease';
+                heroTip.style.opacity = '1';
+
+                await sleep(200);
+
+                // Fade in terminal
+                termContainer.classList.add('visible');
+                cmdInput.focus();
+            }
+
+            // ── Mirror input text + cursor ──
+            function updateMirror() {
+                const val = cmdInput.value;
+                const pos = cmdInput.selectionStart || 0;
+                const before = escapeHTML(val.slice(0, pos));
+                const at = val[pos] ? escapeHTML(val[pos]) : '';
+                const after = escapeHTML(val.slice(pos + 1));
+
+                if (at) {
+                    cmdMirror.innerHTML = before + '<span class="block-cursor" style="color:var(--bg);background:var(--cursor);">' + at + '</span>' + after;
+                } else {
+                    cmdMirror.innerHTML = before + '<span class="block-cursor"></span>';
+                }
+            }
+
+            // ── Print output line(s) ──
+            function printLine(html) {
+                const div = document.createElement('div');
+                div.className = 'output-line';
+                div.innerHTML = html;
+                termOutput.appendChild(div);
+            }
+
+            function printPromptEcho(cmd) {
+                printLine('<span class="prompt-ps">PS </span><span class="prompt-path">C:\\Users\\Sayed\\Portfolio</span><span class="prompt-gt">&gt;</span> ' + escapeHTML(cmd));
+            }
+
+            // Typewriter for output lines
+            async function printLinesAnimated(lines) {
+                for (const line of lines) {
+                    const div = document.createElement('div');
+                    div.className = 'output-line';
+                    termOutput.appendChild(div);
+                    // type char-by-char
+                    const tmp = document.createElement('div');
+                    tmp.innerHTML = line;
+                    const text = tmp.textContent;
+                    for (let i = 0; i < text.length; i++) {
+                        div.textContent += text[i];
+                        await sleep(4 + Math.random() * 4);
+                    }
+                    div.innerHTML = line;
+                    scrollToBottom();
+                }
+            }
+
+            function scrollToBottom() {
+                termOutput.scrollTop = termOutput.scrollHeight;
+            }
+
+            // ── Command handlers ──
+            function cmdHelp() {
+                return [
+                    '<span style="color:var(--text-dim)">┌─────────────────────────────────────────────┐</span>',
+                    '<span style="color:var(--text-dim)">│</span>  <span style="color:var(--text-yellow)">Available Commands</span>                         <span style="color:var(--text-dim)">│</span>',
+                    '<span style="color:var(--text-dim)">├──────────────┬──────────────────────────────┤</span>',
+                    '<span style="color:var(--text-dim)">│</span>  <span style="color:var(--text-accent)">help</span>        <span style="color:var(--text-dim)">│</span>  Show this help menu         <span style="color:var(--text-dim)">│</span>',
+                    '<span style="color:var(--text-dim)">│</span>  <span style="color:var(--text-accent)">whoami</span>    <span style="color:var(--text-dim)">  │</span>   A bit about me             <span style="color:var(--text-dim)">│</span>',
+                    '<span style="color:var(--text-dim)">│</span>  <span style="color:var(--text-accent)">skills</span>      <span style="color:var(--text-dim)">│</span>  View my tech stack          <span style="color:var(--text-dim)">│</span>',
+                    '<span style="color:var(--text-dim)">│</span>  <span style="color:var(--text-accent)">education</span>   <span style="color:var(--text-dim)">│</span>  View my background          <span style="color:var(--text-dim)">│</span>',
+                    '<span style="color:var(--text-dim)">│</span>  <span style="color:var(--text-accent)">connect</span>     <span style="color:var(--text-dim)">│</span>  Get my contact & socials    <span style="color:var(--text-dim)">│</span>',
+                    '<span style="color:var(--text-dim)">│</span>  <span style="color:var(--text-accent)">clear</span>       <span style="color:var(--text-dim)">│</span>  Clear terminal output       <span style="color:var(--text-dim)">│</span>',
+                    '<span style="color:var(--text-dim)">│</span>  <span style="color:var(--text-accent)">projects</span>    <span style="color:var(--text-dim)">│</span>  View my projects            <span style="color:var(--text-dim)">│</span>',
+                    '<span style="color:var(--text-dim)">│</span>  <span style="color:var(--text-accent)">home</span>        <span style="color:var(--text-dim)">│</span>  Return to main portfolio    <span style="color:var(--text-dim)">│</span>',
+                    '<span style="color:var(--text-dim)">└──────────────┴──────────────────────────────┘</span>',
+                ];
+            }
+
+            function cmdWhoami() {
+                return [
+                    '<span style="color:var(--text-accent)">&gt;</span> <span style="color:var(--text-white)">Sayed</span>',
+                    '<span style="color:var(--text-accent)">&gt;</span> Builder of things at <span style="color:var(--text-green)">splotch.in</span>',
+                    '<span style="color:var(--text-accent)">&gt;</span> Currently: learning, making, shipping.',
+                    '<span style="color:var(--text-accent)">&gt;</span> Based in: <span style="color:var(--text-yellow)">Bangalore</span>',
+                ];
+            }
+
+            function cmdProjects() {
+                return [
+                    '<span style="color:var(--text-dim)">╔══════════════════════════════════════════════════════════════════════╗</span>',
+                    '<span style="color:var(--text-dim)">║</span>  <span style="color:var(--text-yellow)">PROJECTS</span>                                                           <span style="color:var(--text-dim)"> ║</span>',
+                    '<span style="color:var(--text-dim)">╠══════════════════════════════════════════════════════════════════════╣</span>',
+                    '<span style="color:var(--text-dim)">║</span>                                                                      <span style="color:var(--text-dim)">║</span>',
+                    '<span style="color:var(--text-dim)">║</span>  <span style="color:var(--text-white)">[1]</span>  <span style="color:var(--text-green)">splotch.in</span>                                                     <span style="color:var(--text-dim)">║</span>',
+                    '<span style="color:var(--text-dim)">║</span>       <span style="color:var(--text-dim)">→</span> A high&#8209;energy, full&#8209;stack e&#8209;commerce platform for modern     <span style="color:var(--text-dim)">║</span>',
+                    '<span style="color:var(--text-dim)">║</span>         streetwear culture. Bold aesthetics, seamless shopping,      <span style="color:var(--text-dim)">║</span>',
+                    '<span style="color:var(--text-dim)">║</span>         dynamic catalogs, secure auth & streamlined checkout.        <span style="color:var(--text-dim)">║</span>',
+                    '<span style="color:var(--text-dim)">║</span>       <span style="color:var(--text-dim)">→</span> <span style="color:var(--text-yellow)">Stack:</span> React/Next.js · Tailwind · Node/Express · MongoDB     <span style="color:var(--text-dim)">║</span>',
+                    '<span style="color:var(--text-dim)">║</span>                JWT · Razorpay · Vercel + Render                      <span style="color:var(--text-dim)">║</span>',
+                    '<span style="color:var(--text-dim)">║</span>       <span style="color:var(--text-dim)">→</span> Status: <span style="color:var(--text-green)">Active</span>                                               <span style="color:var(--text-dim)">║</span>',
+                    '<span style="color:var(--text-dim)">║</span>                                                                      <span style="color:var(--text-dim)">║</span>',
+                    '<span style="color:var(--text-dim)">║</span>  <span style="color:var(--text-white)">[2]</span>  <span style="color:var(--text-green)">MaargDarshak</span> <span style="color:var(--text-dim)">(SIH project)</span>                                     <span style="color:var(--text-dim)">║</span>',
+                    '<span style="color:var(--text-dim)">║</span>       <span style="color:var(--text-dim)">→</span> Career navigation ecosystem bridging academics & industry.   <span style="color:var(--text-dim)">║</span>',
+                    '<span style="color:var(--text-dim)">║</span>         Personalized roadmaps, skill gap analysis & mentorship.      <span style="color:var(--text-dim)">║</span>',
+                    '<span style="color:var(--text-dim)">║</span>       <span style="color:var(--text-dim)">→</span> <span style="color:var(--text-yellow)">Stack:</span> React/Vite · Redux · Node/Express · PostgreSQL        <span style="color:var(--text-dim)">║</span>',
+                    '<span style="color:var(--text-dim)">║</span>                OpenAI/Gemini API · Vercel                            <span style="color:var(--text-dim)">║</span>',
+                    '<span style="color:var(--text-dim)">║</span>       <span style="color:var(--text-dim)">→</span> Status: <span style="color:var(--text-dim)">Abandoned</span>                                            <span style="color:var(--text-dim)">║</span>',
+                    '<span style="color:var(--text-dim)">║</span>                                                                      <span style="color:var(--text-dim)">║</span>',
+                    '<span style="color:var(--text-dim)">║</span>  <span style="color:var(--text-white)">[3]</span>  <span style="color:var(--text-green)">Retro Arcade</span>                                                   <span style="color:var(--text-dim)">║</span>',
+                    '<span style="color:var(--text-dim)">║</span>       <span style="color:var(--text-dim)">→</span> Nostalgic browser&#8209;based gaming environment with classic      <span style="color:var(--text-dim)">║</span>',
+                    '<span style="color:var(--text-dim)">║</span>         arcade titles reimagined in cyber&#8209;retro aesthetic.           <span style="color:var(--text-dim)">║</span>',
+                    '<span style="color:var(--text-dim)">║</span>         Custom JS physics, scanlines, neon glows.                    <span style="color:var(--text-dim)">║</span>',
+                    '<span style="color:var(--text-dim)">║</span>       <span style="color:var(--text-dim)">→</span> <a href="https://github.com/dudefromalhiem/arcadebasic.html" target="_blank" rel="noopener">github.com/dudefromalhiem/arcadebasic.html</a>                   <span style="color:var(--text-dim)">║</span>',
+                    '<span style="color:var(--text-dim)">║</span>       <span style="color:var(--text-dim)">→</span> Status: <span style="color:var(--text-accent)">On GitHub</span>                                            <span style="color:var(--text-dim)">║</span>',
+                    '<span style="color:var(--text-dim)">║</span>                                                                      <span style="color:var(--text-dim)">║</span>',
+                    '<span style="color:var(--text-dim)">╚══════════════════════════════════════════════════════════════════════╝</span>',
+                ];
+            }
+
+            function cmdSkills() {
+                return [
+                    '<span style="color:var(--text-accent)">&gt;</span> <span style="color:var(--text-yellow)">LANGUAGES</span>',
+                    '    Python · JavaScript · SQL · GD Script · MongoDB',
+                    '',
+                    '<span style="color:var(--text-accent)">&gt;</span> <span style="color:var(--text-yellow)">TOOLS &amp; ENGINES</span>',
+                    '    Godot · Git · VS Code · Firebase',
+                    '',
+                    '<span style="color:var(--text-accent)">&gt;</span> <span style="color:var(--text-yellow)">WEB</span>',
+                    '    HTML · CSS · Vanilla JS',
+                    '',
+                    '<span style="color:var(--text-accent)">&gt;</span> <span style="color:var(--text-yellow)">CURRENTLY LEARNING</span>',
+                    '    B.Tech CSE (AI&amp;ML)',
+                ];
+            }
+
+            function cmdEducation() {
+                return [
+                    '<span style="color:var(--text-accent)">&gt;</span> <span style="color:var(--text-yellow)">EDUCATION</span>',
+                    '    B.Tech CSE (AI&amp;ML)',
+                    '    Lovely Professional University',
+                    '    2025–29',
+                    '',
+                    '<span style="color:var(--text-accent)">&gt;</span> <span style="color:var(--text-yellow)">CERTIFICATIONS / COURSES</span>',
+                    '    C++ · Google Ambassador Program · Anglo&#8209;N&#8209;Hunt · Basic Indian Laws',
+                    '    <span style="color:var(--text-dim)">Saylor · Google · Optimus (LPU) · Learnfoundationonline</span>',
+                ];
+            }
+
+            function cmdConnect() {
+                return [
+                    '<span style="color:var(--text-accent)">&gt;</span> <span style="color:var(--text-yellow)">LINKS &amp; CONTACT</span>',
+                    '    Website    →  <a href="https://splotch.in" target="_blank" rel="noopener">https://splotch.in</a>',
+                    '    Email      →  <a href="mailto:sayedsadid007@gmail.com">sayedsadid007@gmail.com</a>',
+                    '    GitHub     →  <a href="https://github.com/dudefromalhiem" target="_blank" rel="noopener">https://github.com/dudefromalhiem</a>',
+                    '    LinkedIn   →  <a href="https://linkedin.com/in/sayedsadidhoda" target="_blank" rel="noopener">https://linkedin.com/in/sayedsadidhoda</a>',
+                    '    Discord    →  <span style="color:var(--text-accent)">@dudefromalhiem</span>',
+                    '',
+                    '    <span style="color:var(--text-dim)">[ All links are clickable ]</span>',
+                ];
+            }
+
+            // ── Process command ──
+            async function processCommand(raw) {
+                const cmd = raw.trim().toLowerCase();
+                if (!cmd) return;
+
+                // Push to history
+                if (history.length === 0 || history[history.length - 1] !== raw.trim()) {
+                    history.push(raw.trim());
+                    if (history.length > 50) history.shift();
+                }
+                historyIdx = history.length;
+
+                // Echo prompt + cmd
+                printPromptEcho(raw.trim());
+
+                if (cmd === 'clear') {
+                    termOutput.innerHTML = '';
+                    printLine('<span style="color:var(--text-dim)">Terminal cleared. Type <span style="color:var(--text-accent)">help</span> for commands.</span>');
+                    scrollToBottom();
+                    return;
+                }
+
+                let lines;
+                switch (cmd) {
+                    case 'home':
+                        printLine('<span style="color:var(--text-dim)">Initiating jump protocol... returning to standard interface.</span>');
+                        await sleep(600);
+                        window.location.href = 'index.html';
+                        return;
+                    case 'help': lines = cmdHelp(); break;
+                    case 'whoami': lines = cmdWhoami(); break;
+                    case 'projects': lines = cmdProjects(); break;
+                    case 'skills': lines = cmdSkills(); break;
+                    case 'education': lines = cmdEducation(); break;
+                    case 'connect': lines = cmdConnect(); break;
+                    default:
+                        lines = ['<span style="color:var(--text-yellow)">\'' + escapeHTML(raw.trim()) + '\'</span> is not recognized as a command. Type <span style="color:var(--text-accent)">\'help\'</span> for available commands.'];
+                }
+
+                await printLinesAnimated(lines);
+                scrollToBottom();
+            }
+
+            // ── Input handling ──
+            cmdInput.addEventListener('input', updateMirror);
+
+            cmdInput.addEventListener('keydown', async (e) => {
+                if (isLocked) { e.preventDefault(); return; }
+
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const val = cmdInput.value;
+                    cmdInput.value = '';
+                    updateMirror();
+                    isLocked = true;
+                    await processCommand(val);
+                    isLocked = false;
+                    cmdInput.focus();
+                    updateMirror();
+                    scrollToBottom();
+                    return;
+                }
+
+                if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    if (history.length === 0) return;
+                    if (historyIdx > 0) historyIdx--;
+                    cmdInput.value = history[historyIdx] || '';
+                    updateMirror();
+                    return;
+                }
+
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    if (historyIdx < history.length - 1) {
+                        historyIdx++;
+                        cmdInput.value = history[historyIdx] || '';
+                    } else {
+                        historyIdx = history.length;
+                        cmdInput.value = '';
+                    }
+                    updateMirror();
+                    return;
+                }
+
+                if (e.key === 'Tab') {
+                    e.preventDefault();
+                    const partial = cmdInput.value.trim().toLowerCase();
+                    if (!partial) return;
+                    const matches = COMMANDS.filter(c => c.startsWith(partial));
+                    if (matches.length === 1) {
+                        cmdInput.value = matches[0];
+                        updateMirror();
+                    }
+                    return;
+                }
+
+                if (e.key === 'l' && e.ctrlKey) {
+                    e.preventDefault();
+                    cmdInput.value = 'clear';
+                    isLocked = true;
+                    cmdInput.value = '';
+                    updateMirror();
+                    termOutput.innerHTML = '';
+                    printLine('<span style="color:var(--text-dim)">Terminal cleared. Type <span style="color:var(--text-accent)">help</span> for commands.</span>');
+                    scrollToBottom();
+                    isLocked = false;
+                    return;
+                }
+            });
+
+            // Keep focus on input
+            document.addEventListener('click', () => { if (!isLocked) cmdInput.focus(); });
+
+            // Update mirror on any change
+            cmdInput.addEventListener('keyup', updateMirror);
+            cmdInput.addEventListener('click', updateMirror);
+
+            // ── Console Easter Egg ──
+            console.log('%c' +
+                '███████╗███████╗██╗  ██╗\n' +
+                '██╔════╝██╔════╝██║  ██║\n' +
+                '███████╗███████╗███████║\n' +
+                '╚════██║╚════██║██╔══██║\n' +
+                '███████║███████║██║  ██║\n' +
+                '╚══════╝╚══════╝╚═╝  ╚═╝\n\n' +
+                '  I think therefore I am',
+                'color: #00B4D8; font-family: monospace; font-size: 12px;'
+            );
+
+            // ── Start ──
+            updateMirror();
+            init();
+
+        })();
+    </script>
+</body>
+
+</html>
