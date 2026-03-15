@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAYED SADID HODA // CYBERCORE</title>
+    <title>AlHiem // Portfolio</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -644,7 +644,7 @@
                 </div>
             </div>
             <div class="xp-bottom">
-                <button class="xp-btn" onclick="proceedToTerminal()">OK</button>
+                <button class="xp-btn" onclick="triggerExitSequence()">OK</button>
                 <button class="xp-btn" onclick="closePopup()">IGNORE</button>
             </div>
         </div>
@@ -679,14 +679,14 @@
         <div class="hero-layout">
             <div class="left-col">
                 <div class="buttons-container">
-                    <a href="#" class="cyber-btn">
+                    <a href="simple.html" class="cyber-btn" onclick="showModePopup(event, 'standard')">
                         <div class="btn-num">01</div>
                         <div class="btn-content">
                             <span class="btn-title">STANDARD MODE</span>
                             <span class="btn-desc">Graphic interface.<br>Optimized for rapid data retrieval.</span>
                         </div>
                     </a>
-                    <a href="interactive.html" class="cyber-btn" onclick="showTerminalPopup(event)">
+                    <a href="interactive.html" class="cyber-btn" onclick="showModePopup(event, 'terminal')">
                         <div class="btn-num">02</div>
                         <div class="btn-content">
                             <span class="btn-title">TERMINAL MODE</span>
@@ -899,8 +899,18 @@
             let t = clock.getElapsedTime();
             uniforms.time.value = t;
 
-            // Intro Camera Animation
-            if (t < INTRO_DURATION) {
+            // Intro / Outro Camera Animation
+            if (window.isExiting) {
+                let progress = (t - window.exitStartTime) / 1.5;
+                if (progress > 1.0) progress = 1.0;
+                
+                // Ease in-out cubic
+                let ease = progress < 0.5 ? 4 * progress * progress * progress : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+                
+                // Move from left to center, and zoom z from 16 to 3
+                camera.position.x = -4.5 + (0.0 - -4.5) * ease;
+                camera.position.z = 16.0 + (3.0 - 16.0) * ease;
+            } else if (t < INTRO_DURATION) {
                 let progress = t / INTRO_DURATION;
                 // Ease out cubic
                 let ease = 1.0 - Math.pow(1.0 - progress, 3);
@@ -945,19 +955,67 @@
         }
         animate();
 
+        window.pendingMode = '';
+        window.isExiting = false;
+        window.exitStartTime = 0;
+
         function closePopup() {
             document.getElementById('xpPopup').style.display = 'none';
         }
 
-        function showTerminalPopup(event) {
-            event.preventDefault(); // Stop normal link click
+        function showModePopup(event, mode) {
+            event.preventDefault();
+            window.pendingMode = mode;
             document.getElementById('xpPopup').style.display = 'flex';
         }
 
-        function proceedToTerminal() {
-            window.location.href = 'interactive.html';
+        function triggerExitSequence() {
+            document.getElementById('xpPopup').style.display = 'none';
+            
+            const splits = document.querySelectorAll('.anim-split');
+            const blinks = document.querySelectorAll('.anim-blink');
+            
+            // 1. Text merges back (0.6s)
+            splits.forEach(el => {
+                el.style.animation = 'none';
+                void el.offsetHeight;
+                el.style.animation = 'introSplit 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) reverse forwards';
+            });
+            
+            // 2. Solid for 0.75s, then blinks twice till 1.5s
+            blinks.forEach(el => {
+                el.style.animation = 'none';
+                void el.offsetHeight;
+                el.style.animation = 'introBlink 1.5s reverse forwards';
+            });
+            
+            // 3. HUD disappears perfectly
+            setTimeout(() => {
+                const hudElements = document.querySelectorAll('.fade-in-ui, .header, .marquee-container, .hero-layout, .qr-block, .typography-bg');
+                hudElements.forEach(el => {
+                    el.style.transition = 'opacity 0.4s ease-out, transform 0.4s ease-out';
+                    el.style.opacity = '0';
+                    el.style.pointerEvents = 'none';
+                });
+            }, 1000);
+
+            // 4. 3D render comes to the middle and zooms in
+            setTimeout(() => {
+                window.isExiting = true;
+                window.exitStartTime = clock.getElapsedTime();
+            }, 1500);
+
+            // 5. Navigate when zoom finishes
+            setTimeout(() => {
+                if (window.pendingMode === 'terminal') {
+                    window.location.href = 'interactive.html';
+                } else {
+                    window.location.href = 'simple.html';
+                }
+            }, 3000);
         }
-    </script>
+
+        </script>
 </body>
 
 </html>

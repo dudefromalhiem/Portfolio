@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAYED SADID HODA // CYBERCORE - SIMPLE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #050508;
+            --primary: #C3B5FF;
+            --primary-glow: rgba(195, 181, 255, 0.4);
+            --white: #FFFFFF;
+        }
+        * { box-sizing: border-box; cursor: crosshair; }
+        body, html {
+            margin: 0; padding: 0; background-color: var(--bg-color); color: var(--primary);
+            font-family: 'Share Tech Mono', monospace; overflow-x: hidden;
+        }
+        .noise {
+            position: fixed; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.12; z-index: 100; pointer-events: none;
+        }
+        .cyber-grid {
+            position: fixed; inset: 0;
+            background-image: linear-gradient(rgba(195, 181, 255, 0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(195, 181, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px; z-index: 0; pointer-events: none;
+            perspective: 500px; transform-origin: bottom; animation: gridMove 20s linear infinite;
+        }
+        @keyframes gridMove { 0% { transform: translateY(0); } 100% { transform: translateY(40px); } }
+        .poster-frame { position: fixed; inset: 20px; border: 1px solid rgba(195, 181, 255, 0.2); pointer-events: none; z-index: 90; }
+        
+        .top-nav {
+            position: fixed; top: 0; left: 0; width: 100%; padding: 30px 40px;
+            display: flex; justify-content: space-between; align-items: center; z-index: 50;
+            background: linear-gradient(rgba(5,5,8,0.9) 60%, transparent);
+        }
+        .nav-left { font-family: 'Syncopate', sans-serif; font-weight: 700; font-size: 16px; color: var(--white); filter: drop-shadow(0 0 5px var(--primary-glow)); }
+        .nav-mid { flex-grow: 1; margin: 0 40px; height: 1px; background: rgba(195,181,255,0.3); }
+        .nav-right { display: flex; gap: 20px; align-items: center;}
+        
+        .nav-btn {
+            font-family: 'Share Tech Mono', monospace;
+            background: transparent; color: var(--primary); text-decoration: none; 
+            font-size: 14px; transition: all 0.3s;
+        }
+        .nav-btn:hover { color: var(--white); text-shadow: 0 0 8px var(--primary-glow); }
+
+        .wrapper { position: relative; z-index: 10; padding: 120px 40px 80px 40px; max-width: 1000px; margin: 0 auto; transition: opacity 0.6s ease; }
+        .section-label { font-family: 'Syncopate', sans-serif; font-weight: 700; color: var(--white); font-size: 20px; margin-bottom: 30px; letter-spacing: 2px; }
+        section { margin-bottom: 100px; }
+
+        .hero { margin-top: 10vh; margin-bottom: 120px; }
+        .hero h1 { font-family: 'Syncopate', sans-serif; font-weight: 700; font-size: clamp(40px, 8vw, 80px); color: var(--white); line-height: 0.9; margin: 0 0 20px 0; filter: drop-shadow(0 0 10px var(--primary-glow)); }
+        .hero p { font-size: 16px; letter-spacing: 2px; }
+        .hero hr { border: 0; height: 1px; background: var(--primary); box-shadow: 0 0 8px var(--primary-glow); margin-top: 40px; }
+
+        .about-split { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .bio { line-height: 1.6; font-size: 16px; }
+        .stats { display: flex; flex-direction: column; gap: 15px; }
+        .stat-item { padding: 10px 0; }
+
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .project-card { 
+            border: 1px solid var(--primary); padding: 25px; transition: all 0.3s; 
+            background: rgba(5,5,8,0.5); backdrop-filter: blur(5px); 
+            display: flex; flex-direction: column; gap: 15px; text-decoration: none;
+            position: relative; overflow: hidden;
+        }
+        .project-card::before {
+            content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 0;
+            background: var(--primary); z-index: 1; transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .project-card:hover::before { width: 100%; }
+        .project-card > * { position: relative; z-index: 2; transition: color 0.3s; }
+        .project-card:hover h3, .project-card:hover .desc, .project-card:hover .status { color: var(--bg-color); text-shadow: none; }
+        .project-card h3 { font-family: 'Syncopate', sans-serif; margin: 0; font-size: 16px; color: var(--white); }
+        .project-card .desc { font-size: 14px; line-height: 1.5; flex-grow: 1; color: var(--primary); }
+        .project-card .status { font-size: 12px; opacity: 0.7; font-weight: bold; color: var(--primary); }
+
+        .skills-cloud { display: flex; flex-wrap: wrap; gap: 10px; }
+        .skill-tag { 
+            border: 1px solid var(--primary); padding: 8px 12px; font-family: 'Syncopate', sans-serif; 
+            font-size: 10px; background: rgba(5,5,8,0.5); transition: all 0.3s;
+        }
+        .skill-tag:hover { box-shadow: 0 0 10px var(--primary-glow); background: rgba(195,181,255,0.1); }
+
+        .connect-list { display: flex; flex-direction: column; gap: 15px; margin-bottom: 40px; }
+        .connect-list a { color: var(--primary); text-decoration: none; transition: color 0.3s; }
+        .connect-list a:hover { color: var(--white); text-shadow: 0 0 8px var(--primary-glow); }
+
+        .qr-block {
+            display: flex; align-items: center; gap: 20px; border: 1px solid var(--primary); padding: 15px;
+            width: fit-content; background: rgba(5, 5, 8, 0.6); backdrop-filter: blur(5px); transition: all 0.3s ease;
+        }
+        .qr-block:hover { box-shadow: 0 0 15px var(--primary-glow); transform: scale(1.02); background: rgba(195, 181, 255, 0.05); }
+        .qr-svg { width: 70px; height: 70px; fill: var(--primary); }
+        .qr-main-text { font-family: 'Syncopate', sans-serif; font-size: 14px; font-weight: 700; line-height: 1.4; max-width: 150px; color: var(--white); text-shadow: 0 0 5px var(--primary-glow); }
+        .qr-text { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 10px; letter-spacing: 2px; opacity: 0.7; }
+
+        footer { text-align: center; font-size: 12px; opacity: 0.5; margin-top: 80px; }
+
+        .scroll-anim { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+        .scroll-anim.visible { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 768px) {
+            .about-split { grid-template-columns: 1fr; }
+            .top-nav { flex-direction: column; gap: 10px; text-align: center; padding: 20px; }
+            .nav-mid { display: none; }
+            .nav-right { justify-content: center; }
+            .hero { margin-top: 15vh; }
+        }
+    </style>
+</head>
+<body>
+    <div class="noise"></div>
+    <div class="cyber-grid"></div>
+    <div class="poster-frame"></div>
+
+    <div class="top-nav">
+        <div class="nav-left">ALHIEM</div>
+        <div class="nav-mid"></div>
+        <div class="nav-right">
+            <a href="interactive.html" class="nav-btn">[ TERMINAL MODE ]</a>
+            <a href="index.html" class="nav-btn">[ &larr; BACK ]</a>
+        </div>
+    </div>
+
+    <div class="wrapper" id="wrapper">
+        <section class="hero">
+            <div class="scroll-anim" style="transition-delay: 0ms;"><h1>SAYED<br>SADID<br>HODA</h1></div>
+            <div class="scroll-anim" style="transition-delay: 80ms;"><p>WEB DEVELOPER &middot; STUDENT &middot; BUILDER</p></div>
+            <div class="scroll-anim" style="transition-delay: 160ms;"><hr></div>
+        </section>
+
+        <section class="about">
+            <div class="section-label scroll-anim">01 / ABOUT</div>
+            <div class="about-split">
+                <div class="bio scroll-anim" style="transition-delay: 80ms;">
+                    I build things for the web. Currently studying B.Tech CSE (AI & ML) at LPU. I run Splotch &mdash; a streetwear brand with a full e-commerce stack. I like making things that feel alive.
+                </div>
+                <div class="stats">
+                    <div class="stat-item scroll-anim" style="transition-delay: 80ms;">[ LPU &middot; 2025&ndash;29 ]</div>
+                    <div class="stat-item scroll-anim" style="transition-delay: 160ms;">[ Bangalore ]</div>
+                    <div class="stat-item scroll-anim" style="transition-delay: 240ms;">[ splotch.in ]</div>
+                    <div class="stat-item scroll-anim" style="transition-delay: 320ms;">[ github/dudefromalhiem ]</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="projects">
+            <div class="section-label scroll-anim">02 / PROJECTS</div>
+            <div class="projects-grid">
+                <a href="#" class="project-card scroll-anim" style="transition-delay: 80ms;">
+                    <h3>splotch.in</h3>
+                    <div class="desc">Full-stack streetwear e-commerce. React &middot; Firebase &middot; Razorpay &middot; Vercel</div>
+                    <div class="status">Status: ACTIVE</div>
+                </a>
+                <a href="#" class="project-card scroll-anim" style="transition-delay: 160ms;">
+                    <h3>MaargDarshak</h3>
+                    <div class="desc">Career navigation platform for J&K students. Multilingual, AI-powered.</div>
+                    <div class="status">Status: ARCHIVED</div>
+                </a>
+                <a href="#" class="project-card scroll-anim" style="transition-delay: 240ms;">
+                    <h3>Retro Arcade</h3>
+                    <div class="desc">Browser-based retro gaming. Custom JS physics, scanlines, neon.</div>
+                    <div class="status">Status: ON GITHUB</div>
+                </a>
+            </div>
+        </section>
+
+        <section class="skills">
+            <div class="section-label scroll-anim">03 / SKILLS</div>
+            <div class="skills-cloud">
+                <div class="skill-tag scroll-anim" style="transition-delay: 0ms;">Python</div>
+                <div class="skill-tag scroll-anim" style="transition-delay: 40ms;">JavaScript</div>
+                <div class="skill-tag scroll-anim" style="transition-delay: 80ms;">SQL</div>
+                <div class="skill-tag scroll-anim" style="transition-delay: 120ms;">GDScript</div>
+                <div class="skill-tag scroll-anim" style="transition-delay: 160ms;">MongoDB</div>
+                <div class="skill-tag scroll-anim" style="transition-delay: 200ms;">Godot</div>
+                <div class="skill-tag scroll-anim" style="transition-delay: 240ms;">Git</div>
+                <div class="skill-tag scroll-anim" style="transition-delay: 280ms;">Firebase</div>
+                <div class="skill-tag scroll-anim" style="transition-delay: 320ms;">HTML</div>
+                <div class="skill-tag scroll-anim" style="transition-delay: 360ms;">CSS</div>
+                <div class="skill-tag scroll-anim" style="transition-delay: 400ms;">Three.js</div>
+                <div class="skill-tag scroll-anim" style="transition-delay: 440ms;">GSAP</div>
+                <div class="skill-tag scroll-anim" style="transition-delay: 480ms;">Figma</div>
+            </div>
+        </section>
+
+        <section class="connect">
+            <div class="section-label scroll-anim">04 / CONNECT</div>
+            <div class="connect-list scroll-anim" style="transition-delay: 80ms;">
+                <a href="#">Email</a>
+                <a href="#">GitHub</a>
+                <a href="#">LinkedIn</a>
+                <a href="#">Discord</a>
+            </div>
+            
+            <div class="qr-block scroll-anim" style="transition-delay: 160ms;">
+                <svg viewBox="0 0 100 100" class="qr-svg">
+                    <path d="M10,10 h20 v20 h-20 z M15,15 h10 v10 h-10 z" />
+                    <path d="M70,10 h20 v20 h-20 z M75,15 h10 v10 h-10 z" />
+                    <path d="M10,70 h20 v20 h-20 z M15,75 h10 v10 h-10 z" />
+                    <rect x="40" y="10" width="10" height="10" />
+                    <rect x="55" y="20" width="10" height="10" />
+                    <rect x="10" y="40" width="10" height="10" />
+                    <rect x="25" y="55" width="10" height="20" />
+                    <rect x="40" y="40" width="20" height="20" />
+                    <rect x="70" y="40" width="20" height="10" />
+                    <rect x="80" y="55" width="10" height="10" />
+                    <rect x="40" y="70" width="10" height="20" />
+                    <rect x="55" y="70" width="10" height="10" />
+                    <rect x="70" y="70" width="20" height="20" />
+                </svg>
+                <div class="qr-main-text">ALHIEM'S<br>ARCHIVE</div>
+                <div class="qr-text">SCAN ME</div>
+            </div>
+        </section>
+
+        <footer class="scroll-anim">
+            ALHIEM &middot; SAYED SADID HODA
+        </footer>
+    </div>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.scroll-anim').forEach((el) => {
+            observer.observe(el);
+        });
+
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const url = btn.getAttribute('href');
+                document.getElementById('wrapper').style.opacity = '0';
+                setTimeout(() => {
+                    window.location.href = url;
+                }, 600);
+            });
+        });
+    </script>
+</body>
+</html>
