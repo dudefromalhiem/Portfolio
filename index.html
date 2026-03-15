@@ -296,7 +296,8 @@
         }
 
         .xp-window {
-            width: 400px;
+            width: 90%;
+            max-width: 400px;
             background: var(--bg-color);
             border: 1px solid var(--primary);
             box-shadow: 0 0 25px var(--primary-glow), inset 0 0 10px rgba(195, 181, 255, 0.1);
@@ -481,6 +482,87 @@
 
             .marquee-content {
                 animation-duration: 15s;
+            }
+        }
+
+        /* Mobile specific optimizations */
+        @media (max-width: 768px) {
+            .scroll-wrapper {
+                padding: 20px;
+                height: auto;
+                min-height: 100vh;
+                padding-bottom: 80px; /* space for marquee */
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+                margin-bottom: 40px;
+                font-size: 12px;
+                text-align: center;
+            }
+
+            .header .line {
+                width: 100%;
+                height: 1px;
+            }
+
+            .left-col {
+                gap: 30px;
+            }
+
+            /* Enhance buttons for touch surfaces */
+            .buttons-container {
+                gap: 15px;
+            }
+
+            .cyber-btn {
+                grid-template-columns: 40px 1fr;
+                border-width: 2px; /* Thicker for easier tapping on mobile */
+            }
+
+            .cyber-btn .btn-num {
+                font-size: 15px;
+            }
+
+            .cyber-btn .btn-content {
+                padding: 15px;
+            }
+
+            .cyber-btn .btn-title {
+                font-size: 14px;
+                margin-bottom: 4px;
+            }
+
+            .cyber-btn .btn-desc {
+                font-size: 11px;
+            }
+
+            /* Stack QR block */
+            .qr-block {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                width: 100%;
+                gap: 10px;
+            }
+
+            .qr-text {
+                writing-mode: horizontal-tb;
+                transform: none;
+                margin-top: 10px;
+            }
+
+            .qr-main-text {
+                max-width: 100%;
+            }
+
+            /* Make sure the XP popup is completely readable on narrow screens */
+            .xp-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
             }
         }
     </style>
