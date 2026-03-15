@@ -66,17 +66,14 @@
             text-orientation: upright;
             font-family: 'Syncopate', sans-serif;
             font-size: clamp(30px, 6vh, 80px);
-            /* Scale dynamically */
             font-weight: 700;
             line-height: 0.9;
             text-transform: uppercase;
             color: transparent;
-            /* Makes text stroke visible */
             -webkit-text-stroke: 2px var(--primary);
             letter-spacing: -6px;
             filter: drop-shadow(0 0 5px var(--primary-glow));
             transform: scaleX(1.2);
-            /* Make it wider and more aggressive */
         }
 
         .vert-name.filled {
@@ -85,7 +82,47 @@
             filter: drop-shadow(0 0 12px var(--primary));
         }
 
-        /* Noise & Vintage Overlays */
+        /* Load-in Animations */
+        .anim-blink {
+            opacity: 0;
+            animation: introBlink 1.5s 1.5s forwards;
+        }
+
+        @keyframes introBlink {
+            0%, 20%, 40% { opacity: 0; filter: drop-shadow(0 0 0 var(--primary)); }
+            10%, 30% { opacity: 1; filter: drop-shadow(0 0 30px var(--primary-glow)); }
+            50%, 100% { opacity: 1; filter: drop-shadow(0 0 12px var(--primary)); }
+        }
+
+        .anim-split {
+            opacity: 0;
+            animation: introSplit 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 2.5s forwards;
+        }
+
+        @keyframes introSplit {
+            0% {
+                opacity: 0;
+            }
+            1% {
+                opacity: 1;
+                transform: translateX(calc(100% * var(--split-dist) + 15px * var(--split-dist))) scaleX(1.2);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0) scaleX(1.2);
+            }
+        }
+
+        .fade-in-ui {
+            opacity: 0;
+            animation: uiFade 1.0s 3.0s forwards;
+        }
+        
+        @keyframes uiFade {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
         .noise {
             position: fixed;
             inset: 0;
@@ -93,6 +130,26 @@
             opacity: 0.12;
             z-index: 100;
             pointer-events: none;
+        }
+
+        /* Subtle cyber grid overlay for extra swag */
+        .cyber-grid {
+            position: fixed;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(195, 181, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(195, 181, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: 0;
+            pointer-events: none;
+            perspective: 500px;
+            transform-origin: bottom;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(40px); }
         }
 
         .poster-frame {
@@ -599,19 +656,20 @@
     <!-- Poster Typography -->
     <div class="typography-bg">
         <!-- Replicating the 5-column style from the reference -->
-        <div class="vert-name outline">ALHIEM</div>
-        <div class="vert-name outline">ALHIEM</div>
-        <div class="vert-name outline">ALHIEM</div>
-        <div class="vert-name outline">ALHIEM</div>
-        <div class="vert-name filled">ALHIEM</div>
+        <div class="vert-name outline anim-split" style="--split-dist: 4;">ALHIEM</div>
+        <div class="vert-name outline anim-split" style="--split-dist: 3;">ALHIEM</div>
+        <div class="vert-name outline anim-split" style="--split-dist: 2;">ALHIEM</div>
+        <div class="vert-name outline anim-split" style="--split-dist: 1;">ALHIEM</div>
+        <div class="vert-name filled anim-blink">ALHIEM</div>
     </div>
 
     <!-- Screen fx over everything -->
     <div class="noise"></div>
-    <div class="poster-frame"></div>
+    <div class="cyber-grid"></div>
+    <div class="poster-frame fade-in-ui"></div>
 
     <!-- Scrolling Content -->
-    <div class="scroll-wrapper">
+    <div class="scroll-wrapper fade-in-ui">
         <header class="header">
             <div>ALHIEM</div>
             <div class="line"></div>
@@ -667,12 +725,19 @@
     </div>
 
     <!-- Scrolling Marquee -->
-    <div class="marquee-container">
+    <div class="marquee-container fade-in-ui">
         <div class="marquee-content">
-            ALHIEM IS THE GOAT <span class="highlight">///</span> NO CAP <span class="highlight">///</span> WEB DESIGN
-            WITH STYLE AND FLAIR <span class="highlight">///</span> ALHIEM IS THE GOAT <span
-                class="highlight">///</span> NO CAP <span class="highlight">///</span> WEB DESIGN WITH STYLE AND FLAIR
-            <span class="highlight">///</span> ALHIEM IS THE GOAT
+            <!-- Content duplicated enough times to cover a full rotation on ultrawide monitors -->
+            <span>
+                ALHIEM IS THE GOAT <span class="highlight">///</span> NO CAP <span class="highlight">///</span> WEB DESIGN WITH STYLE AND FLAIR <span class="highlight">///</span> 
+                ALHIEM IS THE GOAT <span class="highlight">///</span> NO CAP <span class="highlight">///</span> WEB DESIGN WITH STYLE AND FLAIR <span class="highlight">///</span> 
+                ALHIEM IS THE GOAT <span class="highlight">///</span> NO CAP <span class="highlight">///</span> WEB DESIGN WITH STYLE AND FLAIR <span class="highlight">///</span> 
+                ALHIEM IS THE GOAT <span class="highlight">///</span> NO CAP <span class="highlight">///</span> WEB DESIGN WITH STYLE AND FLAIR <span class="highlight">///</span> 
+                ALHIEM IS THE GOAT <span class="highlight">///</span> NO CAP <span class="highlight">///</span> WEB DESIGN WITH STYLE AND FLAIR <span class="highlight">///</span> 
+                ALHIEM IS THE GOAT <span class="highlight">///</span> NO CAP <span class="highlight">///</span> WEB DESIGN WITH STYLE AND FLAIR <span class="highlight">///</span> 
+                ALHIEM IS THE GOAT <span class="highlight">///</span> NO CAP <span class="highlight">///</span> WEB DESIGN WITH STYLE AND FLAIR <span class="highlight">///</span> 
+                ALHIEM IS THE GOAT <span class="highlight">///</span> NO CAP <span class="highlight">///</span> WEB DESIGN WITH STYLE AND FLAIR <span class="highlight">///</span> 
+            </span>
         </div>
     </div>
 
@@ -683,8 +748,8 @@
 
         // Place camera looking at the sphere, offset to the left so it hugs the side
         const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.z = 16;
-        camera.position.x = -4.5;
+        camera.position.z = 8.0;
+        camera.position.x = 0.0;
 
         const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
@@ -827,11 +892,24 @@
         const period = 10.0;
         const transitionDuration = 2.0;
         const totalCycle = period * 3.0;
+        const INTRO_DURATION = 1.5;
 
         function animate() {
             requestAnimationFrame(animate);
             let t = clock.getElapsedTime();
             uniforms.time.value = t;
+
+            // Intro Camera Animation
+            if (t < INTRO_DURATION) {
+                let progress = t / INTRO_DURATION;
+                // Ease out cubic
+                let ease = 1.0 - Math.pow(1.0 - progress, 3);
+                camera.position.x = 0.0 + (-4.5 - 0.0) * ease;
+                camera.position.z = 8.0 + (16.0 - 8.0) * ease;
+            } else {
+                camera.position.x = -4.5;
+                camera.position.z = 16.0;
+            }
 
             // Morph logic: Calculate blending weights
             let cycleTime = t % totalCycle;
