@@ -10,8 +10,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    <link href="https://v8.js-dos.com/latest/js-dos.css" rel="stylesheet">
-    <script src="https://v8.js-dos.com/latest/js-dos.js"></script>
     <style>
         /* ========== TOKENS ========== */
         :root {
@@ -803,10 +801,6 @@
                 <div class="icon-img">🌐</div>
                 <div class="icon-label">Connect</div>
             </div>
-            <div class="desktop-icon" ondblclick="openApp('skills')" onclick="selectIcon(this)">
-                <div class="icon-img">⚡</div>
-                <div class="icon-label">Skills</div>
-            </div>
             <div class="desktop-icon" ondblclick="openApp('doom')" onclick="selectIcon(this)">
                 <div class="icon-img"><img src="doom-icon.jpg" alt="DOOM" style="width:36px;height:36px;object-fit:cover;border-radius:2px;image-rendering:pixelated;"></div>
                 <div class="icon-label">DOOM</div>
@@ -839,9 +833,6 @@
             </div>
             <div class="start-item" onclick="openApp('about'); closeStartMenu();">
                 <span class="si-icon">📄</span> About Me
-            </div>
-            <div class="start-item" onclick="openApp('skills'); closeStartMenu();">
-                <span class="si-icon">⚡</span> Skills
             </div>
             <div class="start-item" onclick="openApp('connect'); closeStartMenu();">
                 <span class="si-icon">🌐</span> Connect
@@ -914,7 +905,7 @@
                     </div>
                     <div class="project-entry">
                         <h3>Splotch</h3>
-                        <p>My streetwear brand. Full e-commerce site with Firebase, auth, shop, and payments.</p>
+                        <p>Streetwear e-commerce site. Full stack with Firebase, auth, shop, and payments.</p>
                         <div class="pe-meta">Stack: HTML · Firebase · Vercel &nbsp;|&nbsp; <span class="pe-status">● Active</span> &nbsp;|&nbsp; <a href="https://splotch.v,
        ercel.app" target="_blank" rel="noopener">Visit →</a></div>
                     </div>
@@ -945,11 +936,11 @@
                     </div>
                 `
                 },
-                about: {
+                    about: {
                     title: 'About Me — notepad.exe',
                     icon: '📄',
-                    width: 480,
-                    height: 360,
+                    width: 500,
+                    height: 520,
                     content: () => `
                     <div class="about-line">
                         <div class="about-label">NAME</div>
@@ -969,49 +960,43 @@
                     </div>
                     <div class="about-line">
                         <div class="about-label">WHAT I DO</div>
-                        <div class="about-value">I run a streetwear brand called Splotch, build web projects that look cool and work well, and spend too much time tweaking pixels.</div>
+                        <div class="about-value">Gamer to the bone, sucker for anything retro. I code because it gives me creative freedom — websites are how I express myself.</div>
                     </div>
                     <div class="about-line">
                         <div class="about-label">VIBES</div>
-                        <div class="about-value">Ship fast. Learn faster. Make it look good.</div>
+                        <div class="about-value">If it screams retro, I'm already hooked.</div>
                     </div>
-                `
-                },
-                skills: {
-                    title: 'Skills',
-                    icon: '⚡',
-                    width: 440,
-                    height: 380,
-                    content: () => `
-                    <div style="color:var(--dim);font-size:11px;margin-bottom:8px;letter-spacing:1px;">LANGUAGES</div>
-                    <div class="skill-grid" style="margin-bottom:16px;">
-                        <div class="skill-item">Python</div>
-                        <div class="skill-item">JavaScript</div>
-                        <div class="skill-item">SQL</div>
-                        <div class="skill-item">GDScript</div>
-                    </div>
-                    <div style="color:var(--dim);font-size:11px;margin-bottom:8px;letter-spacing:1px;">WEB</div>
-                    <div class="skill-grid" style="margin-bottom:16px;">
-                        <div class="skill-item">HTML</div>
-                        <div class="skill-item">CSS</div>
-                        <div class="skill-item">React</div>
-                        <div class="skill-item">Next.js</div>
-                        <div class="skill-item">Node.js</div>
-                        <div class="skill-item">Three.js</div>
-                        <div class="skill-item">GSAP</div>
-                    </div>
-                    <div style="color:var(--dim);font-size:11px;margin-bottom:8px;letter-spacing:1px;">TOOLS & SERVICES</div>
-                    <div class="skill-grid" style="margin-bottom:16px;">
-                        <div class="skill-item">Firebase</div>
-                        <div class="skill-item">MongoDB</div>
-                        <div class="skill-item">Git</div>
-                        <div class="skill-item">Vercel</div>
-                        <div class="skill-item">Godot</div>
-                        <div class="skill-item">Figma</div>
-                    </div>
-                    <div style="color:var(--dim);font-size:11px;margin-bottom:8px;letter-spacing:1px;">CURRENTLY LEARNING</div>
-                    <div class="skill-grid">
-                        <div class="skill-item">AI & ML (B.Tech)</div>
+                    <div style="border-top:1px solid var(--border-dim);margin:16px 0 12px;padding-top:14px;">
+                        <div style="color:var(--dim);font-size:11px;margin-bottom:8px;letter-spacing:1px;">LANGUAGES</div>
+                        <div class="skill-grid" style="margin-bottom:14px;">
+                            <div class="skill-item">Python</div>
+                            <div class="skill-item">JavaScript</div>
+                            <div class="skill-item">SQL</div>
+                            <div class="skill-item">GDScript</div>
+                        </div>
+                        <div style="color:var(--dim);font-size:11px;margin-bottom:8px;letter-spacing:1px;">WEB</div>
+                        <div class="skill-grid" style="margin-bottom:14px;">
+                            <div class="skill-item">HTML</div>
+                            <div class="skill-item">CSS</div>
+                            <div class="skill-item">React</div>
+                            <div class="skill-item">Next.js</div>
+                            <div class="skill-item">Node.js</div>
+                            <div class="skill-item">Three.js</div>
+                            <div class="skill-item">GSAP</div>
+                        </div>
+                        <div style="color:var(--dim);font-size:11px;margin-bottom:8px;letter-spacing:1px;">TOOLS & SERVICES</div>
+                        <div class="skill-grid" style="margin-bottom:14px;">
+                            <div class="skill-item">Firebase</div>
+                            <div class="skill-item">MongoDB</div>
+                            <div class="skill-item">Git</div>
+                            <div class="skill-item">Vercel</div>
+                            <div class="skill-item">Godot</div>
+                            <div class="skill-item">Figma</div>
+                        </div>
+                        <div style="color:var(--dim);font-size:11px;margin-bottom:8px;letter-spacing:1px;">CURRENTLY LEARNING</div>
+                        <div class="skill-grid">
+                            <div class="skill-item">AI & ML (B.Tech)</div>
+                        </div>
                     </div>
                 `
                 },
@@ -1068,40 +1053,18 @@
                     icon: '<img src="doom-icon.jpg" style="width:14px;height:14px;object-fit:cover;border-radius:1px;vertical-align:middle;">',
                     width: 660,
                     height: 520,
-                    isDoom: true,
                     content: () => `
                         <div style="display:flex;flex-direction:column;height:100%;background:#000;">
-                            <div id="doom-container" style="flex:1;width:100%;position:relative;">
-                                <div id="doom-loading" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--accent);font-size:14px;gap:10px;z-index:5;">
-                                    <div style="font-size:28px;">🎮</div>
-                                    <div>Loading DOOM...</div>
-                                    <div style="color:var(--dim);font-size:11px;">Shareware v1.9 · id Software · 1993</div>
-                                    <div style="width:120px;height:3px;background:var(--border-dim);margin-top:8px;overflow:hidden;border-radius:2px;"><div style="width:40%;height:100%;background:var(--accent);animation:doomLoad 1.5s ease-in-out infinite;"></div></div>
-                                </div>
-                            </div>
-                            <div style="padding:4px 10px;font-size:10px;color:var(--dim);border-top:1px solid var(--border-dim);background:var(--bg);text-align:center;flex-shrink:0;">Click the game to capture mouse · ESC to release · Arrow keys + Ctrl to play</div>
+                            <iframe 
+                                id="doom-frame"
+                                src="https://raz0red.github.io/webprboom/" 
+                                style="flex:1;width:100%;border:none;background:#000;"
+                                allowfullscreen
+                                allow="autoplay; fullscreen; gamepad"
+                            ></iframe>
+                            <div style="padding:4px 10px;font-size:10px;color:var(--dim);border-top:1px solid var(--border-dim);background:var(--bg);text-align:center;flex-shrink:0;">Click the game to capture input · ESC to release · Arrow keys + Ctrl to play</div>
                         </div>
-                    `,
-                    onInit: (winId) => {
-                        const win = document.getElementById(winId);
-                        if (!win) return;
-                        const container = win.querySelector('#doom-container');
-                        if (!container) return;
-                        try {
-                            Dos(container, {
-                                style: 'none'
-                            }).run('https://cdn.dos.zone/custom/dos/doom.jsdos').then((ci) => {
-                                const loading = win.querySelector('#doom-loading');
-                                if (loading) loading.style.display = 'none';
-                            }).catch((err) => {
-                                console.error('DOOM load error:', err);
-                                const loading = win.querySelector('#doom-loading');
-                                if (loading) loading.innerHTML = '<div style="color:var(--btn-close);font-size:13px;">Failed to load DOOM.<br><span style="color:var(--dim);font-size:11px;">Check your internet connection.</span></div>';
-                            });
-                        } catch(e) {
-                            console.error('js-dos init error:', e);
-                        }
-                    }
+                    `
                 }
             };
 
@@ -1410,16 +1373,16 @@
                 function cmdWhoami() {
                     return [
                         '<span style="color:var(--white)">></span> <span style="color:var(--white)">Sayed Sadid Hoda</span> (aka Alhiem)',
-                        '<span style="color:var(--white)">></span> Runs <span style="color:var(--white)">Splotch</span> — a streetwear brand',
+                        '<span style="color:var(--white)">></span> Gamer. Retro nerd. Web builder.',
                         '<span style="color:var(--white)">></span> First-year B.Tech CSE (AI&ML) at LPU',
                         '<span style="color:var(--white)">></span> Based in <span style="color:var(--white)">Bangalore</span>',
-                        '<span style="color:var(--white)">></span> Ships fast, learns faster, cares about pixels.',
+                        '<span style="color:var(--white)">></span> I code for creative freedom. Websites are my canvas.',
                     ];
                 }
 
                 function cmdProjects() {
                     return [
-                        '<span style="color:var(--white)">[1]</span>  <span style="color:var(--white)">Splotch</span> — streetwear e-commerce. Firebase, auth, payments. <span style="color:var(--white)">● Active</span>',
+                        '<span style="color:var(--white)">[1]</span>  <span style="color:var(--white)">Splotch</span> — streetwear e-commerce site. Firebase, auth, payments. <span style="color:var(--white)">● Active</span>',
                         '<span style="color:var(--white)">[2]</span>  <span style="color:var(--white)">ARROG</span> — community wiki. SCP-inspired lore, user submissions. <span style="color:var(--white)">● Active</span>',
                         '<span style="color:var(--white)">[3]</span>  <span style="color:var(--white)">RishabhDabral</span> — freelance portfolio for a law student. <span style="color:var(--white)">● Delivered</span>',
                         '<span style="color:var(--white)">[4]</span>  <span style="color:var(--white)">MaargDarshak</span> — career guidance tool for J&K students. <span style="color:var(--dim)">○ Archived</span>',
