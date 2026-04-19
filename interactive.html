@@ -10,6 +10,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://v8.js-dos.com/latest/js-dos.css" rel="stylesheet">
+    <script src="https://v8.js-dos.com/latest/js-dos.js"></script>
     <style>
         /* ========== TOKENS ========== */
         :root {
@@ -723,6 +725,36 @@
             background: rgba(195, 181, 255, 0.08);
         }
 
+        /* ========== DOOM / JS-DOS ========== */
+        @keyframes doomLoad {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(350%); }
+        }
+
+        #doom-container {
+            background: #000;
+        }
+
+        #doom-container .emulator-mouse-overlay {
+            cursor: crosshair !important;
+        }
+
+        /* Hide js-dos default UI elements to keep it clean inside XP window */
+        #doom-container .sidebar-header,
+        #doom-container .sidebar,
+        #doom-container .header,
+        #doom-container .jsdos-player-button,
+        #doom-container .controls-container,
+        #doom-container .player-header {
+            display: none !important;
+        }
+
+        #doom-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: contain;
+        }
+
         /* ========== RESPONSIVE ========== */
         @media (max-width: 600px) {
             .desktop-icon {
@@ -775,6 +807,10 @@
                 <div class="icon-img">⚡</div>
                 <div class="icon-label">Skills</div>
             </div>
+            <div class="desktop-icon" ondblclick="openApp('doom')" onclick="selectIcon(this)">
+                <div class="icon-img">🎮</div>
+                <div class="icon-label">DOOM</div>
+            </div>
         </div>
     </div>
 
@@ -809,6 +845,9 @@
             </div>
             <div class="start-item" onclick="openApp('connect'); closeStartMenu();">
                 <span class="si-icon">🌐</span> Connect
+            </div>
+            <div class="start-item" onclick="openApp('doom'); closeStartMenu();">
+                <span class="si-icon">🎮</span> DOOM
             </div>
             <div class="start-divider"></div>
             <div class="start-item" onclick="openApp('recycle'); closeStartMenu();">
@@ -1023,6 +1062,46 @@
                         </div>
                     </div>
                 `
+                },
+                doom: {
+                    title: 'DOOM — Shareware',
+                    icon: '🎮',
+                    width: 660,
+                    height: 520,
+                    isDoom: true,
+                    content: () => `
+                        <div style="display:flex;flex-direction:column;height:100%;background:#000;">
+                            <div id="doom-container" style="flex:1;width:100%;position:relative;">
+                                <div id="doom-loading" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--accent);font-size:14px;gap:10px;z-index:5;">
+                                    <div style="font-size:28px;">🎮</div>
+                                    <div>Loading DOOM...</div>
+                                    <div style="color:var(--dim);font-size:11px;">Shareware v1.9 · id Software · 1993</div>
+                                    <div style="width:120px;height:3px;background:var(--border-dim);margin-top:8px;overflow:hidden;border-radius:2px;"><div style="width:40%;height:100%;background:var(--accent);animation:doomLoad 1.5s ease-in-out infinite;"></div></div>
+                                </div>
+                            </div>
+                            <div style="padding:4px 10px;font-size:10px;color:var(--dim);border-top:1px solid var(--border-dim);background:var(--bg);text-align:center;flex-shrink:0;">Click the game to capture mouse · ESC to release · Arrow keys + Ctrl to play</div>
+                        </div>
+                    `,
+                    onInit: (winId) => {
+                        const win = document.getElementById(winId);
+                        if (!win) return;
+                        const container = win.querySelector('#doom-container');
+                        if (!container) return;
+                        try {
+                            Dos(container, {
+                                style: 'none'
+                            }).run('https://cdn.dos.zone/custom/dos/doom.jsdos').then((ci) => {
+                                const loading = win.querySelector('#doom-loading');
+                                if (loading) loading.style.display = 'none';
+                            }).catch((err) => {
+                                console.error('DOOM load error:', err);
+                                const loading = win.querySelector('#doom-loading');
+                                if (loading) loading.innerHTML = '<div style="color:var(--btn-close);font-size:13px;">Failed to load DOOM.<br><span style="color:var(--dim);font-size:11px;">Check your internet connection.</span></div>';
+                            });
+                        } catch(e) {
+                            console.error('js-dos init error:', e);
+                        }
+                    }
                 }
             };
 
@@ -1072,6 +1151,11 @@
                 // Init terminal if needed
                 if (app.isTerminal) {
                     setTimeout(() => initTerminal(winId), 50);
+                }
+
+                // Init DOOM or custom onInit
+                if (app.onInit) {
+                    setTimeout(() => app.onInit(winId), 100);
                 }
 
                 win.addEventListener('mousedown', () => focusWindow(winId));
