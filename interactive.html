@@ -807,7 +807,20 @@
                 <div class="icon-label">DOOM</div>
             </div>
             <div class="desktop-icon" ondblclick="openApp('calculator')" onclick="selectIcon(this)">
-                <div class="icon-img" style="font-family:'Times New Roman',serif;font-style:italic;font-weight:bold;color:var(--accent);font-size:24px;line-height:36px;text-align:center;">ƒ(x)</div>
+                <div class="icon-img" style="display:flex;justify-content:center;align-items:center;height:36px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="36" viewBox="0 0 20 24" style="filter:drop-shadow(2px 2px 3px rgba(0,0,0,0.8));">
+                        <rect x="1" y="0" width="18" height="24" rx="2" fill="#3a3c42" stroke="#1a1c22" stroke-width="1"/>
+                        <path d="M2 3 Q10 1 18 3" stroke="#5a5c62" stroke-width="0.7" fill="none"/>
+                        <rect x="3" y="3" width="14" height="6" rx="1" fill="#181a20" stroke="#0f1013" stroke-width="1"/>
+                        <rect x="4" y="4" width="12" height="4" rx="0.5" fill="#a4c639"/>
+                        <path d="M5 6 Q 8 4, 10 6 T 15 6" stroke="#25350d" stroke-width="0.5" fill="none"/>
+                        <circle cx="5" cy="11.5" r="1.3" fill="#6c7a89"/><circle cx="8" cy="11.5" r="1.3" fill="#6c7a89"/>
+                        <circle cx="11" cy="11.5" r="1.3" fill="#6c7a89"/><circle cx="14" cy="11.5" r="1.3" fill="#6c7a89"/>
+                        <rect x="4" y="14" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="8.5" y="14" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="13" y="14" width="3.5" height="2" rx="0.5" fill="#ff7f50"/>
+                        <rect x="4" y="17" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="8.5" y="17" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="13" y="17" width="3.5" height="2" rx="0.5" fill="#ff7f50"/>
+                        <rect x="4" y="20" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="8.5" y="20" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="13" y="20" width="3.5" height="2" rx="0.5" fill="#3b82f6"/>
+                    </svg>
+                </div>
                 <div class="icon-label">Calculator</div>
             </div>
         </div>
@@ -846,7 +859,19 @@
                 <span class="si-icon"><img src="doom-icon.jpg" alt="DOOM" style="width:18px;height:18px;object-fit:cover;border-radius:1px;"></span> DOOM
             </div>
             <div class="start-item" onclick="openApp('calculator'); closeStartMenu();">
-                <span class="si-icon" style="font-family:'Times New Roman',serif;font-style:italic;font-weight:bold;color:var(--accent);">ƒ(x)</span> Calculator
+                <span class="si-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="21" viewBox="0 0 20 24">
+                        <rect x="1" y="0" width="18" height="24" rx="2" fill="#3a3c42" stroke="#1a1c22" stroke-width="1"/>
+                        <path d="M2 3 Q10 1 18 3" stroke="#5a5c62" stroke-width="0.7" fill="none"/>
+                        <rect x="3" y="3" width="14" height="6" rx="1" fill="#181a20" stroke="#0f1013" stroke-width="1"/>
+                        <rect x="4" y="4" width="12" height="4" rx="0.5" fill="#a4c639"/>
+                        <path d="M5 6 Q 8 4, 10 6 T 15 6" stroke="#25350d" stroke-width="0.5" fill="none"/>
+                        <circle cx="5" cy="11.5" r="1.3" fill="#6c7a89"/><circle cx="8" cy="11.5" r="1.3" fill="#6c7a89"/><circle cx="11" cy="11.5" r="1.3" fill="#6c7a89"/><circle cx="14" cy="11.5" r="1.3" fill="#6c7a89"/>
+                        <rect x="4" y="14" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="8.5" y="14" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="13" y="14" width="3.5" height="2" rx="0.5" fill="#ff7f50"/>
+                        <rect x="4" y="17" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="8.5" y="17" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="13" y="17" width="3.5" height="2" rx="0.5" fill="#ff7f50"/>
+                        <rect x="4" y="20" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="8.5" y="20" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="13" y="20" width="3.5" height="2" rx="0.5" fill="#3b82f6"/>
+                    </svg>
+                </span> Calculator
             </div>
             <div class="start-divider"></div>
             <div class="start-item" onclick="openApp('recycle'); closeStartMenu();">
@@ -1076,7 +1101,7 @@
                 },
                 calculator: {
                     title: 'Scientific Calculator',
-                    icon: '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" style="vertical-align:middle; filter:drop-shadow(1px 1px 1px rgba(0,0,0,0.5));"><rect x="4" y="2" width="16" height="20" rx="2" fill="#2d4276" stroke="#111" stroke-width="1"/><rect x="6" y="4" width="12" height="4" rx="1" fill="#7ed98c" stroke="#111" stroke-width="1"/><rect x="6" y="10" width="3" height="2" fill="#ffd166" stroke="#111" stroke-width="1"/><rect x="10.5" y="10" width="3" height="2" fill="#ffd166" stroke="#111" stroke-width="1"/><rect x="15" y="10" width="3" height="2" fill="#ffd166" stroke="#111" stroke-width="1"/><rect x="6" y="13" width="3" height="2" fill="#ffd166" stroke="#111" stroke-width="1"/><rect x="10.5" y="13" width="3" height="2" fill="#ffd166" stroke="#111" stroke-width="1"/><rect x="15" y="13" width="3" height="2" fill="#ffd166" stroke="#111" stroke-width="1"/><rect x="6" y="16" width="3" height="2" fill="#ffd166" stroke="#111" stroke-width="1"/><rect x="10.5" y="16" width="3" height="2" fill="#ffd166" stroke="#111" stroke-width="1"/><rect x="15" y="16" width="3" height="2" fill="#ffd166" stroke="#111" stroke-width="1"/></svg>',
+                    icon: '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="24" viewBox="0 0 20 24" style="vertical-align:middle; filter:drop-shadow(1px 1px 2px rgba(0,0,0,0.8));"><rect x="1" y="0" width="18" height="24" rx="2" fill="#3a3c42" stroke="#1a1c22" stroke-width="1"/><path d="M2 3 Q10 1 18 3" stroke="#5a5c62" stroke-width="0.7" fill="none"/><rect x="3" y="3" width="14" height="6" rx="1" fill="#181a20" stroke="#0f1013" stroke-width="1"/><rect x="4" y="4" width="12" height="4" rx="0.5" fill="#a4c639"/><path d="M5 6 Q 8 4, 10 6 T 15 6" stroke="#25350d" stroke-width="0.5" fill="none"/><circle cx="5" cy="11.5" r="1.3" fill="#6c7a89"/><circle cx="8" cy="11.5" r="1.3" fill="#6c7a89"/><circle cx="11" cy="11.5" r="1.3" fill="#6c7a89"/><circle cx="14" cy="11.5" r="1.3" fill="#6c7a89"/><rect x="4" y="14" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="8.5" y="14" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="13" y="14" width="3.5" height="2" rx="0.5" fill="#ff7f50"/><rect x="4" y="17" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="8.5" y="17" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="13" y="17" width="3.5" height="2" rx="0.5" fill="#ff7f50"/><rect x="4" y="20" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="8.5" y="20" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="13" y="20" width="3.5" height="2" rx="0.5" fill="#3b82f6"/></svg>',
                     width: 320,
                     height: 440,
                     content: () => {
