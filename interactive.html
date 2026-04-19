@@ -74,7 +74,8 @@
             width: 100vw;
             height: calc(100vh - 40px);
             overflow: hidden;
-            background: url('https://upload.wikimedia.org/wikipedia/en/6/67/Bliss_%28Windows_XP%29.png') center center / cover no-repeat;
+            background: url('90299.webp') center center / cover no-repeat fixed;
+            background-color: #0A7BC8;
         }
 
         #desktop::after {
@@ -1243,11 +1244,9 @@
                 <div class="icon-img">🌐</div>
                 <div class="icon-label">Connect</div>
             </div>
-            <div class="desktop-icon" ondblclick="openApp('doom')" onclick="selectIcon(this)">
-                <div class="icon-img"><img src="doom-icon.jpg" alt="DOOM"
-                        style="width:36px;height:36px;object-fit:cover;border-radius:2px;image-rendering:pixelated;">
-                </div>
-                <div class="icon-label">DOOM</div>
+            <div class="desktop-icon" ondblclick="openApp('paint')" onclick="selectIcon(this)">
+                <div class="icon-img">🎨</div>
+                <div class="icon-label">Paint</div>
             </div>
             <div class="desktop-icon" ondblclick="openApp('calculator')" onclick="selectIcon(this)">
                 <div class="icon-img" style="display:flex;justify-content:center;align-items:center;height:36px;">
@@ -1277,10 +1276,6 @@
                 </div>
                 <div class="icon-label">Calculator</div>
             </div>
-            <div class="desktop-icon" ondblclick="openApp('paint')" onclick="selectIcon(this)">
-                <div class="icon-img">🎨</div>
-                <div class="icon-label">Paint</div>
-            </div>
             <div class="desktop-icon" ondblclick="openApp('roadmap')" onclick="selectIcon(this)">
                 <div class="icon-img">📜</div>
                 <div class="icon-label">Project Logs</div>
@@ -1292,6 +1287,12 @@
             <div class="desktop-icon" ondblclick="openApp('minesweeper')" onclick="selectIcon(this)">
                 <div class="icon-img">💣</div>
                 <div class="icon-label">Minesweeper</div>
+            </div>
+            <div class="desktop-icon" ondblclick="openApp('doom')" onclick="selectIcon(this)">
+                <div class="icon-img"><img src="doom-icon.jpg" alt="DOOM"
+                        style="width:36px;height:36px;object-fit:cover;border-radius:2px;image-rendering:pixelated;">
+                </div>
+                <div class="icon-label">DOOM</div>
             </div>
         </div>
     </div>
@@ -2591,7 +2592,11 @@
                 localStorage.setItem('xpBackground', bg);
                 
                 if (bg === 'bliss') {
-                    desktop.style.backgroundImage = "url('https://upload.wikimedia.org/wikipedia/en/6/67/Bliss_%28Windows_XP%29.png')";
+                    desktop.style.backgroundImage = "url('90299.webp')";
+                    desktop.style.backgroundSize = 'cover';
+                    desktop.style.backgroundPosition = 'center center';
+                    desktop.style.backgroundRepeat = 'no-repeat';
+                    desktop.style.backgroundAttachment = 'fixed';
                 } else if (bg === 'gradient') {
                     desktop.style.backgroundImage = 'none';
                     desktop.style.background = 'linear-gradient(135deg, #245edb 0%, #1f56cd 100%)';
@@ -2700,7 +2705,63 @@
                                 const nx = data.pos.x + dx;
                                 const ny = data.pos.y + dy;
                                 if (nx >= 0 && nx < size && ny >= 0 && ny < size) {
-                                    revealCell(ny * size + nx);\n                                }\n                            }\n                        }\n                    }\n                    \n                    if (revealed.size === size * size - mines) {\n                        won = true;\n                        cell.textContent = '✓';\n                    }\n                }\n            };\n\n            // ── Battery & Clock Updates ──\n            function updateClock() {\n                const now = new Date();\n                const h = now.getHours().toString().padStart(2, '0');\n                const m = now.getMinutes().toString().padStart(2, '0');\n                const time = h + ':' + m;\n                \n                // Desktop taskbar\n                const clockEl = document.getElementById('taskbar-clock');\n                if (clockEl) clockEl.textContent = time;\n                \n                // Nokia phone\n                const nokiaTime = document.getElementById('nokia-time');\n                if (nokiaTime) nokiaTime.textContent = time;\n                \n                // Simulate battery drain (100% - 60% over time)\n                const elapsed = Date.now();\n                let batteryPercent = Math.max(60, 100 - (elapsed / 1000 / 60) % 40);\n                \n                // Desktop taskbar battery\n                const batteryFill = document.getElementById('taskbar-battery-fill');\n                const batteryText = document.getElementById('taskbar-battery-text');\n                if (batteryFill && batteryText) {\n                    batteryFill.style.width = batteryPercent + '%';\n                    batteryText.textContent = Math.round(batteryPercent) + '%';\n                }\n                \n                // Nokia battery\n                const nokiaBatteryFill = document.getElementById('nokia-battery-fill');\n                const nokiaBatteryText = document.getElementById('nokia-battery-text');\n                if (nokiaBatteryFill && nokiaBatteryText) {\n                    const fillWidth = 11 * (batteryPercent / 100);\n                    nokiaBatteryFill.style.width = fillWidth + 'px';\n                    nokiaBatteryText.textContent = Math.round(batteryPercent) + '%';\n                }\n            }\n\n            // Restore theme on load\n            const savedTheme = localStorage.getItem('xpTheme') || 'xp';\n            window.applyTheme(savedTheme);\n            const savedBg = localStorage.getItem('xpBackground') || 'bliss';\n            window.applyBackground(savedBg);\n\n            function initNokiaPhone() {
+                                    revealCell(ny * size + nx);
+                                }
+                            }
+                        }
+                    }
+                    
+                    if (revealed.size === size * size - mines) {
+                        won = true;
+                        cell.textContent = '✓';
+                    }
+                }
+            };
+
+            // ── Battery & Clock Updates ──
+            function updateClock() {
+                const now = new Date();
+                const h = now.getHours().toString().padStart(2, '0');
+                const m = now.getMinutes().toString().padStart(2, '0');
+                const time = h + ':' + m;
+                
+                // Desktop taskbar
+                const clockEl = document.getElementById('taskbar-clock');
+                if (clockEl) clockEl.textContent = time;
+                
+                // Nokia phone
+                const nokiaTime = document.getElementById('nokia-time');
+                if (nokiaTime) nokiaTime.textContent = time;
+                
+                // Simulate battery drain (100% - 60% over time)
+                const elapsed = Date.now();
+                let batteryPercent = Math.max(60, 100 - (elapsed / 1000 / 60) % 40);
+                
+                // Desktop taskbar battery
+                const batteryFill = document.getElementById('taskbar-battery-fill');
+                const batteryText = document.getElementById('taskbar-battery-text');
+                if (batteryFill && batteryText) {
+                    batteryFill.style.width = batteryPercent + '%';
+                    batteryText.textContent = Math.round(batteryPercent) + '%';
+                }
+                
+                // Nokia battery
+                const nokiaBatteryFill = document.getElementById('nokia-battery-fill');
+                const nokiaBatteryText = document.getElementById('nokia-battery-text');
+                if (nokiaBatteryFill && nokiaBatteryText) {
+                    const fillWidth = 11 * (batteryPercent / 100);
+                    nokiaBatteryFill.style.width = fillWidth + 'px';
+                    nokiaBatteryText.textContent = Math.round(batteryPercent) + '%';
+                }
+            }
+
+            // Restore theme on load
+            const savedTheme = localStorage.getItem('xpTheme') || 'xp';
+            window.applyTheme(savedTheme);
+            const savedBg = localStorage.getItem('xpBackground') || 'bliss';
+            window.applyBackground(savedBg);
+
+            function initNokiaPhone() {
                 if (!IS_PHONE) return;
 
                 document.body.classList.add('mobile-nokia');
@@ -3018,8 +3079,8 @@
                     if (savedPos && typeof savedPos.left === 'number' && typeof savedPos.top === 'number') {
                         placeIcon(icon, savedPos.left, savedPos.top, false);
                     } else {
-                        const col = Math.floor(idx / 8);
-                        const row = idx % 8;
+                        const col = Math.floor(idx / 6);
+                        const row = idx % 6;
                         placeIcon(icon, 16 + (col * 92), 14 + (row * 96), true);
                     }
 
