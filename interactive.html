@@ -749,6 +749,45 @@
             letter-spacing: 1px;
         }
 
+        /* ========== DESKTOP CONTEXT MENU ========== */
+        .desktop-context-menu {
+            position: fixed;
+            min-width: 170px;
+            background: #f1f4fb;
+            border: 1px solid #0b2f7a;
+            box-shadow: 0 8px 18px rgba(10, 36, 106, 0.35);
+            z-index: 12050;
+            display: none;
+            padding: 4px;
+        }
+
+        .desktop-context-menu.visible {
+            display: block;
+        }
+
+        .desktop-context-menu button {
+            width: 100%;
+            border: none;
+            background: transparent;
+            color: #1f3b6d;
+            text-align: left;
+            padding: 7px 10px;
+            font-family: inherit;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .desktop-context-menu button:hover {
+            background: linear-gradient(180deg, #3d8bf0 0%, #2f73dd 100%);
+            color: #fff;
+        }
+
+        .desktop-context-divider {
+            height: 1px;
+            background: #b4c9ea;
+            margin: 4px 6px;
+        }
+
         /* ========== START MENU ========== */
         #start-menu {
             position: fixed;
@@ -1018,34 +1057,11 @@
             min-height: 280px;
         }
 
-        .nokia-softkeys {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 6px;
-            margin-top: 3px;
-        }
-
-        .nokia-softkeys button {
-            min-height: 40px;
-            border: 1px solid #151c2d;
-            border-radius: 8px;
-            background: linear-gradient(180deg, #7488b9 0%, #44557e 100%);
-            color: #fff;
-            font-size: 12px;
-            font-family: 'Tahoma', 'Segoe UI', sans-serif;
-            font-weight: bold;
-        }
-
-        .nokia-softkeys button:active {
-            transform: translateY(1px);
-            background: linear-gradient(180deg, #44557e 0%, #354365 100%);
-        }
-
         .nokia-keypad {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 7px;
-            margin-top: 12px;
+            margin-top: 6px;
         }
 
         .nokia-key {
@@ -1183,11 +1199,6 @@
                 </div>
                 <div class="nokia-screen-title" id="nokia-screen-title">Menu</div>
                 <div class="nokia-screen-content" id="nokia-screen-content"></div>
-            </div>
-            <div class="nokia-softkeys">
-                <button id="nokia-soft-left" type="button" aria-label="Go up">UP</button>
-                <button id="nokia-soft-select" type="button" aria-label="Select item">OPEN</button>
-                <button id="nokia-soft-right" type="button" aria-label="Go down or back">DOWN</button>
             </div>
             <div class="nokia-keypad" id="nokia-keypad">
                 <button class="nokia-key call" data-phone-key="call" type="button">CALL</button>
@@ -1402,6 +1413,8 @@
         </div>
     </div>
 
+    <div id="desktop-context-menu" class="desktop-context-menu" role="menu" aria-hidden="true"></div>
+
     <script>
         (function () {
             'use strict';
@@ -1414,6 +1427,8 @@
             const ICON_LAYOUT_KEY = 'xpDesktopIconLayout.v1';
             let paintPreloadFrame = null;
             let doomPreloadFrame = null;
+            let doomFrameReady = false;
+            let doomParkingLot = null;
             const IS_PHONE = window.matchMedia('(max-width: 900px) and (pointer: coarse)').matches
                 || /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
             const DOOM_INPUT = {
@@ -1925,26 +1940,28 @@
                     height: 520,
                     content: () => `
                         <div style="display:flex;flex-direction:column;height:100%;background:#000;">
-                            <iframe 
-                                id="doom-frame"
-                                src="https://raz0red.github.io/webprboom/" 
-                                style="flex:1;width:100%;border:none;background:#000;"
-                                loading="eager"
-                                allowfullscreen
-                                allow="autoplay; fullscreen; gamepad"
-                            ></iframe>
+                            <div id="doom-frame-host" style="position:relative;flex:1;width:100%;background:#000;">
+                                <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#d8e7ff;font-size:12px;letter-spacing:0.4px;">
+                                    Launching DOOM...
+                                </div>
+                            </div>
                             <div style="padding:4px 10px;font-size:10px;color:var(--dim);border-top:1px solid var(--border-dim);background:var(--bg);text-align:center;flex-shrink:0;">Click the game to capture input · ESC to release · Arrow keys + Ctrl to play</div>
                         </div>
                     `,
                     onInit: (winId) => {
                         const host = document.getElementById(winId);
                         if (!host) return;
+                        const doomHost = host.querySelector('#doom-frame-host');
+                        if (doomHost) mountDoomFrame(doomHost);
                         const isPhoneHost = !!host.closest('#nokia-phone');
                         setActiveDoomFrame(host, isPhoneHost);
                         if (isPhoneHost) {
                             showDoomTip(host, 'Dial moves, OK shoots, CALL interacts. Touch the game to look around.', 'nokia-doom-tip');
                         } else {
-                            showDoomTip(host, 'WASD to move, Left click to shoot, Right click to interact.', 'desktop-doom-tip');
+                            const tip = doomFrameReady
+                                ? 'WASD to move, Left click to shoot, Right click to interact.'
+                                : 'Preloading DOOM engine... first boot may take a few seconds.';
+                            showDoomTip(host, tip, 'desktop-doom-tip');
                         }
                     }
                 },
@@ -2445,6 +2462,10 @@
             window.closeWindow = function (winId) {
                 const win = document.getElementById(winId);
                 if (win) {
+                    const appId = openWindows[winId]?.appId;
+                    if (appId === 'doom' && win.querySelector('#doom-frame')) {
+                        parkDoomFrame();
+                    }
                     win.style.animation = 'none';
                     win.style.transition = 'transform 0.15s, opacity 0.15s';
                     win.style.transform = 'scale(0.9)';
@@ -2768,13 +2789,10 @@
 
                 const titleEl = document.getElementById('nokia-screen-title');
                 const contentEl = document.getElementById('nokia-screen-content');
-                const upBtn = document.getElementById('nokia-soft-left');
-                const selectBtn = document.getElementById('nokia-soft-select');
-                const downBtn = document.getElementById('nokia-soft-right');
                 const timeEl = document.getElementById('nokia-time');
                 const keypad = document.getElementById('nokia-keypad');
 
-                if (!titleEl || !contentEl || !upBtn || !selectBtn || !downBtn || !timeEl || !keypad) return;
+                if (!titleEl || !contentEl || !timeEl || !keypad) return;
 
                 const menuApps = [
                     'about',
@@ -2824,9 +2842,6 @@
                         });
                     });
 
-                    upBtn.textContent = 'UP';
-                    selectBtn.textContent = 'OPEN';
-                    downBtn.textContent = 'DOWN';
                 }
 
                 function openNokiaApp(appId) {
@@ -2845,9 +2860,6 @@
                         setTimeout(() => app.onInit('nokia-app-host'), 60);
                     }
 
-                    upBtn.textContent = 'MENU';
-                    selectBtn.textContent = 'OPEN';
-                    downBtn.textContent = 'BACK';
                 }
 
                 function stepMenu(delta) {
@@ -2913,30 +2925,6 @@
 
                 window.openNokiaApp = openNokiaApp;
 
-                upBtn.addEventListener('click', () => {
-                    if (currentApp) {
-                        renderMenu();
-                        return;
-                    }
-                    selectedIdx = (selectedIdx - 1 + menuApps.length) % menuApps.length;
-                    renderMenu();
-                });
-
-                downBtn.addEventListener('click', () => {
-                    if (currentApp) {
-                        renderMenu();
-                        return;
-                    }
-                    selectedIdx = (selectedIdx + 1) % menuApps.length;
-                    renderMenu();
-                });
-
-                selectBtn.addEventListener('click', () => {
-                    if (!currentApp) {
-                        openNokiaApp(menuApps[selectedIdx]);
-                    }
-                });
-
                 keypad.querySelectorAll('[data-phone-key]').forEach((btn) => {
                     const action = btn.getAttribute('data-phone-key') || '';
                     if (!action) return;
@@ -2980,13 +2968,20 @@
             }
 
             function persistIconLayout() {
+                const desktop = document.getElementById('desktop');
+                const width = Math.max(desktop ? desktop.clientWidth : 0, 1);
+                const height = Math.max(desktop ? desktop.clientHeight : 0, 1);
                 const icons = document.querySelectorAll('.desktop-icon');
                 const payload = {};
                 icons.forEach((icon, idx) => {
                     const key = icon.dataset.iconId || ('icon-' + idx);
+                    const left = parseInt(icon.style.left || '0', 10);
+                    const top = parseInt(icon.style.top || '0', 10);
                     payload[key] = {
-                        left: parseInt(icon.style.left || '0', 10),
-                        top: parseInt(icon.style.top || '0', 10)
+                        left,
+                        top,
+                        xRatio: left / width,
+                        yRatio: top / height
                     };
                 });
 
@@ -3045,24 +3040,58 @@
 
             function initDoomPreload() {
                 if (doomPreloadFrame) return;
+                doomParkingLot = document.createElement('div');
+                doomParkingLot.style.position = 'absolute';
+                doomParkingLot.style.left = '-9999px';
+                doomParkingLot.style.top = '-9999px';
+                doomParkingLot.style.width = '1px';
+                doomParkingLot.style.height = '1px';
+                doomParkingLot.style.opacity = '0';
+                doomParkingLot.style.pointerEvents = 'none';
+                doomParkingLot.setAttribute('aria-hidden', 'true');
+                document.body.appendChild(doomParkingLot);
+
                 doomPreloadFrame = document.createElement('iframe');
+                doomPreloadFrame.id = 'doom-frame';
                 doomPreloadFrame.src = 'https://raz0red.github.io/webprboom/';
+                doomPreloadFrame.setAttribute('allow', 'autoplay; fullscreen; gamepad');
+                doomPreloadFrame.setAttribute('allowfullscreen', '');
                 doomPreloadFrame.setAttribute('aria-hidden', 'true');
                 doomPreloadFrame.tabIndex = -1;
-                doomPreloadFrame.style.position = 'absolute';
-                doomPreloadFrame.style.left = '-9999px';
-                doomPreloadFrame.style.top = '-9999px';
-                doomPreloadFrame.style.width = '1px';
-                doomPreloadFrame.style.height = '1px';
+                doomPreloadFrame.style.width = '100%';
+                doomPreloadFrame.style.height = '100%';
                 doomPreloadFrame.style.border = '0';
-                doomPreloadFrame.style.opacity = '0';
+                doomPreloadFrame.style.background = '#000';
+                doomPreloadFrame.style.display = 'block';
+                doomPreloadFrame.addEventListener('load', () => {
+                    doomFrameReady = true;
+                }, { once: true });
+                doomParkingLot.appendChild(doomPreloadFrame);
+            }
+
+            function parkDoomFrame() {
+                if (!doomPreloadFrame || !doomParkingLot) return;
+                doomPreloadFrame.setAttribute('aria-hidden', 'true');
                 doomPreloadFrame.style.pointerEvents = 'none';
-                document.body.appendChild(doomPreloadFrame);
+                doomParkingLot.appendChild(doomPreloadFrame);
+            }
+
+            function mountDoomFrame(host) {
+                if (!host) return;
+                if (!doomPreloadFrame) initDoomPreload();
+                if (!doomPreloadFrame) return;
+                host.innerHTML = '';
+                doomPreloadFrame.removeAttribute('aria-hidden');
+                doomPreloadFrame.style.pointerEvents = 'auto';
+                host.appendChild(doomPreloadFrame);
             }
 
             function initDesktopIcons() {
                 const icons = Array.from(document.querySelectorAll('.desktop-icon'));
                 const saved = loadIconLayout();
+                const desktop = document.getElementById('desktop');
+                let lastDesktopWidth = desktop ? desktop.clientWidth : window.innerWidth;
+                let lastDesktopHeight = desktop ? desktop.clientHeight : window.innerHeight;
 
                 icons.forEach((icon, idx) => {
                     if (!icon.dataset.iconId) {
@@ -3077,7 +3106,13 @@
 
                     const savedPos = saved[icon.dataset.iconId];
                     if (savedPos && typeof savedPos.left === 'number' && typeof savedPos.top === 'number') {
-                        placeIcon(icon, savedPos.left, savedPos.top, false);
+                        if (typeof savedPos.xRatio === 'number' && typeof savedPos.yRatio === 'number' && desktop) {
+                            const scaledLeft = savedPos.xRatio * desktop.clientWidth;
+                            const scaledTop = savedPos.yRatio * desktop.clientHeight;
+                            placeIcon(icon, scaledLeft, scaledTop, false);
+                        } else {
+                            placeIcon(icon, savedPos.left, savedPos.top, false);
+                        }
                     } else {
                         const col = Math.floor(idx / 6);
                         const row = idx % 6;
@@ -3126,11 +3161,131 @@
                 persistIconLayout();
 
                 window.addEventListener('resize', () => {
+                    const nextWidth = desktop ? desktop.clientWidth : window.innerWidth;
+                    const nextHeight = desktop ? desktop.clientHeight : window.innerHeight;
+                    const scaleX = lastDesktopWidth > 0 ? (nextWidth / lastDesktopWidth) : 1;
+                    const scaleY = lastDesktopHeight > 0 ? (nextHeight / lastDesktopHeight) : 1;
+
                     icons.forEach(icon => {
-                        placeIcon(icon, parseInt(icon.style.left || '0', 10), parseInt(icon.style.top || '0', 10), true);
+                        const currentLeft = parseInt(icon.style.left || '0', 10);
+                        const currentTop = parseInt(icon.style.top || '0', 10);
+                        const scaledLeft = currentLeft * scaleX;
+                        const scaledTop = currentTop * scaleY;
+                        placeIcon(icon, scaledLeft, scaledTop, true);
                     });
+
+                    lastDesktopWidth = nextWidth;
+                    lastDesktopHeight = nextHeight;
                     persistIconLayout();
                 });
+            }
+
+            function autoArrangeIcons() {
+                const icons = Array.from(document.querySelectorAll('.desktop-icon'));
+                icons.sort((a, b) => {
+                    const aLabel = (a.querySelector('.icon-label')?.textContent || '').trim();
+                    const bLabel = (b.querySelector('.icon-label')?.textContent || '').trim();
+                    return aLabel.localeCompare(bLabel);
+                });
+
+                icons.forEach((icon, idx) => {
+                    const col = Math.floor(idx / 6);
+                    const row = idx % 6;
+                    placeIcon(icon, 16 + (col * 92), 14 + (row * 96), true);
+                });
+
+                persistIconLayout();
+            }
+
+            function initDesktopContextMenu() {
+                const desktop = document.getElementById('desktop');
+                const menu = document.getElementById('desktop-context-menu');
+                if (!desktop || !menu) return;
+
+                function hideMenu() {
+                    menu.classList.remove('visible');
+                    menu.setAttribute('aria-hidden', 'true');
+                }
+
+                function showMenu(x, y, items) {
+                    menu.innerHTML = '';
+
+                    items.forEach((item) => {
+                        if (item.type === 'divider') {
+                            const divider = document.createElement('div');
+                            divider.className = 'desktop-context-divider';
+                            menu.appendChild(divider);
+                            return;
+                        }
+
+                        const btn = document.createElement('button');
+                        btn.type = 'button';
+                        btn.textContent = item.label;
+                        btn.addEventListener('click', () => {
+                            hideMenu();
+                            item.onClick();
+                        });
+                        menu.appendChild(btn);
+                    });
+
+                    menu.classList.add('visible');
+                    menu.setAttribute('aria-hidden', 'false');
+
+                    const maxX = Math.max(8, window.innerWidth - menu.offsetWidth - 8);
+                    const maxY = Math.max(8, window.innerHeight - menu.offsetHeight - 8);
+                    menu.style.left = Math.min(x, maxX) + 'px';
+                    menu.style.top = Math.min(y, maxY) + 'px';
+                }
+
+                desktop.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    const icon = e.target.closest('.desktop-icon');
+
+                    if (icon) {
+                        selectIcon(icon);
+                        const appId = icon.dataset.appId || parseIconAppId(icon);
+                        showMenu(e.clientX, e.clientY, [
+                            {
+                                label: 'Open',
+                                onClick: () => {
+                                    if (appId) openApp(appId);
+                                }
+                            },
+                            {
+                                label: 'Arrange Icons',
+                                onClick: () => autoArrangeIcons()
+                            }
+                        ]);
+                        return;
+                    }
+
+                    showMenu(e.clientX, e.clientY, [
+                        {
+                            label: 'Refresh',
+                            onClick: () => {
+                                window.location.reload();
+                            }
+                        },
+                        {
+                            label: 'Arrange Icons',
+                            onClick: () => autoArrangeIcons()
+                        },
+                        { type: 'divider' },
+                        {
+                            label: 'Open Terminal',
+                            onClick: () => openApp('terminal')
+                        },
+                        {
+                            label: 'Open Explorer',
+                            onClick: () => openApp('explorer')
+                        }
+                    ]);
+                });
+
+                document.addEventListener('click', hideMenu);
+                document.addEventListener('scroll', hideMenu, true);
+                window.addEventListener('resize', hideMenu);
+                menu.addEventListener('contextmenu', (e) => e.preventDefault());
             }
 
             // ── Icon Selection ──
@@ -3147,7 +3302,8 @@
 
             if (!IS_PHONE) {
                 initDesktopIcons();
-                setTimeout(initDoomPreload, 250);
+                initDesktopContextMenu();
+                initDoomPreload();
                 setTimeout(initPaintPreload, 350);
             }
 
