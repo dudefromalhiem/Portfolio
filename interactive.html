@@ -726,8 +726,13 @@
 
         /* ========== DOOM / JS-DOS ========== */
         @keyframes doomLoad {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(350%); }
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(350%);
+            }
         }
 
         #doom-container {
@@ -794,6 +799,10 @@
                 <div class="icon-img">📁</div>
                 <div class="icon-label">My Projects</div>
             </div>
+            <div class="desktop-icon" ondblclick="openApp('explorer')" onclick="selectIcon(this)">
+                <div class="icon-img">🗂️</div>
+                <div class="icon-label">Explorer</div>
+            </div>
             <div class="desktop-icon" ondblclick="openApp('about')" onclick="selectIcon(this)">
                 <div class="icon-img">📄</div>
                 <div class="icon-label">About Me</div>
@@ -803,25 +812,46 @@
                 <div class="icon-label">Connect</div>
             </div>
             <div class="desktop-icon" ondblclick="openApp('doom')" onclick="selectIcon(this)">
-                <div class="icon-img"><img src="doom-icon.jpg" alt="DOOM" style="width:36px;height:36px;object-fit:cover;border-radius:2px;image-rendering:pixelated;"></div>
+                <div class="icon-img"><img src="doom-icon.jpg" alt="DOOM"
+                        style="width:36px;height:36px;object-fit:cover;border-radius:2px;image-rendering:pixelated;">
+                </div>
                 <div class="icon-label">DOOM</div>
             </div>
             <div class="desktop-icon" ondblclick="openApp('calculator')" onclick="selectIcon(this)">
                 <div class="icon-img" style="display:flex;justify-content:center;align-items:center;height:36px;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="36" viewBox="0 0 20 24" style="filter:drop-shadow(2px 2px 3px rgba(0,0,0,0.8));">
-                        <rect x="1" y="0" width="18" height="24" rx="2" fill="#3a3c42" stroke="#1a1c22" stroke-width="1"/>
-                        <path d="M2 3 Q10 1 18 3" stroke="#5a5c62" stroke-width="0.7" fill="none"/>
-                        <rect x="3" y="3" width="14" height="6" rx="1" fill="#181a20" stroke="#0f1013" stroke-width="1"/>
-                        <rect x="4" y="4" width="12" height="4" rx="0.5" fill="#a4c639"/>
-                        <path d="M5 6 Q 8 4, 10 6 T 15 6" stroke="#25350d" stroke-width="0.5" fill="none"/>
-                        <circle cx="5" cy="11.5" r="1.3" fill="#6c7a89"/><circle cx="8" cy="11.5" r="1.3" fill="#6c7a89"/>
-                        <circle cx="11" cy="11.5" r="1.3" fill="#6c7a89"/><circle cx="14" cy="11.5" r="1.3" fill="#6c7a89"/>
-                        <rect x="4" y="14" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="8.5" y="14" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="13" y="14" width="3.5" height="2" rx="0.5" fill="#ff7f50"/>
-                        <rect x="4" y="17" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="8.5" y="17" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="13" y="17" width="3.5" height="2" rx="0.5" fill="#ff7f50"/>
-                        <rect x="4" y="20" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="8.5" y="20" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="13" y="20" width="3.5" height="2" rx="0.5" fill="#3b82f6"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="36" viewBox="0 0 20 24"
+                        style="filter:drop-shadow(2px 2px 3px rgba(0,0,0,0.8));">
+                        <rect x="1" y="0" width="18" height="24" rx="2" fill="#3a3c42" stroke="#1a1c22"
+                            stroke-width="1" />
+                        <path d="M2 3 Q10 1 18 3" stroke="#5a5c62" stroke-width="0.7" fill="none" />
+                        <rect x="3" y="3" width="14" height="6" rx="1" fill="#181a20" stroke="#0f1013"
+                            stroke-width="1" />
+                        <rect x="4" y="4" width="12" height="4" rx="0.5" fill="#a4c639" />
+                        <path d="M5 6 Q 8 4, 10 6 T 15 6" stroke="#25350d" stroke-width="0.5" fill="none" />
+                        <circle cx="5" cy="11.5" r="1.3" fill="#6c7a89" />
+                        <circle cx="8" cy="11.5" r="1.3" fill="#6c7a89" />
+                        <circle cx="11" cy="11.5" r="1.3" fill="#6c7a89" />
+                        <circle cx="14" cy="11.5" r="1.3" fill="#6c7a89" />
+                        <rect x="4" y="14" width="3.5" height="2" rx="0.5" fill="#d1d5db" />
+                        <rect x="8.5" y="14" width="3.5" height="2" rx="0.5" fill="#d1d5db" />
+                        <rect x="13" y="14" width="3.5" height="2" rx="0.5" fill="#ff7f50" />
+                        <rect x="4" y="17" width="3.5" height="2" rx="0.5" fill="#d1d5db" />
+                        <rect x="8.5" y="17" width="3.5" height="2" rx="0.5" fill="#d1d5db" />
+                        <rect x="13" y="17" width="3.5" height="2" rx="0.5" fill="#ff7f50" />
+                        <rect x="4" y="20" width="3.5" height="2" rx="0.5" fill="#d1d5db" />
+                        <rect x="8.5" y="20" width="3.5" height="2" rx="0.5" fill="#d1d5db" />
+                        <rect x="13" y="20" width="3.5" height="2" rx="0.5" fill="#3b82f6" />
                     </svg>
                 </div>
                 <div class="icon-label">Calculator</div>
+            </div>
+            <div class="desktop-icon" ondblclick="openApp('paint')" onclick="selectIcon(this)">
+                <div class="icon-img">🎨</div>
+                <div class="icon-label">Paint</div>
+            </div>
+            <div class="desktop-icon" ondblclick="openApp('roadmap')" onclick="selectIcon(this)">
+                <div class="icon-img">📜</div>
+                <div class="icon-label">Project Logs</div>
             </div>
         </div>
     </div>
@@ -849,6 +879,9 @@
             <div class="start-item" onclick="openApp('projects'); closeStartMenu();">
                 <span class="si-icon">📁</span> My Projects
             </div>
+            <div class="start-item" onclick="openApp('explorer'); closeStartMenu();">
+                <span class="si-icon">🗂️</span> Explorer
+            </div>
             <div class="start-item" onclick="openApp('about'); closeStartMenu();">
                 <span class="si-icon">📄</span> About Me
             </div>
@@ -856,22 +889,40 @@
                 <span class="si-icon">🌐</span> Connect
             </div>
             <div class="start-item" onclick="openApp('doom'); closeStartMenu();">
-                <span class="si-icon"><img src="doom-icon.jpg" alt="DOOM" style="width:18px;height:18px;object-fit:cover;border-radius:1px;"></span> DOOM
+                <span class="si-icon"><img src="doom-icon.jpg" alt="DOOM"
+                        style="width:18px;height:18px;object-fit:cover;border-radius:1px;"></span> DOOM
             </div>
             <div class="start-item" onclick="openApp('calculator'); closeStartMenu();">
                 <span class="si-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="21" viewBox="0 0 20 24">
-                        <rect x="1" y="0" width="18" height="24" rx="2" fill="#3a3c42" stroke="#1a1c22" stroke-width="1"/>
-                        <path d="M2 3 Q10 1 18 3" stroke="#5a5c62" stroke-width="0.7" fill="none"/>
-                        <rect x="3" y="3" width="14" height="6" rx="1" fill="#181a20" stroke="#0f1013" stroke-width="1"/>
-                        <rect x="4" y="4" width="12" height="4" rx="0.5" fill="#a4c639"/>
-                        <path d="M5 6 Q 8 4, 10 6 T 15 6" stroke="#25350d" stroke-width="0.5" fill="none"/>
-                        <circle cx="5" cy="11.5" r="1.3" fill="#6c7a89"/><circle cx="8" cy="11.5" r="1.3" fill="#6c7a89"/><circle cx="11" cy="11.5" r="1.3" fill="#6c7a89"/><circle cx="14" cy="11.5" r="1.3" fill="#6c7a89"/>
-                        <rect x="4" y="14" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="8.5" y="14" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="13" y="14" width="3.5" height="2" rx="0.5" fill="#ff7f50"/>
-                        <rect x="4" y="17" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="8.5" y="17" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="13" y="17" width="3.5" height="2" rx="0.5" fill="#ff7f50"/>
-                        <rect x="4" y="20" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="8.5" y="20" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="13" y="20" width="3.5" height="2" rx="0.5" fill="#3b82f6"/>
+                        <rect x="1" y="0" width="18" height="24" rx="2" fill="#3a3c42" stroke="#1a1c22"
+                            stroke-width="1" />
+                        <path d="M2 3 Q10 1 18 3" stroke="#5a5c62" stroke-width="0.7" fill="none" />
+                        <rect x="3" y="3" width="14" height="6" rx="1" fill="#181a20" stroke="#0f1013"
+                            stroke-width="1" />
+                        <rect x="4" y="4" width="12" height="4" rx="0.5" fill="#a4c639" />
+                        <path d="M5 6 Q 8 4, 10 6 T 15 6" stroke="#25350d" stroke-width="0.5" fill="none" />
+                        <circle cx="5" cy="11.5" r="1.3" fill="#6c7a89" />
+                        <circle cx="8" cy="11.5" r="1.3" fill="#6c7a89" />
+                        <circle cx="11" cy="11.5" r="1.3" fill="#6c7a89" />
+                        <circle cx="14" cy="11.5" r="1.3" fill="#6c7a89" />
+                        <rect x="4" y="14" width="3.5" height="2" rx="0.5" fill="#d1d5db" />
+                        <rect x="8.5" y="14" width="3.5" height="2" rx="0.5" fill="#d1d5db" />
+                        <rect x="13" y="14" width="3.5" height="2" rx="0.5" fill="#ff7f50" />
+                        <rect x="4" y="17" width="3.5" height="2" rx="0.5" fill="#d1d5db" />
+                        <rect x="8.5" y="17" width="3.5" height="2" rx="0.5" fill="#d1d5db" />
+                        <rect x="13" y="17" width="3.5" height="2" rx="0.5" fill="#ff7f50" />
+                        <rect x="4" y="20" width="3.5" height="2" rx="0.5" fill="#d1d5db" />
+                        <rect x="8.5" y="20" width="3.5" height="2" rx="0.5" fill="#d1d5db" />
+                        <rect x="13" y="20" width="3.5" height="2" rx="0.5" fill="#3b82f6" />
                     </svg>
                 </span> Calculator
+            </div>
+            <div class="start-item" onclick="openApp('paint'); closeStartMenu();">
+                <span class="si-icon">🎨</span> Paint
+            </div>
+            <div class="start-item" onclick="openApp('roadmap'); closeStartMenu();">
+                <span class="si-icon">📜</span> Project Logs
             </div>
             <div class="start-divider"></div>
             <div class="start-item" onclick="openApp('recycle'); closeStartMenu();">
@@ -896,6 +947,242 @@
             let zCounter = 100;
             const openWindows = {};
             let activeWindowId = null;
+            let explorerLaunchPath = [];
+
+            const PORTFOLIO_ROOT = ['C:', 'Users', 'Sayed', 'Portfolio'];
+            const VFS = {
+                type: 'dir',
+                children: {
+                    'Projects': {
+                        type: 'dir',
+                        children: {
+                            'Splotch.url': { type: 'link', url: 'https://splotch.vercel.app' },
+                            'ARROG.url': { type: 'link', url: 'https://arrog.vercel.app' },
+                            'RishabhDabral.url': { type: 'link', url: 'https://rishabh-dabral.vercel.app' },
+                            'RetroArcade.url': { type: 'link', url: 'https://github.com/dudefromalhiem/arcadebasic.html' },
+                            'WeatherAnomaly.url': { type: 'link', url: 'https://dudefromalhiem.github.io/WeatherAnomolyDetector/' }
+                        }
+                    },
+                    'Profile': {
+                        type: 'dir',
+                        children: {
+                            'About.txt': { type: 'file', content: 'Sayed Sadid Hoda (Alhiem)\nRetro nerd, gamer, and web builder from Bangalore.' },
+                            'Skills.txt': { type: 'file', content: 'Languages: Python, JavaScript, SQL, GDScript\nWeb: HTML, CSS, React, Next.js, Node.js, Three.js\nTools: Firebase, MongoDB, Git, Vercel, Godot, Figma' },
+                            'Connect.txt': { type: 'file', content: 'Email: sayedsadidhoda@gmail.com\nGitHub: github.com/dudefromalhiem\nLinkedIn: linkedin.com/in/sayedsadidhoda\nDiscord: @dudefromalhiem' }
+                        }
+                    },
+                    'Apps': {
+                        type: 'dir',
+                        children: {
+                            'Projects.lnk': { type: 'shortcut', app: 'projects' },
+                            'About.lnk': { type: 'shortcut', app: 'about' },
+                            'Connect.lnk': { type: 'shortcut', app: 'connect' },
+                            'Explorer.lnk': { type: 'shortcut', app: 'explorer' },
+                            'Terminal.lnk': { type: 'shortcut', app: 'terminal' },
+                            'Calculator.lnk': { type: 'shortcut', app: 'calculator' }
+                        }
+                    },
+                    'System': {
+                        type: 'dir',
+                        children: {
+                            'Roadmap.txt': { type: 'file', content: 'Priority next: Explorer.exe\nTheme direction: Strict Windows XP\nTerminal roadmap: Mirror Explorer file-system logic' },
+                            'RecycleBin.lnk': { type: 'shortcut', app: 'recycle' }
+                        }
+                    }
+                }
+            };
+
+            function getDisplayPath(pathSegs) {
+                return PORTFOLIO_ROOT.concat(pathSegs).join('\\');
+            }
+
+            function findChildKey(node, name) {
+                if (!node || node.type !== 'dir' || !node.children) return null;
+                return Object.keys(node.children).find(k => k.toLowerCase() === name.toLowerCase()) || null;
+            }
+
+            function getNodeByPath(pathSegs) {
+                let node = VFS;
+                for (const seg of pathSegs) {
+                    if (!node || node.type !== 'dir') return null;
+                    const key = findChildKey(node, seg);
+                    if (!key) return null;
+                    node = node.children[key];
+                }
+                return node;
+            }
+
+            function resolvePath(input, cwdSegs) {
+                const raw = (input || '').trim().replace(/\//g, '\\');
+                if (!raw) return { path: cwdSegs.slice(), node: getNodeByPath(cwdSegs) };
+
+                let working = [];
+                let parts = [];
+
+                if (/^[a-zA-Z]:\\/.test(raw)) {
+                    const normalizedRoot = PORTFOLIO_ROOT.join('\\').toLowerCase();
+                    const normalizedRaw = raw.toLowerCase();
+                    if (!normalizedRaw.startsWith(normalizedRoot)) {
+                        return { error: 'Access denied outside portfolio sandbox.' };
+                    }
+                    const remainder = raw.slice(PORTFOLIO_ROOT.join('\\').length);
+                    parts = remainder.split('\\').filter(Boolean);
+                } else if (raw.startsWith('\\')) {
+                    parts = raw.split('\\').filter(Boolean);
+                } else {
+                    working = cwdSegs.slice();
+                    parts = raw.split('\\').filter(Boolean);
+                }
+
+                for (const part of parts) {
+                    if (part === '.') continue;
+                    if (part === '..') {
+                        if (working.length > 0) working.pop();
+                        continue;
+                    }
+
+                    const parent = getNodeByPath(working);
+                    if (!parent || parent.type !== 'dir') return { error: 'Path is not a directory.' };
+                    const key = findChildKey(parent, part);
+                    if (!key) return { error: 'Cannot find path: ' + part };
+                    working.push(key);
+                }
+
+                const node = getNodeByPath(working);
+                if (!node) return { error: 'Path not found.' };
+                return { path: working, node };
+            }
+
+            function listDirectoryEntries(node) {
+                if (!node || node.type !== 'dir') return [];
+                const keys = Object.keys(node.children || {});
+                keys.sort((a, b) => {
+                    const aNode = node.children[a];
+                    const bNode = node.children[b];
+                    if (aNode.type === 'dir' && bNode.type !== 'dir') return -1;
+                    if (aNode.type !== 'dir' && bNode.type === 'dir') return 1;
+                    return a.localeCompare(b);
+                });
+                return keys.map(name => ({ name, node: node.children[name] }));
+            }
+
+            function openVirtualNode(name, node) {
+                if (!node) return { status: 'Item not found.' };
+
+                if (node.type === 'shortcut' && node.app) {
+                    openApp(node.app);
+                    return { status: 'Opened shortcut: ' + name };
+                }
+
+                if (node.type === 'link' && node.url) {
+                    window.open(node.url, '_blank', 'noopener');
+                    return { status: 'Opened link: ' + name };
+                }
+
+                if (node.type === 'file') {
+                    return {
+                        status: 'Opened file: ' + name,
+                        lines: node.content.split('\n').map(line => line || ' ')
+                    };
+                }
+
+                return { status: 'Cannot open this item directly.' };
+            }
+
+            function initExplorer(winId, initialPath) {
+                const win = document.getElementById(winId);
+                if (!win) return;
+
+                const list = win.querySelector('.exp-list');
+                const pathText = win.querySelector('.exp-path');
+                const upBtn = win.querySelector('.exp-up');
+                const rootBtn = win.querySelector('.exp-root');
+                const status = win.querySelector('.exp-status');
+                if (!list || !pathText || !upBtn || !rootBtn || !status) return;
+
+                let cwd = Array.isArray(initialPath) ? initialPath.slice() : [];
+
+                function setStatus(msg) {
+                    status.textContent = msg;
+                }
+
+                function render() {
+                    const node = getNodeByPath(cwd);
+                    if (!node || node.type !== 'dir') {
+                        cwd = [];
+                    }
+
+                    const current = getNodeByPath(cwd);
+                    const entries = listDirectoryEntries(current);
+                    pathText.textContent = getDisplayPath(cwd);
+                    upBtn.disabled = cwd.length === 0;
+                    list.innerHTML = '';
+
+                    if (entries.length === 0) {
+                        const empty = document.createElement('div');
+                        empty.style.color = 'var(--dim)';
+                        empty.style.padding = '8px';
+                        empty.textContent = 'This folder is empty.';
+                        list.appendChild(empty);
+                    }
+
+                    entries.forEach(({ name, node: entry }) => {
+                        const row = document.createElement('div');
+                        row.className = 'clickable';
+                        row.style.display = 'grid';
+                        row.style.gridTemplateColumns = '22px 1fr 80px';
+                        row.style.alignItems = 'center';
+                        row.style.padding = '4px 8px';
+                        row.style.borderBottom = '1px solid #1f2229';
+                        row.style.fontSize = '11px';
+
+                        const icon = entry.type === 'dir' ? '📁' : (entry.type === 'shortcut' ? '↗' : (entry.type === 'link' ? '🌐' : '📄'));
+                        const type = entry.type === 'dir' ? 'Folder' : (entry.type === 'shortcut' ? 'Shortcut' : (entry.type === 'link' ? 'Internet' : 'Text'));
+
+                        row.innerHTML = '<span>' + icon + '</span><span style="color:var(--white);">' + name + '</span><span style="color:var(--dim);text-align:right;">' + type + '</span>';
+
+                        row.addEventListener('mouseenter', () => {
+                            row.style.background = 'rgba(48, 104, 196, 0.18)';
+                        });
+                        row.addEventListener('mouseleave', () => {
+                            row.style.background = 'transparent';
+                        });
+
+                        row.addEventListener('click', () => {
+                            setStatus(name + ' selected');
+                        });
+
+                        row.addEventListener('dblclick', () => {
+                            if (entry.type === 'dir') {
+                                cwd.push(name);
+                                setStatus('Opened folder: ' + name);
+                                render();
+                                return;
+                            }
+
+                            const result = openVirtualNode(name, entry);
+                            setStatus(result.status);
+                        });
+
+                        list.appendChild(row);
+                    });
+                }
+
+                upBtn.addEventListener('click', () => {
+                    if (cwd.length > 0) {
+                        cwd.pop();
+                        render();
+                    }
+                });
+
+                rootBtn.addEventListener('click', () => {
+                    cwd = [];
+                    render();
+                });
+
+                render();
+                setStatus('Explorer ready. Double-click folders to navigate.');
+            }
 
             // ── App Definitions ──
             const APPS = {
@@ -969,7 +1256,28 @@
                     </div>
                 `
                 },
-                    about: {
+                explorer: {
+                    title: 'Explorer.exe',
+                    icon: '🗂️',
+                    width: 620,
+                    height: 470,
+                    content: () => `
+                    <div style="display:flex;flex-direction:column;height:100%;background:#0f131c;border:1px solid #252c38;">
+                        <div style="display:flex;gap:6px;align-items:center;padding:6px;border-bottom:1px solid #2d3443;background:#1a2333;">
+                            <button class="exp-up win-btn" style="width:56px;height:24px;">Up</button>
+                            <button class="exp-root win-btn" style="width:70px;height:24px;">Desktop</button>
+                            <div class="exp-path" style="flex:1;background:#0b1018;border:1px solid #2a3342;padding:3px 7px;font-size:11px;color:var(--white);"></div>
+                        </div>
+                        <div class="exp-list" style="flex:1;overflow:auto;background:#0a0e15;"></div>
+                        <div class="exp-status" style="font-size:11px;color:var(--dim);padding:6px 8px;border-top:1px solid #252c38;background:#121925;"></div>
+                    </div>
+                    `,
+                    onInit: (winId) => {
+                        initExplorer(winId, explorerLaunchPath);
+                        explorerLaunchPath = [];
+                    }
+                },
+                about: {
                     title: 'About Me — notepad.exe',
                     icon: '📄',
                     width: 500,
@@ -1099,6 +1407,60 @@
                         </div>
                     `
                 },
+                paint: {
+                    title: 'Paint',
+                    icon: '🎨',
+                    width: 700,
+                    height: 500,
+                    content: () => `
+                        <div style="display:flex;flex-direction:column;height:100%;background:#c0c0c0;">
+                            <iframe 
+                                src="https://jspaint.app" 
+                                style="flex:1;width:100%;border:none;background:#c0c0c0;"
+                                allowfullscreen
+                            ></iframe>
+                        </div>
+                    `
+                },
+                roadmap: {
+                    title: 'Project_Logs.txt — Notepad',
+                    icon: '📜',
+                    width: 550,
+                    height: 500,
+                    content: () => `
+                        <div style="font-family:'Share Tech Mono', monospace; color:var(--white); line-height:1.5; padding:10px;">
+                            <div style="border-bottom:1px solid var(--border-dim); padding-bottom:10px; margin-bottom:15px; color:var(--primary);">
+                                [ ALHIEM//PORTFOLIO SYSTEM LOGS ]
+                            </div>
+                            
+                            <div style="margin-bottom:20px;">
+                                <strong style="color:var(--primary);"># HISTORY (COMPLETED)</strong><br>
+                                - Three.js Melting Sphere Background<br>
+                                - WinXP Interactive Desktop Environment<br>
+                                - MS Paint (JSPaint) Integration<br>
+                                - Scientific Graphing Calculator<br>
+                                - DOOM Shareware Integration<br>
+                                - PowerShell Terminal Emulator<br>
+                                - Standard/Simple Mode Overhaul
+                            </div>
+
+                            <div style="margin-bottom:20px;">
+                                <strong style="color:var(--primary);"># FUTURE ROADMAP (PLANNED)</strong><br>
+                                [ ] Winamp-style Music Player<br>
+                                [>] Explorer.exe File Browser (PRIORITY NOW)<br>
+                                [>] Terminal + Explorer shared file-system logic<br>
+                                [ ] Guestbook & Live Messaging<br>
+                                [ ] Clippy AI Voice Assistant<br>
+                                [ ] Settings App (XP Theme Controls)<br>
+                                [ ] Classic Games (Minesweeper)
+                            </div>
+
+                            <div style="font-size:11px; color:var(--dim); text-align:center; border-top:1px dashed var(--border-dim); padding-top:10px;">
+                                End of logs. System optimization in progress...
+                            </div>
+                        </div>
+                    `
+                },
                 calculator: {
                     title: 'Scientific Calculator',
                     icon: '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="24" viewBox="0 0 20 24" style="vertical-align:middle; filter:drop-shadow(1px 1px 2px rgba(0,0,0,0.8));"><rect x="1" y="0" width="18" height="24" rx="2" fill="#3a3c42" stroke="#1a1c22" stroke-width="1"/><path d="M2 3 Q10 1 18 3" stroke="#5a5c62" stroke-width="0.7" fill="none"/><rect x="3" y="3" width="14" height="6" rx="1" fill="#181a20" stroke="#0f1013" stroke-width="1"/><rect x="4" y="4" width="12" height="4" rx="0.5" fill="#a4c639"/><path d="M5 6 Q 8 4, 10 6 T 15 6" stroke="#25350d" stroke-width="0.5" fill="none"/><circle cx="5" cy="11.5" r="1.3" fill="#6c7a89"/><circle cx="8" cy="11.5" r="1.3" fill="#6c7a89"/><circle cx="11" cy="11.5" r="1.3" fill="#6c7a89"/><circle cx="14" cy="11.5" r="1.3" fill="#6c7a89"/><rect x="4" y="14" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="8.5" y="14" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="13" y="14" width="3.5" height="2" rx="0.5" fill="#ff7f50"/><rect x="4" y="17" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="8.5" y="17" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="13" y="17" width="3.5" height="2" rx="0.5" fill="#ff7f50"/><rect x="4" y="20" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="8.5" y="20" width="3.5" height="2" rx="0.5" fill="#d1d5db"/><rect x="13" y="20" width="3.5" height="2" rx="0.5" fill="#3b82f6"/></svg>',
@@ -1186,7 +1548,7 @@
                     }
                 }
             };
-            
+
             // Scientific Calculator Logic
             window.calcScopes = {}; // memory per window
 
@@ -1207,12 +1569,12 @@
                 histDiv.scrollTop = histDiv.scrollHeight;
             }
 
-            window.calcToggleGraph = function(id) {
+            window.calcToggleGraph = function (id) {
                 const pane = document.getElementById('calc-graph-pane-' + id);
                 const winElem = document.getElementById(id).closest('.xp-window');
-                if(!pane || !winElem) return;
-                
-                if(pane.style.display === 'none') {
+                if (!pane || !winElem) return;
+
+                if (pane.style.display === 'none') {
                     pane.style.display = 'flex';
                     winElem.style.width = '700px';
                     setTimeout(() => window.calcRenderGrid(id), 50); // allow paint tick
@@ -1221,10 +1583,10 @@
                     winElem.style.width = '320px';
                 }
             };
-            
-            window.calcType = function(id, text) {
+
+            window.calcType = function (id, text) {
                 const input = document.getElementById('calc-in-' + id);
-                if(input) {
+                if (input) {
                     const start = input.selectionStart;
                     const end = input.selectionEnd;
                     const val = input.value;
@@ -1234,11 +1596,11 @@
                 }
             };
 
-            window.calcBksp = function(id) {
+            window.calcBksp = function (id) {
                 const input = document.getElementById('calc-in-' + id);
-                if(input && input.value.length > 0) {
+                if (input && input.value.length > 0) {
                     const start = input.selectionStart;
-                    if(start > 0) {
+                    if (start > 0) {
                         input.value = input.value.substring(0, start - 1) + input.value.substring(start);
                         input.selectionStart = input.selectionEnd = start - 1;
                     }
@@ -1246,44 +1608,44 @@
                 }
             };
 
-            window.calcClear = function(id) {
+            window.calcClear = function (id) {
                 const input = document.getElementById('calc-in-' + id);
                 const ans = document.getElementById('calc-ans-' + id);
                 const hist = document.getElementById('calc-history-' + id);
                 const status = document.getElementById('calc-status-' + id);
-                if(input) input.value = '';
-                if(ans) ans.textContent = '';
-                if(hist) hist.innerHTML = '';
-                if(status) status.textContent = "Memory Cleared.";
-                if(window.calcScopes[id]) window.calcScopes[id] = {}; // clear memory
-                
+                if (input) input.value = '';
+                if (ans) ans.textContent = '';
+                if (hist) hist.innerHTML = '';
+                if (status) status.textContent = "Memory Cleared.";
+                if (window.calcScopes[id]) window.calcScopes[id] = {}; // clear memory
+
                 window.calcRenderGrid(id); // reset graph
                 input && input.focus();
             };
 
-            window.calcEvalKey = function(e, id) {
-                if(e.key === 'Enter') {
+            window.calcEvalKey = function (e, id) {
+                if (e.key === 'Enter') {
                     e.preventDefault();
                     window.calcEval(id);
                 }
             };
 
             // Unified Evaluation & Graphing function
-            window.calcEval = function(id) {
+            window.calcEval = function (id) {
                 const input = document.getElementById('calc-in-' + id);
                 const ans = document.getElementById('calc-ans-' + id);
                 const status = document.getElementById('calc-status-' + id);
-                
-                if(!input || !input.value.trim() || typeof math === 'undefined') return;
-                
+
+                if (!input || !input.value.trim() || typeof math === 'undefined') return;
+
                 const expr = input.value;
-                if(!window.calcScopes[id]) window.calcScopes[id] = {};
-                
+                if (!window.calcScopes[id]) window.calcScopes[id] = {};
+
                 // If equation contains "x" and is not an assignment, we should Plot it
                 if (expr.includes('x') && !expr.includes('=')) {
                     ans.textContent = 'Plotting f(x)...';
                     const pane = document.getElementById('calc-graph-pane-' + id);
-                    if(pane.style.display === 'none') window.calcToggleGraph(id);
+                    if (pane.style.display === 'none') window.calcToggleGraph(id);
                     setTimeout(() => window.calcGraph(id, expr), 60);
                     pushHistory(id, expr, '[Graph plotted]');
                     input.focus();
@@ -1294,78 +1656,78 @@
                 try {
                     const result = math.evaluate(expr, window.calcScopes[id]);
                     ans.textContent = expr + ' =';
-                    
+
                     let resultStr = "";
                     if (typeof result === 'function') {
                         resultStr = 'ƒunction saved';
                     } else if (result && result.isResultSet) {
-                        const vals = result.entries.map(e => math.format(e, {precision: 14}));
-                        resultStr = vals[vals.length - 1]; 
+                        const vals = result.entries.map(e => math.format(e, { precision: 14 }));
+                        resultStr = vals[vals.length - 1];
                     } else {
-                        resultStr = math.format(result, {precision: 14});
+                        resultStr = math.format(result, { precision: 14 });
                     }
-                    
+
                     input.value = resultStr;
                     pushHistory(id, expr, resultStr);
-                    if(status) status.textContent = `Evaluated successfully.`;
-                } catch(e) {
+                    if (status) status.textContent = `Evaluated successfully.`;
+                } catch (e) {
                     ans.textContent = 'Syntax Error';
-                    if(status) status.textContent = `Error: ${e.message}`;
+                    if (status) status.textContent = `Error: ${e.message}`;
                 }
                 input.focus();
             };
-            
-            window.calcRenderGrid = function(id) {
+
+            window.calcRenderGrid = function (id) {
                 const canvas = document.getElementById('calc-graph-' + id);
-                if(!canvas) return;
-                
+                if (!canvas) return;
+
                 // Dynamically sync canvas internal resolution to its actual display flex size
                 const rect = canvas.parentElement.getBoundingClientRect();
                 if (rect.width > 0 && rect.height > 0) {
                     canvas.width = rect.width;
                     canvas.height = rect.height;
                 }
-                
+
                 const ctx = canvas.getContext('2d');
-                const w = canvas.width; 
+                const w = canvas.width;
                 const h = canvas.height;
-                
-                ctx.clearRect(0,0,w,h);
+
+                ctx.clearRect(0, 0, w, h);
 
                 // Grid background
                 ctx.strokeStyle = 'rgba(195,181,255,0.05)';
                 ctx.lineWidth = 1;
                 ctx.beginPath();
-                for(let i=0; i<w; i+=20) { ctx.moveTo(i, 0); ctx.lineTo(i, h); }
-                for(let i=0; i<h; i+=20) { ctx.moveTo(0, i); ctx.lineTo(w, i); }
+                for (let i = 0; i < w; i += 20) { ctx.moveTo(i, 0); ctx.lineTo(i, h); }
+                for (let i = 0; i < h; i += 20) { ctx.moveTo(0, i); ctx.lineTo(w, i); }
                 ctx.stroke();
 
                 // Centered Axes
                 ctx.strokeStyle = 'rgba(195,181,255,0.3)';
                 ctx.lineWidth = 1;
                 ctx.beginPath();
-                ctx.moveTo(w/2, 0); ctx.lineTo(w/2, h); // Y axis
-                ctx.moveTo(0, h/2); ctx.lineTo(w, h/2); // X axis
+                ctx.moveTo(w / 2, 0); ctx.lineTo(w / 2, h); // Y axis
+                ctx.moveTo(0, h / 2); ctx.lineTo(w, h / 2); // X axis
                 ctx.stroke();
             };
 
-            window.calcGraph = function(id, expr) {
+            window.calcGraph = function (id, expr) {
                 const canvas = document.getElementById('calc-graph-' + id);
                 const status = document.getElementById('calc-status-' + id);
-                if(!canvas) return;
+                if (!canvas) return;
 
                 // Ensure actual size is matched for high-fidelity drawing instead of stretching
                 window.calcRenderGrid(id);
-                
+
                 const ctx = canvas.getContext('2d');
-                const w = canvas.width; 
+                const w = canvas.width;
                 const h = canvas.height;
-                
+
                 let compiled;
                 try {
                     compiled = math.compile(expr);
-                } catch(e) {
-                    if(status) status.textContent = `Graph Syntax Error: ${e.message}`;
+                } catch (e) {
+                    if (status) status.textContent = `Graph Syntax Error: ${e.message}`;
                     return;
                 }
 
@@ -1375,31 +1737,31 @@
 
                 const scale = 20; // 20 pixels = 1 unit => ranges from typically -10 to +10 roughly depending on width
                 let first = true;
-                let scope = Object.assign({}, window.calcScopes[id]); 
-                
+                let scope = Object.assign({}, window.calcScopes[id]);
+
                 let plotsDrawn = 0;
 
-                for(let px=0; px<=w; px+=1) {
-                    let rx = (px - w/2) / scale; 
+                for (let px = 0; px <= w; px += 1) {
+                    let rx = (px - w / 2) / scale;
                     scope.x = rx;
                     let ry;
                     try {
                         ry = compiled.evaluate(scope);
-                    } catch(e) { continue; } 
+                    } catch (e) { continue; }
 
                     if (typeof ry !== 'number' || isNaN(ry) || !isFinite(ry)) continue;
-                    
-                    let py = h/2 - (ry * scale); 
-                    
-                    if(first) { ctx.moveTo(px, py); first = false; }
+
+                    let py = h / 2 - (ry * scale);
+
+                    if (first) { ctx.moveTo(px, py); first = false; }
                     else { ctx.lineTo(px, py); }
                     plotsDrawn++;
                 }
-                
+
                 ctx.stroke();
-                if(status && plotsDrawn > 0) {
+                if (status && plotsDrawn > 0) {
                     status.textContent = `Showing graph for f(x) = ${expr}`;
-                } else if(status) {
+                } else if (status) {
                     status.textContent = `Expression evaluated but yielded empty plot.`;
                 }
             };
@@ -1636,10 +1998,12 @@
 
                 if (!output || !input || !mirror) return;
 
+                const pathEl = win.querySelector('.term-path');
                 const history = [];
                 let historyIdx = -1;
                 let isLocked = false;
-                const COMMANDS = ['help', 'projects', 'skills', 'education', 'connect', 'clear', 'whoami', 'home'];
+                let cwd = [];
+                const COMMANDS = ['help', 'whoami', 'projects', 'skills', 'education', 'connect', 'dir', 'ls', 'cd', 'tree', 'pwd', 'type', 'cat', 'open', 'explorer', 'clear', 'home'];
 
                 function escapeHTML(str) {
                     return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -1655,8 +2019,14 @@
                     output.scrollTop = output.scrollHeight;
                 }
 
+                function updatePromptPath() {
+                    if (pathEl) {
+                        pathEl.textContent = getDisplayPath(cwd);
+                    }
+                }
+
                 function printPromptEcho(cmd) {
-                    printLine('<span class="term-ps">PS </span><span class="term-path">C:\\Users\\Sayed\\Portfolio</span><span class="term-gt">&gt;</span> ' + escapeHTML(cmd));
+                    printLine('<span class="term-ps">PS </span><span class="term-path">' + escapeHTML(getDisplayPath(cwd)) + '</span><span class="term-gt">&gt;</span> ' + escapeHTML(cmd));
                 }
 
                 async function printLinesAnimated(lines) {
@@ -1691,19 +2061,115 @@
 
                 function cmdHelp() {
                     return [
-                        '<span style="color:var(--dim)">┌─────────────────────────────────────────────┐</span>',
-                        '<span style="color:var(--dim)">│</span>  <span style="color:var(--white)">Available Commands</span>                         <span style="color:var(--dim)">│</span>',
-                        '<span style="color:var(--dim)">├──────────────┬──────────────────────────────┤</span>',
-                        '<span style="color:var(--dim)">│</span>  <span style="color:var(--white)">help</span>        <span style="color:var(--dim)">│</span>  Show this menu               <span style="color:var(--dim)">│</span>',
-                        '<span style="color:var(--dim)">│</span>  <span style="color:var(--white)">whoami</span>      <span style="color:var(--dim)">│</span>  A bit about me               <span style="color:var(--dim)">│</span>',
-                        '<span style="color:var(--dim)">│</span>  <span style="color:var(--white)">projects</span>    <span style="color:var(--dim)">│</span>  View my projects             <span style="color:var(--dim)">│</span>',
-                        '<span style="color:var(--dim)">│</span>  <span style="color:var(--white)">skills</span>      <span style="color:var(--dim)">│</span>  View my tech stack           <span style="color:var(--dim)">│</span>',
-                        '<span style="color:var(--dim)">│</span>  <span style="color:var(--white)">education</span>   <span style="color:var(--dim)">│</span>  View my background           <span style="color:var(--dim)">│</span>',
-                        '<span style="color:var(--dim)">│</span>  <span style="color:var(--white)">connect</span>     <span style="color:var(--dim)">│</span>  Get my contact & socials     <span style="color:var(--dim)">│</span>',
-                        '<span style="color:var(--dim)">│</span>  <span style="color:var(--white)">clear</span>       <span style="color:var(--dim)">│</span>  Clear terminal               <span style="color:var(--dim)">│</span>',
-                        '<span style="color:var(--dim)">│</span>  <span style="color:var(--white)">home</span>        <span style="color:var(--dim)">│</span>  Back to main portfolio       <span style="color:var(--dim)">│</span>',
-                        '<span style="color:var(--dim)">└──────────────┴──────────────────────────────┘</span>',
+                        '<span style="color:var(--white)">Core:</span> help, whoami, projects, skills, education, connect, clear, home',
+                        '<span style="color:var(--white)">Filesystem:</span> dir/ls, cd, pwd, tree, type/cat, open, explorer',
+                        '<span style="color:var(--dim)">Tip: Use Tab for command autocomplete.</span>'
                     ];
+                }
+
+                function cmdPwd() {
+                    return ['<span style="color:var(--white)">' + escapeHTML(getDisplayPath(cwd)) + '</span>'];
+                }
+
+                function cmdDir(target) {
+                    const resolved = resolvePath(target || '.', cwd);
+                    if (resolved.error) return ['<span style="color:var(--btn-close)">' + escapeHTML(resolved.error) + '</span>'];
+                    if (!resolved.node || resolved.node.type !== 'dir') {
+                        return ['<span style="color:var(--btn-close)">Not a directory.</span>'];
+                    }
+
+                    const entries = listDirectoryEntries(resolved.node);
+                    const lines = ['<span style="color:var(--dim)">Directory: ' + escapeHTML(getDisplayPath(resolved.path)) + '</span>'];
+                    if (entries.length === 0) {
+                        lines.push('<span style="color:var(--dim)">(empty)</span>');
+                        return lines;
+                    }
+
+                    entries.forEach(({ name, node }) => {
+                        const marker = node.type === 'dir' ? '[DIR]' : '[FILE]';
+                        lines.push('<span style="color:var(--white)">' + marker + '</span> ' + escapeHTML(name));
+                    });
+                    return lines;
+                }
+
+                function cmdCd(target) {
+                    const resolved = resolvePath(target || '', cwd);
+                    if (resolved.error) return ['<span style="color:var(--btn-close)">' + escapeHTML(resolved.error) + '</span>'];
+                    if (!resolved.node || resolved.node.type !== 'dir') {
+                        return ['<span style="color:var(--btn-close)">Not a directory.</span>'];
+                    }
+                    cwd = resolved.path.slice();
+                    updatePromptPath();
+                    return ['<span style="color:var(--dim)">Current directory: ' + escapeHTML(getDisplayPath(cwd)) + '</span>'];
+                }
+
+                function cmdTree(target) {
+                    const resolved = resolvePath(target || '.', cwd);
+                    if (resolved.error) return ['<span style="color:var(--btn-close)">' + escapeHTML(resolved.error) + '</span>'];
+                    if (!resolved.node || resolved.node.type !== 'dir') {
+                        return ['<span style="color:var(--btn-close)">Not a directory.</span>'];
+                    }
+
+                    const lines = ['<span style="color:var(--white)">' + escapeHTML(getDisplayPath(resolved.path)) + '</span>'];
+
+                    function walk(node, prefix) {
+                        const entries = listDirectoryEntries(node);
+                        entries.forEach((entry, idx) => {
+                            const isLast = idx === entries.length - 1;
+                            const connector = isLast ? '└─ ' : '├─ ';
+                            lines.push(escapeHTML(prefix + connector + entry.name));
+                            if (entry.node.type === 'dir') {
+                                walk(entry.node, prefix + (isLast ? '   ' : '│  '));
+                            }
+                        });
+                    }
+
+                    walk(resolved.node, '');
+                    return lines;
+                }
+
+                function cmdType(target) {
+                    if (!target) return ['<span style="color:var(--btn-close)">Usage: type filename.txt</span>'];
+                    const resolved = resolvePath(target, cwd);
+                    if (resolved.error) return ['<span style="color:var(--btn-close)">' + escapeHTML(resolved.error) + '</span>'];
+                    if (!resolved.node || resolved.node.type !== 'file') {
+                        return ['<span style="color:var(--btn-close)">Only text files can be displayed with type.</span>'];
+                    }
+
+                    const fileName = resolved.path[resolved.path.length - 1] || 'file';
+                    const lines = ['<span style="color:var(--dim)">--- ' + escapeHTML(fileName) + ' ---</span>'];
+                    resolved.node.content.split('\n').forEach(line => lines.push(escapeHTML(line || ' ')));
+                    return lines;
+                }
+
+                function cmdOpen(target) {
+                    if (!target) return ['<span style="color:var(--btn-close)">Usage: open item</span>'];
+                    const resolved = resolvePath(target, cwd);
+                    if (resolved.error) return ['<span style="color:var(--btn-close)">' + escapeHTML(resolved.error) + '</span>'];
+
+                    if (resolved.node.type === 'dir') {
+                        return ['<span style="color:var(--dim)">That item is a folder. Use cd to enter it.</span>'];
+                    }
+
+                    const itemName = resolved.path[resolved.path.length - 1] || target;
+                    const result = openVirtualNode(itemName, resolved.node);
+                    if (result.lines && result.lines.length) {
+                        return ['<span style="color:var(--dim)">' + escapeHTML(result.status) + '</span>']
+                            .concat(result.lines.map(line => escapeHTML(line)));
+                    }
+                    return ['<span style="color:var(--dim)">' + escapeHTML(result.status) + '</span>'];
+                }
+
+                function cmdExplorer(target) {
+                    const resolved = resolvePath(target || '.', cwd);
+                    if (resolved.error) return ['<span style="color:var(--btn-close)">' + escapeHTML(resolved.error) + '</span>'];
+                    if (!resolved.node || resolved.node.type !== 'dir') {
+                        return ['<span style="color:var(--btn-close)">Explorer target must be a folder.</span>'];
+                    }
+
+                    explorerLaunchPath = resolved.path.slice();
+                    openApp('explorer');
+                    return ['<span style="color:var(--dim)">Explorer launched at ' + escapeHTML(getDisplayPath(resolved.path)) + '</span>'];
                 }
 
                 function cmdWhoami() {
@@ -1760,16 +2226,20 @@
                 }
 
                 async function processCommand(raw) {
-                    const cmd = raw.trim().toLowerCase();
-                    if (!cmd) return;
+                    const trimmed = raw.trim();
+                    if (!trimmed) return;
 
-                    if (history.length === 0 || history[history.length - 1] !== raw.trim()) {
-                        history.push(raw.trim());
+                    const parts = trimmed.split(/\s+/);
+                    const cmd = (parts[0] || '').toLowerCase();
+                    const args = parts.slice(1).join(' ');
+
+                    if (history.length === 0 || history[history.length - 1] !== trimmed) {
+                        history.push(trimmed);
                         if (history.length > 50) history.shift();
                     }
                     historyIdx = history.length;
 
-                    printPromptEcho(raw.trim());
+                    printPromptEcho(trimmed);
 
                     if (cmd === 'clear') {
                         output.innerHTML = '';
@@ -1792,17 +2262,27 @@
                         case 'skills': lines = cmdSkills(); break;
                         case 'education': lines = cmdEducation(); break;
                         case 'connect': lines = cmdConnect(); break;
+                        case 'pwd': lines = cmdPwd(); break;
+                        case 'dir': lines = cmdDir(args); break;
+                        case 'ls': lines = cmdDir(args); break;
+                        case 'cd': lines = cmdCd(args); break;
+                        case 'tree': lines = cmdTree(args); break;
+                        case 'type': lines = cmdType(args); break;
+                        case 'cat': lines = cmdType(args); break;
+                        case 'open': lines = cmdOpen(args); break;
+                        case 'explorer': lines = cmdExplorer(args); break;
                         default:
-                            lines = ['<span style="color:var(--white)">\'' + escapeHTML(raw.trim()) + '\'</span> is not recognized. Type <span style="color:var(--white)">help</span> for commands.'];
+                            lines = ['<span style="color:var(--white)">\'' + escapeHTML(trimmed) + '\'</span> is not recognized. Type <span style="color:var(--white)">help</span> for commands.'];
                     }
 
                     await printLinesAnimated(lines);
                 }
 
                 // Welcome message
-                printLine('<span style="color:var(--white)">Alhiem\'s Terminal v2.0.26</span>');
-                printLine('<span style="color:var(--dim)">Type <span style="color:var(--white)">help</span> for a list of commands.</span>');
+                printLine('<span style="color:var(--white)">Alhiem\'s Terminal v2.1.0</span>');
+                printLine('<span style="color:var(--dim)">XP file-system mode enabled. Type <span style="color:var(--white)">help</span> for commands.</span>');
                 printLine('');
+                updatePromptPath();
 
                 input.addEventListener('input', updateMirror);
                 input.addEventListener('keyup', updateMirror);
@@ -1849,7 +2329,7 @@
                     if (e.key === 'Tab') {
                         e.preventDefault();
                         const partial = input.value.trim().toLowerCase();
-                        if (!partial) return;
+                        if (!partial || partial.includes(' ')) return;
                         const matches = COMMANDS.filter(c => c.startsWith(partial));
                         if (matches.length === 1) {
                             input.value = matches[0];
@@ -1886,27 +2366,53 @@
 
         })();
     </script>
-    
+
     <!-- CUSTOM CURSOR -->
     <style>
         @media (pointer: fine) {
             * {
                 cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22"><polygon points="1,1 1,16 6,12 9,18 12,17 9,11 14,11" fill="%23C3B5FF" stroke="black" stroke-width="1"/></svg>'), auto !important;
             }
-            .clickable, a, button, .desktop-icon, .win-titlebar, .start-item, .start-btn, [onclick] {
+
+            .clickable,
+            a,
+            button,
+            .desktop-icon,
+            .win-titlebar,
+            .start-item,
+            .start-btn,
+            [onclick] {
                 cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22"><path d="M7 10V2a2 2 0 014 0v5h1a2 2 0 012 0v1h1a2 2 0 012 0v2h1a2 2 0 012 2v6c0 3-2 5-5 5H7c-3 0-5-2-5-5V10h5z" fill="%23C3B5FF" stroke="black" stroke-width="1"/></svg>'), pointer !important;
             }
-            iframe, #doom-container *, input, textarea, .terminal-body * {
+
+            iframe,
+            #doom-container *,
+            input,
+            textarea,
+            .terminal-body * {
                 cursor: auto !important;
             }
+
             .sparkle {
-                position: fixed; pointer-events: none; z-index: 9999999;
-                width: 6px; height: 6px; background: #C3B5FF;
+                position: fixed;
+                pointer-events: none;
+                z-index: 9999999;
+                width: 6px;
+                height: 6px;
+                background: #C3B5FF;
                 animation: spark-anim 0.6s linear forwards;
             }
+
             @keyframes spark-anim {
-                0% { transform: scale(1) rotate(0deg); opacity: 1; }
-                100% { transform: scale(0) rotate(180deg) translate(0px, 20px); opacity: 0; }
+                0% {
+                    transform: scale(1) rotate(0deg);
+                    opacity: 1;
+                }
+
+                100% {
+                    transform: scale(0) rotate(180deg) translate(0px, 20px);
+                    opacity: 0;
+                }
             }
         }
     </style>
