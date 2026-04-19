@@ -4,12 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AlHiem's Desktop — Portfolio XP</title>
+    <title>Alhiem//Portfolio</title>
     <meta name="description"
         content="Windows XP-themed interactive portfolio desktop for Sayed Sadid Hoda. Explore projects, skills, and more through draggable windows.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.4.0/math.js"></script>
     <style>
         /* ========== TOKENS ========== */
         :root {
@@ -805,6 +806,10 @@
                 <div class="icon-img"><img src="doom-icon.jpg" alt="DOOM" style="width:36px;height:36px;object-fit:cover;border-radius:2px;image-rendering:pixelated;"></div>
                 <div class="icon-label">DOOM</div>
             </div>
+            <div class="desktop-icon" ondblclick="openApp('calculator')" onclick="selectIcon(this)">
+                <div class="icon-img" style="font-family:'Times New Roman',serif;font-style:italic;font-weight:bold;color:var(--accent);font-size:24px;line-height:36px;text-align:center;">ƒ(x)</div>
+                <div class="icon-label">Calculator</div>
+            </div>
         </div>
     </div>
 
@@ -839,6 +844,9 @@
             </div>
             <div class="start-item" onclick="openApp('doom'); closeStartMenu();">
                 <span class="si-icon"><img src="doom-icon.jpg" alt="DOOM" style="width:18px;height:18px;object-fit:cover;border-radius:1px;"></span> DOOM
+            </div>
+            <div class="start-item" onclick="openApp('calculator'); closeStartMenu();">
+                <span class="si-icon" style="font-family:'Times New Roman',serif;font-style:italic;font-weight:bold;color:var(--accent);">ƒ(x)</span> Calculator
             </div>
             <div class="start-divider"></div>
             <div class="start-item" onclick="openApp('recycle'); closeStartMenu();">
@@ -1065,7 +1073,223 @@
                             <div style="padding:4px 10px;font-size:10px;color:var(--dim);border-top:1px solid var(--border-dim);background:var(--bg);text-align:center;flex-shrink:0;">Click the game to capture input · ESC to release · Arrow keys + Ctrl to play</div>
                         </div>
                     `
+                },
+                calculator: {
+                    title: 'Scientific Calculator',
+                    icon: '<span style="font-family:serif;font-style:italic;font-weight:bold;">ƒ(x)</span>',
+                    width: 600,
+                    height: 400,
+                    content: () => {
+                        const winId = 'calc_' + Date.now();
+                        return `
+                        <div id="${winId}" class="clickable" style="background:var(--bg);height:100%;display:flex;user-select:none;color:var(--primary);font-family:monospace;overflow:hidden;">
+                            <div style="flex:0 0 280px;padding:10px;display:flex;flex-direction:column;gap:10px;border-right:1px solid rgba(195, 181, 255, 0.15);box-sizing:border-box;">
+                                <div style="display:flex;flex-direction:column;background:#000;border:1px solid var(--border-dim);padding:8px;">
+                                    <div class="calc-ans" id="calc-ans-${winId}" style="text-align:right;font-size:12px;color:rgba(195,181,255,0.7);height:14px;overflow:hidden;"></div>
+                                    <input type="text" class="calc-in" id="calc-in-${winId}" onkeydown="calcEvalKey(event, '${winId}')" style="width:100%;background:transparent;border:none;text-align:right;font-size:20px;font-family:monospace;color:var(--accent);outline:none;padding:0;" placeholder="0">
+                                </div>
+                                <div style="display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(7,1fr);gap:4px;flex:1;">
+                                    <button onclick="calcType('${winId}', 'sin(')" class="win-btn" style="background:var(--surface);">sin</button>
+                                    <button onclick="calcType('${winId}', 'cos(')" class="win-btn" style="background:var(--surface);">cos</button>
+                                    <button onclick="calcType('${winId}', 'tan(')" class="win-btn" style="background:var(--surface);">tan</button>
+                                    <button onclick="calcType('${winId}', 'e')" class="win-btn" style="background:var(--surface);">e</button>
+                                    <button onclick="calcClear('${winId}')" class="win-btn" style="color:var(--btn-close);background:rgba(255,68,102,0.1);">C</button>
+                                    
+                                    <button onclick="calcType('${winId}', 'log(')" class="win-btn" style="background:var(--surface);">log</button>
+                                    <button onclick="calcType('${winId}', 'sqrt(')" class="win-btn" style="background:var(--surface);">√</button>
+                                    <button onclick="calcType('${winId}', '^')" class="win-btn" style="background:var(--surface);">^</button>
+                                    <button onclick="calcType('${winId}', 'pi')" class="win-btn" style="background:var(--surface);">π</button>
+                                    <button onclick="calcBksp('${winId}')" class="win-btn" style="background:var(--surface);">⌫</button>
+
+                                    <button onclick="calcType('${winId}', '(')" class="win-btn" style="background:var(--surface);">(</button>
+                                    <button onclick="calcType('${winId}', ')')" class="win-btn" style="background:var(--surface);">)</button>
+                                    <button onclick="calcType('${winId}', 'x')" class="win-btn" style="color:var(--accent);font-weight:bold;background:var(--surface);">x</button>
+                                    <button onclick="calcType('${winId}', 'y')" class="win-btn" style="color:var(--accent);font-weight:bold;background:var(--surface);">y</button>
+                                    <button onclick="calcType('${winId}', '/')" class="win-btn" style="background:var(--surface);">/</button>
+
+                                    <button onclick="calcType('${winId}', '7')" class="win-btn">7</button>
+                                    <button onclick="calcType('${winId}', '8')" class="win-btn">8</button>
+                                    <button onclick="calcType('${winId}', '9')" class="win-btn">9</button>
+                                    <button onclick="calcType('${winId}', '*')" class="win-btn" style="background:var(--surface);">*</button>
+                                    <button onclick="calcGraph('${winId}')" class="win-btn" style="background:rgba(195,181,255,0.15);color:var(--white);border:1px solid var(--accent);grid-row:4/6;grid-column:5/6;font-size:10px;">GRAPH</button>
+
+                                    <button onclick="calcType('${winId}', '4')" class="win-btn">4</button>
+                                    <button onclick="calcType('${winId}', '5')" class="win-btn">5</button>
+                                    <button onclick="calcType('${winId}', '6')" class="win-btn">6</button>
+                                    <button onclick="calcType('${winId}', '-')" class="win-btn" style="background:var(--surface);">-</button>
+
+                                    <button onclick="calcType('${winId}', '1')" class="win-btn">1</button>
+                                    <button onclick="calcType('${winId}', '2')" class="win-btn">2</button>
+                                    <button onclick="calcType('${winId}', '3')" class="win-btn">3</button>
+                                    <button onclick="calcType('${winId}', '+')" class="win-btn" style="background:var(--surface);">+</button>
+                                    <button onclick="calcEval('${winId}')" class="win-btn" style="background:var(--accent);color:#000;font-weight:bold;grid-row:6/8;grid-column:5/6;">ENT</button>
+
+                                    <button onclick="calcType('${winId}', '0')" class="win-btn" style="grid-column:1/3;">0</button>
+                                    <button onclick="calcType('${winId}', '.')" class="win-btn">.</button>
+                                    <button onclick="calcType('${winId}', '=')" class="win-btn" style="background:var(--surface);">var=</button>
+                                </div>
+                            </div>
+                            <div style="flex:1;position:relative;background:#020204;box-sizing:border-box;display:flex;flex-direction:column;">
+                                <div style="font-size:10px;padding:4px;color:rgba(195,181,255,0.5);text-align:center;border-bottom:1px solid rgba(195,181,255,0.15);">Live Graph Plotter over X [-10, 10]</div>
+                                <canvas id="calc-graph-${winId}" width="300" height="340" style="width:100%;height:100%;flex:1;cursor:crosshair;"></canvas>
+                            </div>
+                        </div>
+                        <script>
+                            setTimeout(() => {
+                                const input = document.getElementById('calc-in-${winId}');
+                                if (input) input.focus();
+                                window.calcRenderGrid('${winId}');
+                            }, 100);
+                        <\/script>
+                        `;
+                    }
                 }
+            };
+            
+            // Scientific Calculator Logic
+            window.calcScopes = {}; // memory per window
+
+            window.calcType = function(id, text) {
+                const input = document.getElementById('calc-in-' + id);
+                if(input) {
+                    const start = input.selectionStart;
+                    const end = input.selectionEnd;
+                    const val = input.value;
+                    input.value = val.substring(0, start) + text + val.substring(end);
+                    input.selectionStart = input.selectionEnd = start + text.length;
+                    input.focus();
+                }
+            };
+
+            window.calcBksp = function(id) {
+                const input = document.getElementById('calc-in-' + id);
+                if(input && input.value.length > 0) {
+                    const start = input.selectionStart;
+                    if(start > 0) {
+                        input.value = input.value.substring(0, start - 1) + input.value.substring(start);
+                        input.selectionStart = input.selectionEnd = start - 1;
+                    }
+                    input.focus();
+                }
+            };
+
+            window.calcClear = function(id) {
+                const input = document.getElementById('calc-in-' + id);
+                const ans = document.getElementById('calc-ans-' + id);
+                if(input) input.value = '';
+                if(ans) ans.textContent = '';
+                if(window.calcScopes[id]) window.calcScopes[id] = {}; // clear memory
+                const canvas = document.getElementById('calc-graph-' + id);
+                if (canvas) {
+                    const ctx = canvas.getContext('2d');
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    window.calcRenderGrid(id);
+                }
+                input && input.focus();
+            };
+
+            window.calcEvalKey = function(e, id) {
+                if(e.key === 'Enter') {
+                    e.preventDefault();
+                    window.calcEval(id);
+                }
+            };
+
+            window.calcEval = function(id) {
+                const input = document.getElementById('calc-in-' + id);
+                const ans = document.getElementById('calc-ans-' + id);
+                if(!input || !input.value.trim() || typeof math === 'undefined') return;
+                
+                if(!window.calcScopes[id]) window.calcScopes[id] = {};
+                const expr = input.value;
+                try {
+                    const result = math.evaluate(expr, window.calcScopes[id]);
+                    ans.textContent = expr + ' =';
+                    
+                    // Format result cleanly
+                    if (typeof result === 'function') {
+                        input.value = 'function';
+                    } else if (result && result.isResultSet) {
+                        const vals = result.entries.map(e => math.format(e, {precision: 14}));
+                        input.value = vals[vals.length - 1]; // display last evaluation in multiline
+                    } else {
+                        input.value = math.format(result, {precision: 14});
+                    }
+                } catch(e) {
+                    ans.textContent = 'Error';
+                    console.error('Math.js error:', e);
+                }
+                input.focus();
+            };
+            
+            window.calcRenderGrid = function(id) {
+                const canvas = document.getElementById('calc-graph-' + id);
+                if(!canvas) return;
+                const ctx = canvas.getContext('2d');
+                const w = canvas.width; const h = canvas.height;
+                ctx.strokeStyle = 'rgba(195,181,255,0.05)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                for(let i=0; i<w; i+=20) { ctx.moveTo(i, 0); ctx.lineTo(i, h); }
+                for(let i=0; i<h; i+=20) { ctx.moveTo(0, i); ctx.lineTo(w, i); }
+                ctx.stroke();
+                ctx.strokeStyle = 'rgba(195,181,255,0.3)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(w/2, 0); ctx.lineTo(w/2, h); // Y axis
+                ctx.moveTo(0, h/2); ctx.lineTo(w, h/2); // X axis
+                ctx.stroke();
+            };
+
+            window.calcGraph = function(id) {
+                const input = document.getElementById('calc-in-' + id);
+                const canvas = document.getElementById('calc-graph-' + id);
+                if(!input || !canvas || typeof math === 'undefined') return;
+                const expr = input.value;
+                if(!expr.trim()) return;
+                
+                const ctx = canvas.getContext('2d');
+                const w = canvas.width; const h = canvas.height;
+                
+                // Clear and redraw grid
+                ctx.clearRect(0,0,w,h);
+                window.calcRenderGrid(id);
+                
+                if(!window.calcScopes[id]) window.calcScopes[id] = {};
+                let scope = Object.assign({}, window.calcScopes[id]); 
+                
+                let compiled;
+                try {
+                    compiled = math.compile(expr);
+                } catch(e) {
+                    document.getElementById('calc-ans-' + id).textContent = 'Graph Syntax Error';
+                    return;
+                }
+
+                ctx.strokeStyle = '#C3B5FF';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+
+                const scale = 20; // 20 pixels = 1 unit
+                let first = true;
+                
+                for(let px=0; px<=w; px+=1) {
+                    let rx = (px - w/2) / scale; 
+                    scope.x = rx;
+                    let ry;
+                    try {
+                        ry = compiled.evaluate(scope);
+                    } catch(e) { continue; } 
+
+                    if (typeof ry !== 'number' || isNaN(ry) || !isFinite(ry)) continue;
+                    
+                    let py = h/2 - (ry * scale); 
+                    
+                    if(first) { ctx.moveTo(px, py); first = false; }
+                    else { ctx.lineTo(px, py); }
+                }
+                ctx.stroke();
+                document.getElementById('calc-ans-' + id).textContent = 'Graphing: ƒ(x) = ' + expr;
             };
 
             // ── Window Management ──
@@ -1548,6 +1772,47 @@
             );
 
         })();
+    </script>
+    
+    <!-- CUSTOM CURSOR -->
+    <style>
+        @media (pointer: fine) {
+            * {
+                cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22"><polygon points="1,1 1,16 6,12 9,18 12,17 9,11 14,11" fill="%23C3B5FF" stroke="black" stroke-width="1"/></svg>'), auto !important;
+            }
+            .clickable, a, button, .desktop-icon, .win-titlebar, .start-item, .start-btn, [onclick] {
+                cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22"><path d="M7 10V2a2 2 0 014 0v5h1a2 2 0 012 0v1h1a2 2 0 012 0v2h1a2 2 0 012 2v6c0 3-2 5-5 5H7c-3 0-5-2-5-5V10h5z" fill="%23C3B5FF" stroke="black" stroke-width="1"/></svg>'), pointer !important;
+            }
+            iframe, #doom-container *, input, textarea, .terminal-body * {
+                cursor: auto !important;
+            }
+            .sparkle {
+                position: fixed; pointer-events: none; z-index: 9999999;
+                width: 6px; height: 6px; background: #C3B5FF;
+                animation: spark-anim 0.6s linear forwards;
+            }
+            @keyframes spark-anim {
+                0% { transform: scale(1) rotate(0deg); opacity: 1; }
+                100% { transform: scale(0) rotate(180deg) translate(0px, 20px); opacity: 0; }
+            }
+        }
+    </style>
+    <script>
+        if (window.matchMedia("(pointer: fine)").matches) {
+            let lastSparkle = 0;
+            document.addEventListener('mousemove', e => {
+                const now = Date.now();
+                if (now - lastSparkle > 40 && Math.random() < 0.4) {
+                    lastSparkle = now;
+                    const spark = document.createElement('div');
+                    spark.className = 'sparkle';
+                    spark.style.left = (e.clientX + 6) + 'px';
+                    spark.style.top = (e.clientY + 12) + 'px';
+                    document.body.appendChild(spark);
+                    setTimeout(() => spark.remove(), 600);
+                }
+            });
+        }
     </script>
 </body>
 

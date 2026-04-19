@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AlHiem // Portfolio</title>
+    <title>Alhiem//Portfolio</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1016,6 +1016,46 @@
         }
 
         </script>
+        
+        <!-- CUSTOM CURSOR -->
+        <style>
+            @media (pointer: fine) {
+                * {
+                    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22"><polygon points="1,1 1,16 6,12 9,18 12,17 9,11 14,11" fill="%23C3B5FF" stroke="black" stroke-width="1"/></svg>'), auto !important;
+                }
+                .clickable, a, button, .desktop-icon, .win-titlebar, .start-item, .start-btn, [onclick] {
+                    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22"><path d="M7 10V2a2 2 0 014 0v5h1a2 2 0 012 0v1h1a2 2 0 012 0v2h1a2 2 0 012 2v6c0 3-2 5-5 5H7c-3 0-5-2-5-5V10h5z" fill="%23C3B5FF" stroke="black" stroke-width="1"/></svg>'), pointer !important;
+                }
+                iframe, #doom-container *, input, textarea, .terminal-body * {
+                    cursor: auto !important;
+                }
+                .sparkle {
+                    position: fixed; pointer-events: none; z-index: 9999999;
+                    width: 6px; height: 6px; background: #C3B5FF;
+                    animation: spark-anim 0.6s linear forwards;
+                }
+                @keyframes spark-anim {
+                    0% { transform: scale(1) rotate(0deg); opacity: 1; }
+                    100% { transform: scale(0) rotate(180deg) translate(0px, 20px); opacity: 0; }
+                }
+            }
+        </style>
+        <script>
+            if (window.matchMedia("(pointer: fine)").matches) {
+                let lastSparkle = 0;
+                document.addEventListener('mousemove', e => {
+                    const now = Date.now();
+                    if (now - lastSparkle > 40 && Math.random() < 0.4) {
+                        lastSparkle = now;
+                        const spark = document.createElement('div');
+                        spark.className = 'sparkle';
+                        spark.style.left = (e.clientX + 6) + 'px';
+                        spark.style.top = (e.clientY + 12) + 'px';
+                        document.body.appendChild(spark);
+                        setTimeout(() => spark.remove(), 600);
+                    }
+                });
+            }
+        </script>
 </body>
-
 </html>
