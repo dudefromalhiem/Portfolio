@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alhiem//Portfolio</title>
     <meta name="description"
-        content="Windows XP-themed interactive portfolio desktop for Sayed Sadid Hoda. Explore projects, skills, and more through draggable windows.">
+        content="Windows XP-themed interactive portfolio desktop for me (Sayed Sadid Hoda). Explore my projects, skills, and more through draggable windows.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -920,7 +920,7 @@
                     <div class="project-entry">
                         <h3>ARROG</h3>
                         <p>Community wiki platform. SCP-inspired lore site with user submissions and admin tools.</p>
-                        <div class="pe-meta">Stack: JS · Firebase · Vercel &nbsp;|&nbsp; <span class="pe-status">● Active</span> &nbsp;|&nbsp; <a href="https://arrog.vercel.app" target="_blank" rel="noopener">Visit →</a></div>
+                        <div class="pe-meta">Stack: JS · Firebase · Vercel &nbsp;|&nbsp; <span class="pe-status" style="color:var(--white);">● Delivered</span> &nbsp;|&nbsp; <a href="https://arrog.vercel.app" target="_blank" rel="noopener">Visit →</a></div>
                     </div>
                     <div class="project-entry">
                         <h3>RishabhDabral</h3>
@@ -930,7 +930,7 @@
                     <div class="project-entry">
                         <h3>MaargDarshak</h3>
                         <p>Career guidance tool for J&K students. AI-powered, multilingual. Built for SIH.</p>
-                        <div class="pe-meta">Stack: React · Vite · Node · PostgreSQL &nbsp;|&nbsp; <span class="pe-status" style="color:var(--dim)">○ Archived</span></div>
+                        <div class="pe-meta">Stack: React · Vite · Node · PostgreSQL &nbsp;|&nbsp; <span class="pe-status" style="color:var(--btn-close)">× Abandoned</span></div>
                     </div>
                     <div class="project-entry">
                         <h3>Retro Arcade</h3>
@@ -1076,62 +1076,78 @@
                 },
                 calculator: {
                     title: 'Scientific Calculator',
-                    icon: '<span style="font-family:serif;font-style:italic;font-weight:bold;">ƒ(x)</span>',
-                    width: 600,
-                    height: 400,
+                    icon: '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" style="vertical-align:middle; filter:drop-shadow(1px 1px 1px rgba(0,0,0,0.5));"><rect x="4" y="2" width="16" height="20" rx="2" fill="#2d4276" stroke="#111" stroke-width="1"/><rect x="6" y="4" width="12" height="4" rx="1" fill="#7ed98c" stroke="#111" stroke-width="1"/><rect x="6" y="10" width="3" height="2" fill="#ffd166" stroke="#111" stroke-width="1"/><rect x="10.5" y="10" width="3" height="2" fill="#ffd166" stroke="#111" stroke-width="1"/><rect x="15" y="10" width="3" height="2" fill="#ffd166" stroke="#111" stroke-width="1"/><rect x="6" y="13" width="3" height="2" fill="#ffd166" stroke="#111" stroke-width="1"/><rect x="10.5" y="13" width="3" height="2" fill="#ffd166" stroke="#111" stroke-width="1"/><rect x="15" y="13" width="3" height="2" fill="#ffd166" stroke="#111" stroke-width="1"/><rect x="6" y="16" width="3" height="2" fill="#ffd166" stroke="#111" stroke-width="1"/><rect x="10.5" y="16" width="3" height="2" fill="#ffd166" stroke="#111" stroke-width="1"/><rect x="15" y="16" width="3" height="2" fill="#ffd166" stroke="#111" stroke-width="1"/></svg>',
+                    width: 320,
+                    height: 440,
                     content: () => {
                         const winId = 'calc_' + Date.now();
                         return `
-                        <div id="${winId}" class="clickable" style="background:var(--bg);height:100%;display:flex;user-select:none;color:var(--primary);font-family:monospace;overflow:hidden;">
-                            <div style="flex:0 0 280px;padding:10px;display:flex;flex-direction:column;gap:10px;border-right:1px solid rgba(195, 181, 255, 0.15);box-sizing:border-box;">
-                                <div style="display:flex;flex-direction:column;background:#000;border:1px solid var(--border-dim);padding:8px;">
-                                    <div class="calc-ans" id="calc-ans-${winId}" style="text-align:right;font-size:12px;color:rgba(195,181,255,0.7);height:14px;overflow:hidden;"></div>
-                                    <input type="text" class="calc-in" id="calc-in-${winId}" onkeydown="calcEvalKey(event, '${winId}')" style="width:100%;background:transparent;border:none;text-align:right;font-size:20px;font-family:monospace;color:var(--accent);outline:none;padding:0;" placeholder="0">
+                        <div id="${winId}" class="clickable" style="background:var(--bg);height:100%;display:flex;flex-direction:row;user-select:none;color:var(--primary);font-family:monospace;overflow:hidden;">
+                            
+                            <!-- Left Pane: History & Keypad -->
+                            <div style="flex:0 0 320px;display:flex;flex-direction:column;border-right:1px solid rgba(195,181,255,0.15);background:#050508;box-sizing:border-box;">
+                                
+                                <!-- History & Screen -->
+                                <div style="display:flex;flex-direction:column;background:#020204;border-bottom:1px solid var(--border-dim);padding:8px 10px;height:120px;overflow:hidden;position:relative;">
+                                    <div id="calc-history-${winId}" style="flex:1;overflow-y:auto;font-size:11px;color:rgba(195,181,255,0.5);margin-bottom:5px;display:flex;flex-direction:column;gap:3px;">
+                                        <!-- history log goes here -->
+                                    </div>
+                                    <div class="calc-ans" id="calc-ans-${winId}" style="text-align:right;font-size:12px;color:rgba(195,181,255,0.8);height:16px;"></div>
+                                    <input type="text" class="calc-in" id="calc-in-${winId}" onkeydown="calcEvalKey(event, '${winId}')" style="width:100%;background:transparent;border:none;text-align:right;font-size:22px;font-family:monospace;color:var(--accent);outline:none;padding:0;margin-top:2px;" placeholder="0">
                                 </div>
-                                <div style="display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(7,1fr);gap:4px;flex:1;">
-                                    <button onclick="calcType('${winId}', 'sin(')" class="win-btn" style="background:var(--surface);">sin</button>
-                                    <button onclick="calcType('${winId}', 'cos(')" class="win-btn" style="background:var(--surface);">cos</button>
-                                    <button onclick="calcType('${winId}', 'tan(')" class="win-btn" style="background:var(--surface);">tan</button>
-                                    <button onclick="calcType('${winId}', 'e')" class="win-btn" style="background:var(--surface);">e</button>
-                                    <button onclick="calcClear('${winId}')" class="win-btn" style="color:var(--btn-close);background:rgba(255,68,102,0.1);">C</button>
-                                    
-                                    <button onclick="calcType('${winId}', 'log(')" class="win-btn" style="background:var(--surface);">log</button>
-                                    <button onclick="calcType('${winId}', 'sqrt(')" class="win-btn" style="background:var(--surface);">√</button>
-                                    <button onclick="calcType('${winId}', '^')" class="win-btn" style="background:var(--surface);">^</button>
-                                    <button onclick="calcType('${winId}', 'pi')" class="win-btn" style="background:var(--surface);">π</button>
-                                    <button onclick="calcBksp('${winId}')" class="win-btn" style="background:var(--surface);">⌫</button>
 
-                                    <button onclick="calcType('${winId}', '(')" class="win-btn" style="background:var(--surface);">(</button>
-                                    <button onclick="calcType('${winId}', ')')" class="win-btn" style="background:var(--surface);">)</button>
-                                    <button onclick="calcType('${winId}', 'x')" class="win-btn" style="color:var(--accent);font-weight:bold;background:var(--surface);">x</button>
-                                    <button onclick="calcType('${winId}', 'y')" class="win-btn" style="color:var(--accent);font-weight:bold;background:var(--surface);">y</button>
-                                    <button onclick="calcType('${winId}', '/')" class="win-btn" style="background:var(--surface);">/</button>
+                                <!-- Keypad -->
+                                <div style="display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(6,1fr);gap:2px;flex:1;padding:4px;background:rgba(255,255,255,0.02);">
+                                    <button onclick="calcType('${winId}', 'sin(')" class="win-btn" style="background:rgba(195,181,255,0.05);border:1px solid rgba(195,181,255,0.1);">sin</button>
+                                    <button onclick="calcType('${winId}', 'cos(')" class="win-btn" style="background:rgba(195,181,255,0.05);border:1px solid rgba(195,181,255,0.1);">cos</button>
+                                    <button onclick="calcType('${winId}', 'tan(')" class="win-btn" style="background:rgba(195,181,255,0.05);border:1px solid rgba(195,181,255,0.1);">tan</button>
+                                    <button onclick="calcType('${winId}', 'log(')" class="win-btn" style="background:rgba(195,181,255,0.05);border:1px solid rgba(195,181,255,0.1);">log</button>
+                                    <button onclick="calcType('${winId}', '(')" class="win-btn" style="background:rgba(195,181,255,0.05);border:1px solid rgba(195,181,255,0.1);"> ( </button>
+                                    <button onclick="calcType('${winId}', ')')" class="win-btn" style="background:rgba(195,181,255,0.05);border:1px solid rgba(195,181,255,0.1);"> ) </button>
 
-                                    <button onclick="calcType('${winId}', '7')" class="win-btn">7</button>
-                                    <button onclick="calcType('${winId}', '8')" class="win-btn">8</button>
-                                    <button onclick="calcType('${winId}', '9')" class="win-btn">9</button>
-                                    <button onclick="calcType('${winId}', '*')" class="win-btn" style="background:var(--surface);">*</button>
-                                    <button onclick="calcGraph('${winId}')" class="win-btn" style="background:rgba(195,181,255,0.15);color:var(--white);border:1px solid var(--accent);grid-row:4/6;grid-column:5/6;font-size:10px;">GRAPH</button>
+                                    <button onclick="calcType('${winId}', 'sqrt(')" class="win-btn" style="background:rgba(195,181,255,0.05);border:1px solid rgba(195,181,255,0.1);">√</button>
+                                    <button onclick="calcType('${winId}', '^')" class="win-btn" style="background:rgba(195,181,255,0.05);border:1px solid rgba(195,181,255,0.1);">^</button>
+                                    <button onclick="calcType('${winId}', 'pi')" class="win-btn" style="background:rgba(195,181,255,0.05);border:1px solid rgba(195,181,255,0.1);">π</button>
+                                    <button onclick="calcType('${winId}', 'e')" class="win-btn" style="background:rgba(195,181,255,0.05);border:1px solid rgba(195,181,255,0.1);">e</button>
+                                    <button onclick="calcType('${winId}', 'x')" class="win-btn" style="color:var(--white);font-weight:bold;background:rgba(195,181,255,0.15);border:1px solid var(--accent);">x</button>
+                                    <button onclick="calcType('${winId}', 'y')" class="win-btn" style="color:var(--white);font-weight:bold;background:rgba(195,181,255,0.15);border:1px solid var(--accent);">y</button>
 
-                                    <button onclick="calcType('${winId}', '4')" class="win-btn">4</button>
-                                    <button onclick="calcType('${winId}', '5')" class="win-btn">5</button>
-                                    <button onclick="calcType('${winId}', '6')" class="win-btn">6</button>
-                                    <button onclick="calcType('${winId}', '-')" class="win-btn" style="background:var(--surface);">-</button>
+                                    <button onclick="calcType('${winId}', '7')" class="win-btn" style="background:rgba(255,255,255,0.05);">7</button>
+                                    <button onclick="calcType('${winId}', '8')" class="win-btn" style="background:rgba(255,255,255,0.05);">8</button>
+                                    <button onclick="calcType('${winId}', '9')" class="win-btn" style="background:rgba(255,255,255,0.05);">9</button>
+                                    <button onclick="calcType('${winId}', '/')" class="win-btn" style="background:rgba(195,181,255,0.08);color:var(--accent);">/</button>
+                                    <button onclick="calcType('${winId}', 'a')" class="win-btn" style="color:var(--accent);background:rgba(195,181,255,0.05);">a</button>
+                                    <button onclick="calcType('${winId}', 'b')" class="win-btn" style="color:var(--accent);background:rgba(195,181,255,0.05);">b</button>
 
-                                    <button onclick="calcType('${winId}', '1')" class="win-btn">1</button>
-                                    <button onclick="calcType('${winId}', '2')" class="win-btn">2</button>
-                                    <button onclick="calcType('${winId}', '3')" class="win-btn">3</button>
-                                    <button onclick="calcType('${winId}', '+')" class="win-btn" style="background:var(--surface);">+</button>
-                                    <button onclick="calcEval('${winId}')" class="win-btn" style="background:var(--accent);color:#000;font-weight:bold;grid-row:6/8;grid-column:5/6;">ENT</button>
+                                    <button onclick="calcType('${winId}', '4')" class="win-btn" style="background:rgba(255,255,255,0.05);">4</button>
+                                    <button onclick="calcType('${winId}', '5')" class="win-btn" style="background:rgba(255,255,255,0.05);">5</button>
+                                    <button onclick="calcType('${winId}', '6')" class="win-btn" style="background:rgba(255,255,255,0.05);">6</button>
+                                    <button onclick="calcType('${winId}', '*')" class="win-btn" style="background:rgba(195,181,255,0.08);color:var(--accent);">*</button>
+                                    <button onclick="calcType('${winId}', 'c')" class="win-btn" style="color:var(--accent);background:rgba(195,181,255,0.05);">c</button>
+                                    <button onclick="calcType('${winId}', '=')" class="win-btn" style="background:rgba(195,181,255,0.08);color:var(--white);">var=</button>
 
-                                    <button onclick="calcType('${winId}', '0')" class="win-btn" style="grid-column:1/3;">0</button>
-                                    <button onclick="calcType('${winId}', '.')" class="win-btn">.</button>
-                                    <button onclick="calcType('${winId}', '=')" class="win-btn" style="background:var(--surface);">var=</button>
+                                    <button onclick="calcType('${winId}', '1')" class="win-btn" style="background:rgba(255,255,255,0.05);">1</button>
+                                    <button onclick="calcType('${winId}', '2')" class="win-btn" style="background:rgba(255,255,255,0.05);">2</button>
+                                    <button onclick="calcType('${winId}', '3')" class="win-btn" style="background:rgba(255,255,255,0.05);">3</button>
+                                    <button onclick="calcType('${winId}', '-')" class="win-btn" style="background:rgba(195,181,255,0.08);color:var(--accent);">-</button>
+                                    <button onclick="calcClear('${winId}')" class="win-btn" style="color:var(--btn-close);background:rgba(255,68,102,0.1);font-size:11px;">AC</button>
+                                    <button onclick="calcBksp('${winId}')" class="win-btn" style="background:rgba(195,181,255,0.08);">⌫</button>
+
+                                    <button onclick="calcType('${winId}', '0')" class="win-btn" style="background:rgba(255,255,255,0.05);grid-column:1/3;">0</button>
+                                    <button onclick="calcType('${winId}', '.')" class="win-btn" style="background:rgba(255,255,255,0.05);">.</button>
+                                    <button onclick="calcType('${winId}', '+')" class="win-btn" style="background:rgba(195,181,255,0.08);color:var(--accent);">+</button>
+                                    <button onclick="calcEval('${winId}')" class="win-btn" style="background:var(--accent);color:#000;font-weight:bold;">ENT</button>
+                                    <button onclick="calcToggleGraph('${winId}')" class="win-btn" style="grid-column:6/7;background:rgba(195,181,255,0.15);color:var(--white);font-weight:bold;font-size:9px;">PLOT</button>
                                 </div>
                             </div>
-                            <div style="flex:1;position:relative;background:#020204;box-sizing:border-box;display:flex;flex-direction:column;">
-                                <div style="font-size:10px;padding:4px;color:rgba(195,181,255,0.5);text-align:center;border-bottom:1px solid rgba(195,181,255,0.15);">Live Graph Plotter over X [-10, 10]</div>
-                                <canvas id="calc-graph-${winId}" width="300" height="340" style="width:100%;height:100%;flex:1;cursor:crosshair;"></canvas>
+                            
+                            <!-- Right Pane: Graph Plotter -->
+                            <div id="calc-graph-pane-${winId}" style="display:none;flex:1;position:relative;background:#000;box-sizing:border-box;flex-direction:column;border-left:1px solid rgba(195,181,255,0.1);">
+                                <div style="font-size:10px;padding:6px;color:var(--accent);text-align:center;border-bottom:1px solid rgba(195,181,255,0.15);background:rgba(195,181,255,0.05);letter-spacing:1px;text-transform:uppercase;">Modular Graph Plotter</div>
+                                <div style="flex:1;position:relative;overflow:hidden;">
+                                    <canvas id="calc-graph-${winId}" style="width:100%;height:100%;cursor:crosshair;"></canvas>
+                                </div>
+                                <div id="calc-status-${winId}" style="font-size:9px;padding:4px;color:rgba(195,181,255,0.4);border-top:1px solid rgba(195,181,255,0.1);background:#020204;">Ready to plot. Use 'x' variable and click '='.</div>
                             </div>
                         </div>
                         <script>
@@ -1149,6 +1165,38 @@
             // Scientific Calculator Logic
             window.calcScopes = {}; // memory per window
 
+            // Scientific Calculator Logic & State Management
+            window.calcScopes = {}; // memory per window
+
+            // Helper to push to history log
+            function pushHistory(id, expr, result) {
+                const histDiv = document.getElementById('calc-history-' + id);
+                if (!histDiv) return;
+                const entry = document.createElement('div');
+                entry.style.display = 'flex';
+                entry.style.justifyContent = 'space-between';
+                entry.style.borderBottom = '1px dashed rgba(195,181,255,0.1)';
+                entry.style.paddingBottom = '2px';
+                entry.innerHTML = `<span style="color:var(--white);">${expr}</span> <span style="color:var(--accent);">${result}</span>`;
+                histDiv.appendChild(entry);
+                histDiv.scrollTop = histDiv.scrollHeight;
+            }
+
+            window.calcToggleGraph = function(id) {
+                const pane = document.getElementById('calc-graph-pane-' + id);
+                const winElem = document.getElementById(id).closest('.xp-window');
+                if(!pane || !winElem) return;
+                
+                if(pane.style.display === 'none') {
+                    pane.style.display = 'flex';
+                    winElem.style.width = '700px';
+                    setTimeout(() => window.calcRenderGrid(id), 50); // allow paint tick
+                } else {
+                    pane.style.display = 'none';
+                    winElem.style.width = '320px';
+                }
+            };
+            
             window.calcType = function(id, text) {
                 const input = document.getElementById('calc-in-' + id);
                 if(input) {
@@ -1176,15 +1224,15 @@
             window.calcClear = function(id) {
                 const input = document.getElementById('calc-in-' + id);
                 const ans = document.getElementById('calc-ans-' + id);
+                const hist = document.getElementById('calc-history-' + id);
+                const status = document.getElementById('calc-status-' + id);
                 if(input) input.value = '';
                 if(ans) ans.textContent = '';
+                if(hist) hist.innerHTML = '';
+                if(status) status.textContent = "Memory Cleared.";
                 if(window.calcScopes[id]) window.calcScopes[id] = {}; // clear memory
-                const canvas = document.getElementById('calc-graph-' + id);
-                if (canvas) {
-                    const ctx = canvas.getContext('2d');
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    window.calcRenderGrid(id);
-                }
+                
+                window.calcRenderGrid(id); // reset graph
                 input && input.focus();
             };
 
@@ -1195,29 +1243,49 @@
                 }
             };
 
+            // Unified Evaluation & Graphing function
             window.calcEval = function(id) {
                 const input = document.getElementById('calc-in-' + id);
                 const ans = document.getElementById('calc-ans-' + id);
+                const status = document.getElementById('calc-status-' + id);
+                
                 if(!input || !input.value.trim() || typeof math === 'undefined') return;
                 
-                if(!window.calcScopes[id]) window.calcScopes[id] = {};
                 const expr = input.value;
+                if(!window.calcScopes[id]) window.calcScopes[id] = {};
+                
+                // If equation contains "x" and is not an assignment, we should Plot it
+                if (expr.includes('x') && !expr.includes('=')) {
+                    ans.textContent = 'Plotting f(x)...';
+                    const pane = document.getElementById('calc-graph-pane-' + id);
+                    if(pane.style.display === 'none') window.calcToggleGraph(id);
+                    setTimeout(() => window.calcGraph(id, expr), 60);
+                    pushHistory(id, expr, '[Graph plotted]');
+                    input.focus();
+                    return;
+                }
+
+                // Normal math.js evaluation
                 try {
                     const result = math.evaluate(expr, window.calcScopes[id]);
                     ans.textContent = expr + ' =';
                     
-                    // Format result cleanly
+                    let resultStr = "";
                     if (typeof result === 'function') {
-                        input.value = 'function';
+                        resultStr = 'ƒunction saved';
                     } else if (result && result.isResultSet) {
                         const vals = result.entries.map(e => math.format(e, {precision: 14}));
-                        input.value = vals[vals.length - 1]; // display last evaluation in multiline
+                        resultStr = vals[vals.length - 1]; 
                     } else {
-                        input.value = math.format(result, {precision: 14});
+                        resultStr = math.format(result, {precision: 14});
                     }
+                    
+                    input.value = resultStr;
+                    pushHistory(id, expr, resultStr);
+                    if(status) status.textContent = `Evaluated successfully.`;
                 } catch(e) {
-                    ans.textContent = 'Error';
-                    console.error('Math.js error:', e);
+                    ans.textContent = 'Syntax Error';
+                    if(status) status.textContent = `Error: ${e.message}`;
                 }
                 input.focus();
             };
@@ -1225,14 +1293,29 @@
             window.calcRenderGrid = function(id) {
                 const canvas = document.getElementById('calc-graph-' + id);
                 if(!canvas) return;
+                
+                // Dynamically sync canvas internal resolution to its actual display flex size
+                const rect = canvas.parentElement.getBoundingClientRect();
+                if (rect.width > 0 && rect.height > 0) {
+                    canvas.width = rect.width;
+                    canvas.height = rect.height;
+                }
+                
                 const ctx = canvas.getContext('2d');
-                const w = canvas.width; const h = canvas.height;
+                const w = canvas.width; 
+                const h = canvas.height;
+                
+                ctx.clearRect(0,0,w,h);
+
+                // Grid background
                 ctx.strokeStyle = 'rgba(195,181,255,0.05)';
                 ctx.lineWidth = 1;
                 ctx.beginPath();
                 for(let i=0; i<w; i+=20) { ctx.moveTo(i, 0); ctx.lineTo(i, h); }
                 for(let i=0; i<h; i+=20) { ctx.moveTo(0, i); ctx.lineTo(w, i); }
                 ctx.stroke();
+
+                // Centered Axes
                 ctx.strokeStyle = 'rgba(195,181,255,0.3)';
                 ctx.lineWidth = 1;
                 ctx.beginPath();
@@ -1241,38 +1324,36 @@
                 ctx.stroke();
             };
 
-            window.calcGraph = function(id) {
-                const input = document.getElementById('calc-in-' + id);
+            window.calcGraph = function(id, expr) {
                 const canvas = document.getElementById('calc-graph-' + id);
-                if(!input || !canvas || typeof math === 'undefined') return;
-                const expr = input.value;
-                if(!expr.trim()) return;
-                
-                const ctx = canvas.getContext('2d');
-                const w = canvas.width; const h = canvas.height;
-                
-                // Clear and redraw grid
-                ctx.clearRect(0,0,w,h);
+                const status = document.getElementById('calc-status-' + id);
+                if(!canvas) return;
+
+                // Ensure actual size is matched for high-fidelity drawing instead of stretching
                 window.calcRenderGrid(id);
                 
-                if(!window.calcScopes[id]) window.calcScopes[id] = {};
-                let scope = Object.assign({}, window.calcScopes[id]); 
+                const ctx = canvas.getContext('2d');
+                const w = canvas.width; 
+                const h = canvas.height;
                 
                 let compiled;
                 try {
                     compiled = math.compile(expr);
                 } catch(e) {
-                    document.getElementById('calc-ans-' + id).textContent = 'Graph Syntax Error';
+                    if(status) status.textContent = `Graph Syntax Error: ${e.message}`;
                     return;
                 }
 
-                ctx.strokeStyle = '#C3B5FF';
+                ctx.strokeStyle = '#C3B5FF'; // Cyber purple
                 ctx.lineWidth = 2;
                 ctx.beginPath();
 
-                const scale = 20; // 20 pixels = 1 unit
+                const scale = 20; // 20 pixels = 1 unit => ranges from typically -10 to +10 roughly depending on width
                 let first = true;
+                let scope = Object.assign({}, window.calcScopes[id]); 
                 
+                let plotsDrawn = 0;
+
                 for(let px=0; px<=w; px+=1) {
                     let rx = (px - w/2) / scale; 
                     scope.x = rx;
@@ -1287,9 +1368,15 @@
                     
                     if(first) { ctx.moveTo(px, py); first = false; }
                     else { ctx.lineTo(px, py); }
+                    plotsDrawn++;
                 }
+                
                 ctx.stroke();
-                document.getElementById('calc-ans-' + id).textContent = 'Graphing: ƒ(x) = ' + expr;
+                if(status && plotsDrawn > 0) {
+                    status.textContent = `Showing graph for f(x) = ${expr}`;
+                } else if(status) {
+                    status.textContent = `Expression evaluated but yielded empty plot.`;
+                }
             };
 
             // ── Window Management ──
@@ -1607,9 +1694,9 @@
                 function cmdProjects() {
                     return [
                         '<span style="color:var(--white)">[1]</span>  <span style="color:var(--white)">Splotch</span> — streetwear e-commerce site. Firebase, auth, payments. <span style="color:var(--white)">● Active</span>',
-                        '<span style="color:var(--white)">[2]</span>  <span style="color:var(--white)">ARROG</span> — community wiki. SCP-inspired lore, user submissions. <span style="color:var(--white)">● Active</span>',
+                        '<span style="color:var(--white)">[2]</span>  <span style="color:var(--white)">ARROG</span> — community wiki. SCP-inspired lore, user submissions. <span style="color:var(--white)">● Delivered</span>',
                         '<span style="color:var(--white)">[3]</span>  <span style="color:var(--white)">RishabhDabral</span> — freelance portfolio for a law student. <span style="color:var(--white)">● Delivered</span>',
-                        '<span style="color:var(--white)">[4]</span>  <span style="color:var(--white)">MaargDarshak</span> — career guidance tool for J&K students. <span style="color:var(--dim)">○ Archived</span>',
+                        '<span style="color:var(--white)">[4]</span>  <span style="color:var(--white)">MaargDarshak</span> — career guidance tool for J&K students. <span style="color:var(--btn-close)">× Abandoned</span>',
                         '<span style="color:var(--white)">[5]</span>  <span style="color:var(--white)">Retro Arcade</span> — browser games, custom physics, neon vibes. <span style="color:var(--white)">● On GitHub</span>',
                         '<span style="color:var(--white)">[6]</span>  <span style="color:var(--white)">Weather Anomaly Detector</span> — spots weird weather, Chart.js graphs. <span style="color:var(--white)">● On GitHub</span>',
                     ];
@@ -1638,7 +1725,8 @@
                 function cmdConnect() {
                     return [
                         '<span style="color:var(--white)">></span> <span style="color:var(--white)">LINKS</span>',
-                        '   Splotch    →  <a href="https://splotch.in" target="_blank" rel="noopener">splotch.in</a>',
+                        '<span style="color:var(--white)">Here\'s how to reach me:</span>',
+                        '',
                         '   Email      →  <a href="mailto:sayedsadidhoda@gmail.com">sayedsadidhoda@gmail.com</a>',
                         '   GitHub     →  <a href="https://github.com/dudefromalhiem" target="_blank" rel="noopener">github.com/dudefromalhiem</a>',
                         '   LinkedIn   →  <a href="https://linkedin.com/in/sayedsadidhoda" target="_blank" rel="noopener">linkedin.com/in/sayedsadidhoda</a>',
