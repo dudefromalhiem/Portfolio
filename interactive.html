@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://jspaint.app" crossorigin>
+    <link rel="preconnect" href="https://raz0red.github.io" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.4.0/math.js"></script>
     <style>
@@ -1388,6 +1389,7 @@
             let explorerLaunchPath = [];
             const ICON_LAYOUT_KEY = 'xpDesktopIconLayout.v1';
             let paintPreloadFrame = null;
+            let doomPreloadFrame = null;
             const IS_PHONE = window.matchMedia('(max-width: 900px) and (pointer: coarse)').matches
                 || /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
             const DOOM_INPUT = {
@@ -1903,6 +1905,7 @@
                                 id="doom-frame"
                                 src="https://raz0red.github.io/webprboom/" 
                                 style="flex:1;width:100%;border:none;background:#000;"
+                                loading="eager"
                                 allowfullscreen
                                 allow="autoplay; fullscreen; gamepad"
                             ></iframe>
@@ -2956,6 +2959,23 @@
                 document.body.appendChild(paintPreloadFrame);
             }
 
+            function initDoomPreload() {
+                if (doomPreloadFrame) return;
+                doomPreloadFrame = document.createElement('iframe');
+                doomPreloadFrame.src = 'https://raz0red.github.io/webprboom/';
+                doomPreloadFrame.setAttribute('aria-hidden', 'true');
+                doomPreloadFrame.tabIndex = -1;
+                doomPreloadFrame.style.position = 'absolute';
+                doomPreloadFrame.style.left = '-9999px';
+                doomPreloadFrame.style.top = '-9999px';
+                doomPreloadFrame.style.width = '1px';
+                doomPreloadFrame.style.height = '1px';
+                doomPreloadFrame.style.border = '0';
+                doomPreloadFrame.style.opacity = '0';
+                doomPreloadFrame.style.pointerEvents = 'none';
+                document.body.appendChild(doomPreloadFrame);
+            }
+
             function initDesktopIcons() {
                 const icons = Array.from(document.querySelectorAll('.desktop-icon'));
                 const saved = loadIconLayout();
@@ -3043,6 +3063,7 @@
 
             if (!IS_PHONE) {
                 initDesktopIcons();
+                setTimeout(initDoomPreload, 250);
                 setTimeout(initPaintPreload, 350);
             }
 
