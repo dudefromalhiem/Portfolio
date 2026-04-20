@@ -1462,7 +1462,7 @@
             const openWindows = {};
             let activeWindowId = null;
             let explorerLaunchPath = [];
-            const ICON_LAYOUT_KEY = 'xpDesktopIconLayout.v1';
+            const ICON_LAYOUT_KEY = 'xpDesktopIconLayout.v2';
             let paintPreloadFrame = null;
             let doomPreloadFrame = null;
             let doomFrameReady = false;
@@ -1996,6 +1996,7 @@
                     icon: '<img src="doom-icon.jpg" style="width:14px;height:14px;object-fit:cover;border-radius:1px;vertical-align:middle;">',
                     width: 660,
                     height: 520,
+                    blockContextMenu: true,
                     content: () => `
                         <div style="display:flex;flex-direction:column;height:100%;background:#000;">
                             <div id="doom-frame-host" style="position:relative;flex:1;width:100%;background:#000;">
@@ -2078,6 +2079,7 @@
                     icon: '💣',
                     width: 280,
                     height: 340,
+                    blockContextMenu: true,
                     content: () => {
                         const boardSize = 8;
                         const mineCount = 10;
@@ -2497,6 +2499,13 @@
                     setTimeout(() => initTerminal(winId), 50);
                 }
 
+                if (app.blockContextMenu) {
+                    win.addEventListener('contextmenu', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    });
+                }
+
                 // Init DOOM or custom onInit
                 if (app.onInit) {
                     setTimeout(() => app.onInit(winId), 100);
@@ -2692,6 +2701,7 @@
 
                 board.addEventListener('contextmenu', (e) => {
                     e.preventDefault();
+                    e.stopPropagation();
                 });
                 
                 board.innerHTML = '';
@@ -2739,6 +2749,7 @@
                     
                     cell.addEventListener('contextmenu', (e) => {
                         e.preventDefault();
+                        e.stopPropagation();
                         if (revealed.has(i) || won) return;
                         if (flagged.has(i)) {
                             flagged.delete(i);
@@ -3030,6 +3041,120 @@
                 return { left: snappedLeft, top: snappedTop };
             }
 
+            function getDesktopGridSlots() {
+                const desktop = document.getElementById('desktop');
+                if (!desktop) return [];
+
+                const gridX = 92;
+                const gridY = 96;
+                const marginLeft = 14;
+                const marginTop = 12;
+                const maxLeft = Math.max(marginLeft, desktop.clientWidth - 56);
+                const maxTop = Math.max(marginTop, desktop.clientHeight - 68);
+
+                const slots = [];
+                for (let left = marginLeft; left <= maxLeft; left += gridX) {
+                    for (let top = marginTop; top <= maxTop; top += gridY) {
+                        slots.push({ left, top });
+                    }
+                }
+                return slots;
+            }
+
+            function slotKey(left, top) {
+                return left + '|' + top;
+            }
+
+            function findBestFreeSlot(preferred, occupied, slots) {
+                const preferredKey = slotKey(preferred.left, preferred.top);
+                if (!occupied.has(preferredKey)) return preferred;
+
+                let best = null;
+                let bestDist = Infinity;
+
+                slots.forEach((slot) => {
+                    const key = slotKey(slot.left, slot.top);
+                    if (occupied.has(key)) return;
+                    const dx = slot.left - preferred.left;
+                    const dy = slot.top - preferred.top;
+                    const dist = (dx * dx) + (dy * dy);
+                    if (dist < bestDist) {
+                        bestDist = dist;
+                        best = slot;
+                    }
+                });
+
+                return best || preferred;
+            }
+
+            function preventIconStacking(icons, pinnedIcon) {
+                const allIcons = Array.from(icons || document.querySelectorAll('.desktop-icon'));
+                const slots = getDesktopGridSlots();
+                if (!allIcons.length || !slots.length) return;
+
+                const occupied = new Set();
+
+                if (pinnedIcon) {
+                    const pinned = snapToGrid(parseInt(pinnedIcon.style.left || '0', 10), parseInt(pinnedIcon.style.top || '0', 10));
+                    const pinnedSlot = findBestFreeSlot(pinned, occupied, slots);
+                    placeIcon(pinnedIcon, pinnedSlot.left, pinnedSlot.top, true);
+                    occupied.add(slotKey(parseInt(pinnedIcon.style.left || '0', 10), parseInt(pinnedIcon.style.top || '0', 10)));
+                }
+
+                allIcons.forEach((icon) => {
+                    if (icon === pinnedIcon) return;
+                    const desired = snapToGrid(parseInt(icon.style.left || '0', 10), parseInt(icon.style.top || '0', 10));
+                    const chosen = findBestFreeSlot(desired, occupied, slots);
+                    placeIcon(icon, chosen.left, chosen.top, true);
+                    occupied.add(slotKey(parseInt(icon.style.left || '0', 10), parseInt(icon.style.top || '0', 10)));
+                });
+            }
+
+            function applyDefaultDesktopStructure(icons) {
+                const allIcons = Array.from(icons || document.querySelectorAll('.desktop-icon'));
+                const byApp = new Map();
+                allIcons.forEach((icon) => {
+                    const appId = icon.dataset.appId || parseIconAppId(icon);
+                    if (appId && !byApp.has(appId)) byApp.set(appId, icon);
+                });
+
+                const rows = [
+                    ['recycle', 'achievements'],
+                    ['terminal', 'calculator'],
+                    ['explorer', 'paint'],
+                    ['connect', 'roadmap'],
+                    ['projects', 'doom'],
+                    ['about', 'minesweeper'],
+                    ['settings', '']
+                ];
+
+                const placed = new Set();
+                rows.forEach((pair, row) => {
+                    pair.forEach((appId, col) => {
+                        if (!appId) return;
+                        const icon = byApp.get(appId);
+                        if (!icon) return;
+                        placeIcon(icon, 16 + (col * 92), 14 + (row * 96), true);
+                        placed.add(icon);
+                    });
+                });
+
+                const slots = getDesktopGridSlots();
+                const occupied = new Set(Array.from(placed).map((icon) => {
+                    return slotKey(parseInt(icon.style.left || '0', 10), parseInt(icon.style.top || '0', 10));
+                }));
+
+                allIcons.forEach((icon) => {
+                    if (placed.has(icon)) return;
+                    const desired = snapToGrid(parseInt(icon.style.left || '0', 10), parseInt(icon.style.top || '0', 10));
+                    const chosen = findBestFreeSlot(desired, occupied, slots);
+                    placeIcon(icon, chosen.left, chosen.top, true);
+                    occupied.add(slotKey(parseInt(icon.style.left || '0', 10), parseInt(icon.style.top || '0', 10)));
+                });
+
+                preventIconStacking(allIcons);
+            }
+
             function persistIconLayout() {
                 const desktop = document.getElementById('desktop');
                 const width = Math.max(desktop ? desktop.clientWidth : 0, 1);
@@ -3142,7 +3267,23 @@
             function mountDoomFrame(host) {
                 if (!host) return;
                 if (!doomPreloadFrame) initDoomPreload();
-                if (!doomPreloadFrame) return;
+
+                if (!doomPreloadFrame) {
+                    doomPreloadFrame = document.createElement('iframe');
+                    doomPreloadFrame.id = 'doom-frame';
+                    doomPreloadFrame.src = 'https://raz0red.github.io/webprboom/';
+                    doomPreloadFrame.setAttribute('allow', 'autoplay; fullscreen; gamepad');
+                    doomPreloadFrame.setAttribute('allowfullscreen', '');
+                    doomPreloadFrame.style.width = '100%';
+                    doomPreloadFrame.style.height = '100%';
+                    doomPreloadFrame.style.border = '0';
+                    doomPreloadFrame.style.background = '#000';
+                    doomPreloadFrame.style.display = 'block';
+                    doomPreloadFrame.addEventListener('load', () => {
+                        doomFrameReady = true;
+                    }, { once: true });
+                }
+
                 host.innerHTML = '';
                 doomPreloadFrame.removeAttribute('aria-hidden');
                 doomPreloadFrame.style.pointerEvents = 'auto';
@@ -3155,6 +3296,7 @@
                 const desktop = document.getElementById('desktop');
                 let lastDesktopWidth = desktop ? desktop.clientWidth : window.innerWidth;
                 let lastDesktopHeight = desktop ? desktop.clientHeight : window.innerHeight;
+                let hasCompleteSavedLayout = true;
 
                 icons.forEach((icon, idx) => {
                     if (!icon.dataset.iconId) {
@@ -3168,6 +3310,11 @@
                     }
 
                     const savedPos = saved[icon.dataset.iconId];
+                    hasCompleteSavedLayout = hasCompleteSavedLayout
+                        && !!savedPos
+                        && typeof savedPos.left === 'number'
+                        && typeof savedPos.top === 'number';
+
                     if (savedPos && typeof savedPos.left === 'number' && typeof savedPos.top === 'number') {
                         if (typeof savedPos.xRatio === 'number' && typeof savedPos.yRatio === 'number' && desktop) {
                             const scaledLeft = savedPos.xRatio * desktop.clientWidth;
@@ -3213,6 +3360,7 @@
                                 icon.classList.remove('dragging');
                                 icon.style.transition = '';
                                 placeIcon(icon, parseInt(icon.style.left || '0', 10), parseInt(icon.style.top || '0', 10), true);
+                                preventIconStacking(icons, icon);
                                 persistIconLayout();
                             }
                         };
@@ -3221,6 +3369,12 @@
                         document.addEventListener('mouseup', onUp);
                     });
                 });
+
+                if (!hasCompleteSavedLayout) {
+                    applyDefaultDesktopStructure(icons);
+                }
+
+                preventIconStacking(icons);
                 persistIconLayout();
 
                 window.addEventListener('resize', () => {
@@ -3237,6 +3391,8 @@
                         placeIcon(icon, scaledLeft, scaledTop, true);
                     });
 
+                    preventIconStacking(icons);
+
                     lastDesktopWidth = nextWidth;
                     lastDesktopHeight = nextHeight;
                     persistIconLayout();
@@ -3245,17 +3401,7 @@
 
             function autoArrangeIcons() {
                 const icons = Array.from(document.querySelectorAll('.desktop-icon'));
-                icons.sort((a, b) => {
-                    const aLabel = (a.querySelector('.icon-label')?.textContent || '').trim();
-                    const bLabel = (b.querySelector('.icon-label')?.textContent || '').trim();
-                    return aLabel.localeCompare(bLabel);
-                });
-
-                icons.forEach((icon, idx) => {
-                    const col = Math.floor(idx / 6);
-                    const row = idx % 6;
-                    placeIcon(icon, 16 + (col * 92), 14 + (row * 96), true);
-                });
+                applyDefaultDesktopStructure(icons);
 
                 persistIconLayout();
             }
@@ -3302,6 +3448,12 @@
 
                 desktop.addEventListener('contextmenu', (e) => {
                     e.preventDefault();
+                    const blockedAppWindow = e.target.closest('.xp-window[data-app-id="minesweeper"], .xp-window[data-app-id="doom"]');
+                    if (blockedAppWindow) {
+                        hideMenu();
+                        return;
+                    }
+
                     const icon = e.target.closest('.desktop-icon');
 
                     if (icon) {
