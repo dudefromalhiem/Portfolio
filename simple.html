@@ -89,6 +89,19 @@
         }
         .skill-tag:hover { box-shadow: 0 0 10px var(--primary-glow); background: rgba(195,181,255,0.1); }
 
+        .achievements-panel {
+            border: 1px solid var(--primary);
+            background: rgba(5, 5, 8, 0.5);
+            backdrop-filter: blur(5px);
+            padding: 26px;
+        }
+
+        .achievements-empty {
+            color: var(--white);
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
         .connect-list { display: flex; flex-direction: column; gap: 15px; margin-bottom: 40px; }
         .connect-list a { color: var(--primary); text-decoration: none; transition: color 0.3s; }
         .connect-list a:hover { color: var(--white); text-shadow: 0 0 8px var(--primary-glow); }
@@ -118,7 +131,7 @@
         <div class="nav-left">ALHIEM</div>
         <div class="nav-mid"></div>
         <div class="nav-right">
-            <a href="interactive.html" class="nav-btn">[ DESKTOP MODE ]</a>
+            <a href="interactive.html" class="nav-btn">[ INTERACTIVE MODE ]</a>
             <a href="index.html" class="nav-btn">[ &larr; BACK ]</a>
         </div>
     </div>
@@ -204,8 +217,15 @@
             </div>
         </section>
 
+        <section class="achievements">
+            <div class="section-label scroll-anim">04 / ACHIEVEMENTS</div>
+            <div class="achievements-panel scroll-anim" style="transition-delay: 80ms;">
+                <div class="achievements-empty">Achievements will be added here once you share them.</div>
+            </div>
+        </section>
+
         <section class="connect">
-            <div class="section-label scroll-anim">04 / CONNECT</div>
+            <div class="section-label scroll-anim">05 / CONNECT</div>
             <div class="connect-list scroll-anim" style="transition-delay: 80ms;">
                 <a href="mailto:sayedsadidhoda@gmail.com">Email</a>
                 <a href="https://github.com/dudefromalhiem">GitHub</a>

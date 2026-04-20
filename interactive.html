@@ -960,10 +960,10 @@
         body.mobile-nokia #nokia-phone {
             display: flex;
             width: 100%;
-            min-height: 100vh;
+            min-height: 100dvh;
             align-items: center;
             justify-content: center;
-            padding: 14px;
+            padding: 10px;
         }
 
         .nokia-shell {
@@ -972,7 +972,10 @@
             border: 2px solid #101524;
             border-radius: 28px;
             box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45), inset 0 0 0 2px #596b98;
-            padding: 16px 14px 20px;
+            padding: clamp(10px, 2.5vh, 16px) clamp(8px, 2.8vw, 14px) clamp(12px, 2.8vh, 20px);
+            max-height: calc(100dvh - 20px);
+            display: flex;
+            flex-direction: column;
         }
 
         .nokia-brand {
@@ -985,7 +988,9 @@
         }
 
         .nokia-screen {
-            height: 420px;
+            height: auto;
+            min-height: 0;
+            flex: 1;
             background: linear-gradient(180deg, #b8cca1 0%, #9bb181 100%);
             border: 2px solid #4e5b3f;
             border-radius: 10px;
@@ -1017,6 +1022,7 @@
 
         .nokia-screen-content {
             flex: 1;
+            min-height: 0;
             overflow: auto;
             color: #102007;
             font-size: 12px;
@@ -1065,7 +1071,7 @@
         }
 
         .nokia-key {
-            min-height: 44px;
+            min-height: clamp(34px, 6vh, 44px);
             border: 1px solid #151c2d;
             border-radius: 10px;
             background: linear-gradient(180deg, #7a8ec0 0%, #4a5a84 100%);
@@ -1091,7 +1097,32 @@
         }
 
         .nokia-key.nav {
-            min-height: 52px;
+            min-height: clamp(38px, 7vh, 52px);
+        }
+
+        @media (max-height: 760px) {
+            body.mobile-nokia #nokia-phone {
+                padding: 6px;
+            }
+
+            .nokia-shell {
+                border-radius: 20px;
+                max-height: calc(100dvh - 12px);
+            }
+
+            .nokia-brand {
+                margin-bottom: 6px;
+                font-size: 14px;
+            }
+
+            .nokia-keypad {
+                gap: 5px;
+                margin-top: 5px;
+            }
+
+            .nokia-key {
+                font-size: 11px;
+            }
         }
 
         .nokia-key.call {
@@ -1210,11 +1241,11 @@
                 <button class="nokia-key nav" data-phone-key="right" type="button">▶</button>
 
                 <button class="nokia-key" data-phone-key="1" type="button">1<small>.</small></button>
-                <button class="nokia-key" data-phone-key="2" type="button">2<small>ABC</small></button>
+                <button class="nokia-key nav" data-phone-key="down" type="button">▼</button>
                 <button class="nokia-key" data-phone-key="3" type="button">3<small>DEF</small></button>
 
                 <button class="nokia-key" data-phone-key="4" type="button">4<small>GHI</small></button>
-                <button class="nokia-key nav" data-phone-key="down" type="button">▼</button>
+                <button class="nokia-key" data-phone-key="2" type="button">2<small>ABC</small></button>
                 <button class="nokia-key" data-phone-key="6" type="button">6<small>MNO</small></button>
 
                 <button class="nokia-key" data-phone-key="7" type="button">7<small>PQRS</small></button>
@@ -1294,6 +1325,10 @@
             <div class="desktop-icon" ondblclick="openApp('settings')" onclick="selectIcon(this)">
                 <div class="icon-img">⚙️</div>
                 <div class="icon-label">Settings</div>
+            </div>
+            <div class="desktop-icon" ondblclick="openApp('achievements')" onclick="selectIcon(this)">
+                <div class="icon-img">🏆</div>
+                <div class="icon-label">Achievements</div>
             </div>
             <div class="desktop-icon" ondblclick="openApp('minesweeper')" onclick="selectIcon(this)">
                 <div class="icon-img">💣</div>
@@ -1395,6 +1430,9 @@
             <div class="start-item" onclick="openApp('settings'); closeStartMenu();">
                 <span class="si-icon">⚙️</span> Settings
             </div>
+            <div class="start-item" onclick="openApp('achievements'); closeStartMenu();">
+                <span class="si-icon">🏆</span> Achievements
+            </div>
             <div class="start-item" onclick="openApp('minesweeper'); closeStartMenu();">
                 <span class="si-icon">💣</span> Minesweeper
             </div>
@@ -1405,7 +1443,7 @@
         </div>
         <div class="start-footer">
             <button class="start-footer-btn" onclick="window.location.href='simple.html'">
-                <span>↩</span> Standard Mode
+                <span>↩</span> Overview Mode
             </button>
             <button class="start-footer-btn" onclick="window.location.href='index.html'" style="margin-left:6px;">
                 <span>⏻</span> Home
@@ -1466,6 +1504,7 @@
                             'Connect.lnk': { type: 'shortcut', app: 'connect' },
                             'Explorer.lnk': { type: 'shortcut', app: 'explorer' },
                             'Terminal.lnk': { type: 'shortcut', app: 'terminal' },
+                            'Achievements.lnk': { type: 'shortcut', app: 'achievements' },
                             'Calculator.lnk': { type: 'shortcut', app: 'calculator' }
                         }
                     },
@@ -1737,7 +1776,7 @@
                     height: 320,
                     content: () => `
                     <div style="color:var(--dim);font-size:11px;margin-bottom:12px;letter-spacing:1px;">
-                        DELETED ITEMS — 2 object(s)
+                        DELETED ITEMS — 3 object(s)
                     </div>
                     <div class="recycle-item">
                         <span class="ri-icon">📄</span>
@@ -1751,6 +1790,13 @@
                         <div>
                             <div class="ri-name">Past.txt</div>
                             <div class="ri-info">Deleted: when I moved forward · Size: heavy</div>
+                        </div>
+                    </div>
+                    <div class="recycle-item">
+                        <span class="ri-icon">📄</span>
+                        <div>
+                            <div class="ri-name">satire.txt</div>
+                            <div class="ri-info">Yes this is satire</div>
                         </div>
                     </div>
                     <div style="color:var(--dim);font-size:11px;margin-top:16px;text-align:center;">
@@ -1882,6 +1928,18 @@
                         <div class="skill-grid">
                             <div class="skill-item">AI & ML (B.Tech)</div>
                         </div>
+                    </div>
+                `
+                },
+                achievements: {
+                    title: 'Achievements',
+                    icon: '🏆',
+                    width: 460,
+                    height: 320,
+                    content: () => `
+                    <div style="color:var(--dim);font-size:11px;margin-bottom:12px;letter-spacing:1px;">ACHIEVEMENTS</div>
+                    <div style="border:1px solid var(--border-dim);padding:14px;background:rgba(195, 181, 255, 0.03);color:var(--white);line-height:1.6;">
+                        Achievements will be added here once you share them.
                     </div>
                 `
                 },
@@ -2027,7 +2085,7 @@
                         const cellSize = 30;
                         const gridDim = boardSize * cellSize + (boardSize - 1);
                         return `
-                            <div style="background:var(--surface); height:100%; display:flex; flex-direction:column; padding:8px; font-family:Tahoma,sans-serif;">
+                            <div style="background:var(--surface); height:100%; display:flex; flex-direction:column; padding:8px; font-family:Tahoma,sans-serif;" oncontextmenu="return false;">
                                 <div style="display:flex; gap:8px; margin-bottom:8px;">
                                     <div style="flex:1; background:var(--bg); padding:4px; border:1px solid var(--border); border-radius:2px; color:var(--white); font-size:11px; text-align:center;">
                                         Flags: <span id="${gameId}-flags">0</span>/${mineCount}
@@ -2066,7 +2124,7 @@
                                 - Scientific Graphing Calculator<br>
                                 - DOOM Shareware Integration<br>
                                 - PowerShell Terminal Emulator<br>
-                                - Standard/Simple Mode Overhaul
+                                - Overview Mode Overhaul
                             </div>
 
                             <div style="margin-bottom:20px;">
@@ -2631,6 +2689,10 @@
             window.initMinesweeper = function(gameId, size, mines) {
                 const board = document.getElementById(gameId + '-board');
                 if (!board) return;
+
+                board.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                });
                 
                 board.innerHTML = '';
                 const cellMap = new Map();
@@ -2800,6 +2862,7 @@
                     'explorer',
                     'terminal',
                     'connect',
+                    'achievements',
                     'calculator',
                     'paint',
                     'doom',
