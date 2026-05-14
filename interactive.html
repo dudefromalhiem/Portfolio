@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alhiem//Portfolio</title>
     <meta name="description"
-        content="Windows XP-themed interactive portfolio desktop for me (Sayed Sadid Hoda). Explore my projects, skills, and more through draggable windows.">
+        content="Windows XP-themed interactive portfolio desktop. Explore projects, skills, and more through draggable windows.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://jspaint.app" crossorigin>
@@ -967,67 +967,129 @@
         }
 
         .nokia-shell {
-            width: min(380px, 100%);
-            background: linear-gradient(180deg, #3e4f7a 0%, #202741 100%);
-            border: 2px solid #101524;
-            border-radius: 28px;
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45), inset 0 0 0 2px #596b98;
-            padding: clamp(10px, 2.5vh, 16px) clamp(8px, 2.8vw, 14px) clamp(12px, 2.8vh, 20px);
+            position: relative;
+            width: min(360px, 100%);
+            background: linear-gradient(135deg, #1a2a4a 0%, #0f1825 100%);
+            border: 3px solid #0a0f1a;
+            border-radius: 20px 20px 30px 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(100, 150, 200, 0.15), inset 0 -2px 8px rgba(0, 0, 0, 0.5);
+            padding: clamp(8px, 2vh, 12px) clamp(6px, 2vw, 10px) clamp(8px, 2vh, 12px);
             max-height: calc(100dvh - 20px);
             display: flex;
             flex-direction: column;
         }
 
+        .nokia-shell::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            width: 8px;
+            height: 30px;
+            background: #1a2a4a;
+            border-radius: 4px;
+            border: 1px solid #0a0f1a;
+            box-shadow: inset 0 1px 2px rgba(100, 150, 200, 0.1);
+        }
+
+        .nokia-shell::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(180deg, #0a0f1a 0%, #050a10 100%);
+            border-radius: 0 0 30px 30px;
+            border: 1px solid #000;
+            border-top: none;
+        }
+
         .nokia-brand {
             text-align: center;
-            color: #dce8ff;
-            font-size: 16px;
-            letter-spacing: 2px;
-            font-weight: bold;
-            margin-bottom: 10px;
+            color: #c8d8f0;
+            font-size: 13px;
+            font-family: Arial Black, sans-serif;
+            letter-spacing: 6px;
+            font-weight: 900;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
 
         .nokia-screen {
+            position: relative;
             height: auto;
             min-height: 0;
             flex: 1;
-            background: linear-gradient(180deg, #b8cca1 0%, #9bb181 100%);
-            border: 2px solid #4e5b3f;
-            border-radius: 10px;
-            box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.28);
+            background: linear-gradient(180deg, #8fa878 0%, #7a9168 100%);
+            border: 3px inset #4a5e3a;
+            border-radius: 4px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 2px 5px rgba(0, 0, 0, 0.4);
             display: flex;
             flex-direction: column;
             overflow: hidden;
         }
 
+        .nokia-screen::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent 0px,
+                transparent 1px,
+                rgba(0, 0, 0, 0.05) 1px,
+                rgba(0, 0, 0, 0.05) 2px
+            );
+            pointer-events: none;
+            z-index: 1;
+        }
+
         .nokia-status {
+            position: relative;
+            z-index: 2;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 4px 8px;
-            font-size: 11px;
-            color: #13220a;
-            border-bottom: 1px solid rgba(19, 34, 10, 0.2);
+            padding: 2px 6px;
+            font-size: 10px;
+            color: #1a2e0a;
+            border-bottom: 1px solid rgba(74, 94, 58, 0.4);
             font-weight: bold;
+            font-family: 'Courier New', monospace;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .nokia-status span {
+            font-family: 'Courier New', monospace;
+            font-size: 9px;
+            letter-spacing: 1px;
         }
 
         .nokia-screen-title {
-            padding: 5px 8px;
-            font-size: 12px;
-            color: #112006;
-            background: rgba(255, 255, 255, 0.22);
-            border-bottom: 1px solid rgba(17, 32, 6, 0.25);
+            position: relative;
+            z-index: 2;
+            padding: 3px 6px;
+            font-size: 10px;
+            color: #1a2e0a;
+            background: rgba(255, 255, 255, 0.2);
+            border-bottom: 1px solid rgba(74, 94, 58, 0.3);
             font-weight: bold;
+            font-family: 'Courier New', monospace;
         }
 
         .nokia-screen-content {
+            position: relative;
+            z-index: 2;
             flex: 1;
             min-height: 0;
             overflow: auto;
-            color: #102007;
-            font-size: 12px;
-            line-height: 1.45;
-            padding: 6px;
+            color: #1a2e0a;
+            font-size: 11px;
+            font-family: 'Courier New', monospace;
+            line-height: 1.4;
+            padding: 4px;
         }
 
         .nokia-menu-list {
@@ -1035,102 +1097,176 @@
         }
 
         .nokia-menu-item {
-            padding: 8px 9px;
-            border-bottom: 1px dashed rgba(16, 32, 7, 0.25);
-            color: #16290b;
+            padding: 6px 8px;
+            border-bottom: 1px solid rgba(26, 46, 10, 0.2);
+            color: #1a2e0a;
+            font-family: 'Courier New', monospace;
+            font-size: 10px;
         }
 
         .nokia-menu-item.active {
             background: #355a14;
-            color: #f8ffe8;
+            color: #f0ffe0;
             font-weight: bold;
         }
 
         .nokia-app-wrap {
-            background: rgba(255, 255, 255, 0.22);
-            border: 1px solid rgba(16, 32, 7, 0.25);
+            position: relative;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(26, 46, 10, 0.2);
             min-height: 100%;
             overflow: auto;
         }
 
         .nokia-app-wrap .win-body {
-            padding: 10px;
+            padding: 6px;
             min-height: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 10px;
         }
 
         .nokia-app-wrap .terminal-body {
             height: 100%;
-            min-height: 280px;
+            min-height: 240px;
         }
 
         .nokia-keypad {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 7px;
+            gap: 5px;
             margin-top: 6px;
+            padding: 0 2px;
         }
 
         .nokia-key {
-            min-height: clamp(34px, 6vh, 44px);
-            border: 1px solid #151c2d;
-            border-radius: 10px;
-            background: linear-gradient(180deg, #7a8ec0 0%, #4a5a84 100%);
-            color: #f4f7ff;
-            font-size: 12px;
+            min-height: clamp(32px, 5.5vh, 40px);
+            border: 1px solid #111;
+            border-radius: 8px;
+            background: linear-gradient(145deg, #3a3a4a, #252535);
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), -1px -1px 2px rgba(255, 255, 255, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            color: #f1f3f5;
+            font-size: 11px;
             font-family: 'Tahoma', 'Segoe UI', sans-serif;
             font-weight: bold;
-            letter-spacing: 0.2px;
+            letter-spacing: 0.3px;
             position: relative;
+            cursor: pointer;
+            transition: all 0.08s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
         }
 
         .nokia-key small {
-            font-size: 9px;
-            opacity: 0.8;
+            font-size: 8px;
+            opacity: 0.7;
+            color: #888;
             display: block;
-            margin-top: 1px;
+            margin-top: 2px;
         }
 
         .nokia-key:active,
         .nokia-key.active {
-            transform: translateY(1px);
-            background: linear-gradient(180deg, #44557e 0%, #354365 100%);
+            transform: scale(0.94);
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6) inset, -1px -1px 2px rgba(255, 255, 255, 0.02), inset 0 -1px 0 rgba(0, 0, 0, 0.3);
         }
 
         .nokia-key.nav {
-            min-height: clamp(38px, 7vh, 52px);
+            min-height: clamp(36px, 6.5vh, 46px);
         }
 
-        @media (max-height: 760px) {
-            body.mobile-nokia #nokia-phone {
-                padding: 6px;
-            }
+        .nokia-dpad-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+            margin-bottom: 4px;
+        }
 
-            .nokia-shell {
-                border-radius: 20px;
-                max-height: calc(100dvh - 12px);
-            }
+        .nokia-dpad-empty {
+            /* Corners - empty */
+        }
 
-            .nokia-brand {
-                margin-bottom: 6px;
-                font-size: 14px;
-            }
+        .nokia-dpad-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-            .nokia-keypad {
-                gap: 5px;
-                margin-top: 5px;
-            }
+        .nokia-key-dpad {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+        }
 
-            .nokia-key {
-                font-size: 11px;
-            }
+        .nokia-key-ok {
+            min-height: clamp(36px, 6.5vh, 46px);
+            background: linear-gradient(145deg, #2a4a2a, #1a3a1a);
+            border-color: #0a1a0a;
+            color: #7fd77f;
+            font-weight: bold;
+            border-radius: 50%;
+            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6), -1px -1px 2px rgba(100, 200, 100, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .nokia-key-ok:active {
+            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7) inset, -1px -1px 2px rgba(100, 200, 100, 0.05);
         }
 
         .nokia-key.call {
-            background: linear-gradient(180deg, #6db26d 0%, #3f7f3f 100%);
+            background: linear-gradient(145deg, #2d7a2d, #1d5a1d);
+            border-color: #0d3d0d;
+            color: #a0ffa0;
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), -1px -1px 2px rgba(200, 255, 200, 0.1), 0 0 8px rgba(45, 122, 45, 0.3);
+        }
+
+        .nokia-key.call:active {
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6) inset, -1px -1px 2px rgba(200, 255, 200, 0.05);
         }
 
         .nokia-key.end {
-            background: linear-gradient(180deg, #c96f6f 0%, #8f3f3f 100%);
+            background: linear-gradient(145deg, #8b2020, #6b1010);
+            border-color: #3b0a0a;
+            color: #ffb3b3;
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), -1px -1px 2px rgba(255, 150, 150, 0.1), 0 0 6px rgba(139, 32, 32, 0.3);
+        }
+
+        .nokia-key.end:active {
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6) inset, -1px -1px 2px rgba(255, 150, 150, 0.05);
+        }
+
+        @media (max-height: 740px) {
+            body.mobile-nokia #nokia-phone {
+                padding: 4px;
+            }
+
+            .nokia-shell {
+                border-radius: 18px 18px 26px 26px;
+                padding: 6px 6px 8px;
+                max-height: calc(100dvh - 8px);
+            }
+
+            .nokia-brand {
+                font-size: 11px;
+                margin-bottom: 6px;
+                letter-spacing: 4px;
+            }
+
+            .nokia-keypad {
+                gap: 4px;
+                margin-top: 4px;
+            }
+
+            .nokia-key {
+                font-size: 10px;
+                min-height: 32px;
+            }
+
+            .nokia-key small {
+                font-size: 7px;
+            }
         }
 
         .nokia-doom-tip {
@@ -1232,29 +1368,46 @@
                 <div class="nokia-screen-content" id="nokia-screen-content"></div>
             </div>
             <div class="nokia-keypad" id="nokia-keypad">
-                <button class="nokia-key call" data-phone-key="call" type="button">CALL</button>
-                <button class="nokia-key nav" data-phone-key="up" type="button">▲</button>
-                <button class="nokia-key end" data-phone-key="back" type="button">BACK</button>
+                <!-- D-Pad Section -->
+                <div style="grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;">
+                    <div class="nokia-dpad-empty"></div>
+                    <button class="nokia-key nokia-key-dpad" data-phone-key="up" type="button">▲</button>
+                    <div class="nokia-dpad-empty"></div>
+                    
+                    <button class="nokia-key nokia-key-dpad" data-phone-key="left" type="button">◀</button>
+                    <button class="nokia-key nokia-key-ok nokia-key-dpad" data-phone-key="ok" type="button">●</button>
+                    <button class="nokia-key nokia-key-dpad" data-phone-key="right" type="button">▶</button>
+                    
+                    <div class="nokia-dpad-empty"></div>
+                    <button class="nokia-key nokia-key-dpad" data-phone-key="down" type="button">▼</button>
+                    <div class="nokia-dpad-empty"></div>
+                </div>
 
-                <button class="nokia-key nav" data-phone-key="left" type="button">◀</button>
-                <button class="nokia-key nav" data-phone-key="ok" type="button">OK</button>
-                <button class="nokia-key nav" data-phone-key="right" type="button">▶</button>
+                <!-- Action Keys Row -->
+                <div style="grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:2px;">
+                    <button class="nokia-key call" data-phone-key="call" type="button">✆</button>
+                    <button class="nokia-key" data-phone-key="0" type="button">0<small>+</small></button>
+                    <button class="nokia-key end" data-phone-key="back" type="button">END</button>
+                </div>
 
-                <button class="nokia-key" data-phone-key="1" type="button">1<small>.</small></button>
-                <button class="nokia-key nav" data-phone-key="down" type="button">▼</button>
-                <button class="nokia-key" data-phone-key="3" type="button">3<small>DEF</small></button>
+                <!-- Number Pad -->
+                <div style="grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:2px;">
+                    <button class="nokia-key" data-phone-key="1" type="button">1<small>.</small></button>
+                    <button class="nokia-key" data-phone-key="2" type="button">2<small>ABC</small></button>
+                    <button class="nokia-key" data-phone-key="3" type="button">3<small>DEF</small></button>
 
-                <button class="nokia-key" data-phone-key="4" type="button">4<small>GHI</small></button>
-                <button class="nokia-key" data-phone-key="2" type="button">2<small>ABC</small></button>
-                <button class="nokia-key" data-phone-key="6" type="button">6<small>MNO</small></button>
+                    <button class="nokia-key" data-phone-key="4" type="button">4<small>GHI</small></button>
+                    <button class="nokia-key" data-phone-key="5" type="button">5<small>JKL</small></button>
+                    <button class="nokia-key" data-phone-key="6" type="button">6<small>MNO</small></button>
 
-                <button class="nokia-key" data-phone-key="7" type="button">7<small>PQRS</small></button>
-                <button class="nokia-key" data-phone-key="8" type="button">8<small>TUV</small></button>
-                <button class="nokia-key" data-phone-key="9" type="button">9<small>WXYZ</small></button>
+                    <button class="nokia-key" data-phone-key="7" type="button">7<small>PQRS</small></button>
+                    <button class="nokia-key" data-phone-key="8" type="button">8<small>TUV</small></button>
+                    <button class="nokia-key" data-phone-key="9" type="button">9<small>WXYZ</small></button>
 
-                <button class="nokia-key" data-phone-key="*" type="button">*</button>
-                <button class="nokia-key" data-phone-key="0" type="button">0<small>+</small></button>
-                <button class="nokia-key" data-phone-key="#" type="button">#</button>
+                    <button class="nokia-key" data-phone-key="*" type="button">*</button>
+                    <button style="opacity:0;pointer-events:none;"></button>
+                    <button class="nokia-key" data-phone-key="#" type="button">#</button>
+                </div>
             </div>
         </div>
     </div>
@@ -1329,6 +1482,10 @@
             <div class="desktop-icon" ondblclick="openApp('achievements')" onclick="selectIcon(this)">
                 <div class="icon-img">🏆</div>
                 <div class="icon-label">Achievements</div>
+            </div>
+            <div class="desktop-icon" ondblclick="openApp('devlog')" onclick="selectIcon(this)">
+                <div class="icon-img">📝</div>
+                <div class="icon-label">Dev Logs</div>
             </div>
             <div class="desktop-icon" ondblclick="openApp('minesweeper')" onclick="selectIcon(this)">
                 <div class="icon-img">💣</div>
@@ -1433,6 +1590,9 @@
             <div class="start-item" onclick="openApp('achievements'); closeStartMenu();">
                 <span class="si-icon">🏆</span> Achievements
             </div>
+            <div class="start-item" onclick="openApp('devlog'); closeStartMenu();">
+                <span class="si-icon">📝</span> Dev Logs
+            </div>
             <div class="start-item" onclick="openApp('minesweeper'); closeStartMenu();">
                 <span class="si-icon">💣</span> Minesweeper
             </div>
@@ -1474,7 +1634,7 @@
                 isPhone: false
             };
 
-            const PORTFOLIO_ROOT = ['C:', 'Users', 'Sayed', 'Portfolio'];
+            const PORTFOLIO_ROOT = ['C:', 'Users', 'ALHIEM', 'Portfolio'];
             const VFS = {
                 type: 'dir',
                 children: {
@@ -1491,9 +1651,9 @@
                     'Profile': {
                         type: 'dir',
                         children: {
-                            'About.txt': { type: 'file', content: 'Sayed Sadid Hoda (Alhiem)\nRetro nerd, gamer, and web builder from Bangalore.' },
+                            'About.txt': { type: 'file', content: 'ALHIEM\nRetro nerd, gamer, and web builder from Bangalore.' },
                             'Skills.txt': { type: 'file', content: 'Languages: Python, JavaScript, SQL, GDScript\nWeb: HTML, CSS, React, Next.js, Node.js, Three.js\nTools: Firebase, MongoDB, Git, Vercel, Godot, Figma' },
-                            'Connect.txt': { type: 'file', content: 'Email: sayedsadidhoda@gmail.com\nGitHub: github.com/dudefromalhiem\nLinkedIn: linkedin.com/in/sayedsadidhoda\nDiscord: @dudefromalhiem' }
+                            'Connect.txt': { type: 'file', content: 'Email: [ REDACTED ]\nGitHub: github.com/dudefromalhiem\nLinkedIn: linkedin.com/in/dudefromalhiem\nDiscord: @dudefromalhiem' }
                         }
                     },
                     'Apps': {
@@ -1875,7 +2035,7 @@
                     content: () => `
                     <div class="about-line">
                         <div class="about-label">NAME</div>
-                        <div class="about-value">Sayed Sadid Hoda</div>
+                        <div class="about-value">ALHIEM</div>
                     </div>
                     <div class="about-line">
                         <div class="about-label">ALIAS</div>
@@ -1975,6 +2135,27 @@
                     </div>
                 `
                 },
+                devlog: {
+                    title: 'Dev_Logs.txt — Notepad',
+                    icon: '📝',
+                    width: 560,
+                    height: 500,
+                    content: () => `
+                    <div style="font-family:'Courier New',monospace;font-size:11px;color:#1c2f55;line-height:1.6;white-space:pre-wrap;word-wrap:break-word;">
+[2026-05-14] — ARROG Security Audit Complete
+Fixed critical admin panel exposure vulnerability and CSS injection attacks. Patched Firebase storage misconfigurations and implemented client-side auth guards. Added comprehensive security headers and Firestore rule validation. Full audit report generated.
+
+[2026-05-12] — Splotch E-Commerce Platform v1.0 Shipped
+Deployed full-stack platform with Firebase, Razorpay integration, and Nodemailer backend. Implemented secure authentication, Firestore rules, and HTTP security headers. Completed brand identity and social media asset generation.
+
+[2026-05-08] — W.A.D.D. Weather Dashboard Released
+Built anomaly detection system using IQR and Z-score algorithms. Integrated Visual Crossing API, implemented CSV upload feature and demo data generator. Neo-Cyber Blue theme applied. Testing in progress.
+
+[2026-05-01] — IEEE Paper Formatting & Submission
+Co-authored Arduino-based fuel adulteration detection paper. Handled structural edits, literature review, AI-detection analysis, and abstract refinement. Paper accepted for submission to IEEE conference proceedings.
+                    </div>
+                `
+                },
                 connect: {
                     title: 'Connect',
                     icon: '🌐',
@@ -1984,7 +2165,7 @@
                     <div style="color:var(--dim);font-size:11px;margin-bottom:12px;letter-spacing:1px;">LINKS & CONTACT</div>
                     <div class="connect-item">
                         <span class="ci-icon">📧</span>
-                        <a href="mailto:sayedsadidhoda@gmail.com">sayedsadidhoda@gmail.com</a>
+                        <a href="#">[ REDACTED ]</a>
                     </div>
                     <div class="connect-item">
                         <span class="ci-icon">🐙</span>
@@ -1992,7 +2173,7 @@
                     </div>
                     <div class="connect-item">
                         <span class="ci-icon">💼</span>
-                        <a href="https://linkedin.com/in/sayedsadidhoda" target="_blank" rel="noopener">linkedin.com/in/sayedsadidhoda</a>
+                        <a href="https://linkedin.com/in/dudefromalhiem" target="_blank" rel="noopener">linkedin.com/in/dudefromalhiem</a>
                     </div>
                     <div class="connect-item">
                         <span class="ci-icon">🎮</span>
@@ -2906,6 +3087,7 @@
                     'terminal',
                     'connect',
                     'achievements',
+                    'devlog',
                     'calculator',
                     'paint',
                     'doom',
@@ -3765,8 +3947,8 @@
 
                 function cmdWhoami() {
                     return [
-                        '<span style="color:var(--white)">></span> <span style="color:var(--white)">Sayed Sadid Hoda</span> (aka Alhiem)',
-                        '<span style="color:var(--white)">></span> Gamer. Retro nerd. Web builder.',
+                        '<span style="color:var(--white)">></span> <span style="color:var(--white)">ALHIEM</span> (aka Alhiem)',
+                        '<span style="color:var(--white)">></span> Gamer. Retro nerd. Web builder.',,
                         '<span style="color:var(--white)">></span> First-year B.Tech CSE (AI&ML) at LPU',
                         '<span style="color:var(--white)">></span> Based in <span style="color:var(--white)">Bangalore</span>',
                         '<span style="color:var(--white)">></span> I code for creative freedom. Websites are my canvas.',
@@ -3809,9 +3991,9 @@
                         '<span style="color:var(--white)">></span> <span style="color:var(--white)">LINKS</span>',
                         '<span style="color:var(--white)">Here\'s how to reach me:</span>',
                         '',
-                        '   Email      →  <a href="mailto:sayedsadidhoda@gmail.com">sayedsadidhoda@gmail.com</a>',
+                        '   Email      →  [ REDACTED ]',
                         '   GitHub     →  <a href="https://github.com/dudefromalhiem" target="_blank" rel="noopener">github.com/dudefromalhiem</a>',
-                        '   LinkedIn   →  <a href="https://linkedin.com/in/sayedsadidhoda" target="_blank" rel="noopener">linkedin.com/in/sayedsadidhoda</a>',
+                        '   LinkedIn   →  <a href="https://linkedin.com/in/dudefromalhiem" target="_blank" rel="noopener">linkedin.com/in/dudefromalhiem</a>',
                         '   Discord    →  <span style="color:var(--white)">@dudefromalhiem</span>',
                     ];
                 }
