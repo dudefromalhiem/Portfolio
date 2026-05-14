@@ -96,10 +96,59 @@
             padding: 26px;
         }
 
-        .achievements-empty {
+        .achievement-category {
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .achievement-item {
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(195, 181, 255, 0.1);
+        }
+
+        .achievement-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .achievement-item h3 {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 14px;
             color: var(--white);
-            opacity: 0.9;
+            margin: 0 0 4px 0;
+        }
+
+        .achievement-item p {
+            margin: 2px 0;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .achievement-desc {
+            color: var(--primary);
+        }
+
+        .achievement-meta {
+            font-size: 11px;
+            opacity: 0.7;
+            color: var(--primary);
+        }
+
+        .achievement-highlights {
+            margin-top: 15px;
+            font-size: 12px;
             line-height: 1.6;
+            color: var(--primary);
+        }
+
+        .achievement-highlights li {
+            margin: 4px 0;
         }
 
         .connect-list { display: flex; flex-direction: column; gap: 15px; margin-bottom: 40px; }
@@ -220,7 +269,44 @@
         <section class="achievements">
             <div class="section-label scroll-anim">04 / ACHIEVEMENTS</div>
             <div class="achievements-panel scroll-anim" style="transition-delay: 80ms;">
-                <div class="achievements-empty">Achievements will be added here later.</div>
+                <div class="achievement-category">Awards & Recognition</div>
+                <div class="achievement-item">
+                    <h3>🥇 Smart India Hackathon 2026</h3>
+                    <p class="achievement-desc">Top 50 Rank at National Level</p>
+                    <p class="achievement-meta">36-hour national-level hackathon • Lovely Professional University</p>
+                </div>
+                <div class="achievement-item">
+                    <h3>🥈 All India Hackathon 2026</h3>
+                    <p class="achievement-desc">First Runner-Up at LPU</p>
+                    <p class="achievement-meta">36-hour national-level hackathon • Campus finalist</p>
+                </div>
+                <div class="achievement-item">
+                    <h3>💼 SkillFlow AI Internship</h3>
+                    <p class="achievement-desc">Selected for 1-Month Internship • July 2026</p>
+                    <p class="achievement-meta">Artificial Intelligence track • Accepted</p>
+                </div>
+
+                <div class="achievement-category">Hackathons & Competitions</div>
+                <div class="achievement-item">
+                    <h3>COD-A-FEST 3.0 (2026)</h3>
+                    <p class="achievement-desc">18-hour Generative AI Hackathon</p>
+                    <p class="achievement-meta">Cert ID: HD-CAF3-2026-111 • HiDevs / ASTITWA</p>
+                </div>
+                <div class="achievement-item">
+                    <h3>Algo-N-Hunt Marathon (Nov 2025)</h3>
+                    <p class="achievement-desc">Competitive Coding & Gaming Marathon</p>
+                    <p class="achievement-meta">Dual Recognition: Google GSA Program + OPTIMUS • LPU</p>
+                </div>
+
+                <div class="achievement-category">Notable Achievements</div>
+                <div class="achievement-highlights">
+                    <ul style="margin: 0; padding-left: 16px;">
+                        <li>Co-Founder of Splotch (Premium Streetwear Brand)</li>
+                        <li>Active on LeetCode, HackerRank, HackerEarth</li>
+                        <li>IEEE-Format Research Paper Co-Author</li>
+                        <li>Google Student Ambassador (2025–Present)</li>
+                    </ul>
+                </div>
             </div>
         </section>
 
