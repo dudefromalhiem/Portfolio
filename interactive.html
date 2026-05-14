@@ -1929,6 +1929,20 @@
 
             // ── App Definitions ──
             const APPS = {
+                home: {
+                    title: 'Home',
+                    icon: '🏠',
+                    width: 360,
+                    height: 240,
+                    content: () => `
+                    <div style="padding:8px 6px;color:#1a2e0a;line-height:1.5;">
+                        <div style="font-size:11px;margin-bottom:10px;letter-spacing:1px;font-weight:bold;color:var(--dim);">RETURN TO HOME</div>
+                        <div style="margin-bottom:10px;">Leave Nokia mode and go back to the main landing page.</div>
+                        <button onclick="window.location.href='index.html'" style="width:100%;padding:10px;border:1px solid #1a2e0a;background:#355a14;color:#f0ffe0;font-family:'Courier New',monospace;font-size:11px;font-weight:bold;cursor:pointer;">GO HOME</button>
+                        <div style="margin-top:8px;font-size:10px;opacity:0.8;">Use END to return to the menu.</div>
+                    </div>
+                `
+                },
                 recycle: {
                     title: 'Recycle Bin',
                     icon: '🗑️',
@@ -3081,19 +3095,16 @@ Co-authored Arduino-based fuel adulteration detection paper. Handled structural 
                 if (!titleEl || !contentEl || !timeEl || !keypad) return;
 
                 const menuApps = [
+                    'home',
                     'about',
                     'projects',
                     'explorer',
-                    'terminal',
                     'connect',
                     'achievements',
                     'devlog',
                     'calculator',
-                    'paint',
-                    'doom',
                     'roadmap',
                     'settings',
-                    'minesweeper',
                     'recycle'
                 ].filter(id => !!APPS[id]);
 
